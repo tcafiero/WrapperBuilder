@@ -1,0 +1,61 @@
+Author: Antonio Cafiero
+Module: VF042
+Description: Gestione relè anabaglianti [F042.Vf4]
+Date: 2013-12-03
+Platform: Body Platform F142M L7
+Input:
+ -
+  Source: VF036
+  Type: NBC
+  Implemented: not
+  Signal:
+   -
+    Name: LowBeamFollowMeCarCmd
+    Type: t_bool
+    Value: [
+         [0x00, LOWBEAMFOLLOWMECARCMD_OFF, Deactive function LowBeamFollowMeCarCmd],
+         [0x01, LOWBEAMFOLLOWMECARCMD_ON, Active function LowBeamFollowMeCarCmd]]
+ -
+  Source: VF247
+  Type: NBC
+  Implemented: not
+  Signal:
+   -
+    Name: LowBeamCmd
+    Type: t_bool
+    Value: [
+         [0x00, LOWBEAMCMD_OFF, Deactive function LowBeamCmd ],
+         [0x01, LOWBEAMCMD_ON, Active function LowBeamCmd ]]
+ -
+  Source: VF048
+  Type: NBC
+  Implemented: not
+  Signal:
+   -
+    Name: LowBeamFollowMeCmd
+    Type: t_bool
+    Value: [
+         [0x00, LOWBEAMFOLLOWMECMD_OFF, Deactive function LowBeamFollowMeCmd ],
+         [0x01, LOWBEAMFOLLOWMECMD_ON, Active function LowBeamFollowMeCmd ]]
+
+Output:
+ -
+  Destination: [PHI, ]
+  Name: LowBeamOut
+  Type: t_bool
+  ConnectorPin: AC-12
+  ProcessorPin: [OUT_ANAB_SX]  
+  Value: [
+         [0x00, LOWBEAMOUT_OFF, Deactive function LowBeamOut ],
+         [0x01, LOWBEAMOUT_ON, Active function LowBeamOut ]]
+ -
+  Destination: [CAN, ]
+  Name: LowBeamSts
+  Message: EXTERNAL_LIGHTS
+  Type: t_bool
+  NetName: [EXTERNAL_LIGHTSLowBeamSts_bit, STATUS_B_CAN2LowBeamSts_bit]
+  Async: yes
+  DefaultValue: LOWBEAMSTS_OFF
+  Value: [
+         [0x00, LOWBEAMSTS_OFF, Deactive function LowBeamSts ],
+         [0x01, LOWBEAMSTS_ON, Active function LowBeamSts ]]
