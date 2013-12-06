@@ -37,10 +37,36 @@ Input:
     Value: [
          [0x00, LOWBEAMFOLLOWMECMD_OFF, Deactive function LowBeamFollowMeCmd ],
          [0x01, LOWBEAMFOLLOWMECMD_ON, Active function LowBeamFollowMeCmd ]]
+ -
+  Source: Network
+  Type: CAN
+  Implemented: not
+  Signal:
+   -
+    Name: LowBeamFollowMeCmd
+    Type: t_bool
+    MessageName:
+    SignalName:
+    Value: [
+         [0x00, LOWBEAMFOLLOWMECMD_OFF, Deactive function LowBeamFollowMeCmd ],
+         [0x01, LOWBEAMFOLLOWMECMD_ON, Active function LowBeamFollowMeCmd ]]
+ -
+  Source: Physical
+  Type: PHY
+  Implemented: not
+  Signal:
+   -
+    Name: LowBeamFollowMeCmd
+    Type: t_bool
+    ConnectorPinName:
+    ProcessorPinName: M_VOLTAGE_STAB
+    Value: [
+         [0x00, LOWBEAMFOLLOWMECMD_OFF, Deactive function LowBeamFollowMeCmd ],
+         [0x01, LOWBEAMFOLLOWMECMD_ON, Active function LowBeamFollowMeCmd ]]
 
 Output:
  -
-  Destination: [PHI, ]
+  Destination: [PHY, ]
   Name: LowBeamOut
   Type: t_bool
   ConnectorPin: AC-12
