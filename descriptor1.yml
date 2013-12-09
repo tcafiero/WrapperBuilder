@@ -5,91 +5,96 @@ Date: 2013-12-03
 Platform: Body Platform F142M L7
 Input:
  -
-  Source: VF036
-  Type: NBC
-  Implemented: not
+  Name: LowBeamFollowMeCarCmd
+  Type: t_bool
+  Value: [
+         [LOWBEAMFOLLOWMECARCMD_OFF, 0x00, Deactive function LowBeamFollowMeCarCmd],
+         [LOWBEAMFOLLOWMECARCMD_ON, 0x01, Active function LowBeamFollowMeCarCmd]]
   Signal:
    -
-    Name: LowBeamFollowMeCarCmd
-    Type: t_bool
-    Value: [
-         [0x00, LOWBEAMFOLLOWMECARCMD_OFF, Deactive function LowBeamFollowMeCarCmd],
-         [0x01, LOWBEAMFOLLOWMECARCMD_ON, Active function LowBeamFollowMeCarCmd]]
+    Source: VF036
+    Type: NBC
+    Implemented: not
  -
-  Source: VF247
-  Type: NBC
-  Implemented: not
+  Name: LowBeamCmd
+  Type: t_bool
+  Value: [
+         [LOWBEAMCMD_OFF, 0x00, Deactive function LowBeamCmd ],
+         [LOWBEAMCMD_ON, 0x01, Active function LowBeamCmd ]]
   Signal:
    -
-    Name: LowBeamCmd
-    Type: t_bool
-    Value: [
-         [0x00, LOWBEAMCMD_OFF, Deactive function LowBeamCmd ],
-         [0x01, LOWBEAMCMD_ON, Active function LowBeamCmd ]]
+    Source: VF247
+    Type: NBC
+    Implemented: not
+
  -
-  Source: VF048
-  Type: NBC
-  Implemented: not
+  Name: LowBeamFollowMeCmd
+  Type: t_bool
+  Value: [
+         [LOWBEAMFOLLOWMECMD_OFF, 0x00, Deactive function LowBeamFollowMeCmd ],
+         [LOWBEAMFOLLOWMECMD_ON, 0x01, Active function LowBeamFollowMeCmd ]]
   Signal:
    -
-    Name: LowBeamFollowMeCmd
-    Type: t_bool
-    Value: [
-         [0x00, LOWBEAMFOLLOWMECMD_OFF, Deactive function LowBeamFollowMeCmd ],
-         [0x01, LOWBEAMFOLLOWMECMD_ON, Active function LowBeamFollowMeCmd ]]
+    Source: VF048
+    Type: NBC
+    Implemented: not
  -
-  Source: Network
-  Type: CAN
-  Implemented: not
+  Name: LowBeamFollowMeCmd
+  Type: t_bool
+  MessageName:
+  Value: [
+         [LOWBEAMFOLLOWMECMD_OFF, 0x00, Deactive function LowBeamFollowMeCmd ],
+         [LOWBEAMFOLLOWMECMD_ON, 0x01, Active function LowBeamFollowMeCmd ]]
   Signal:
    -
-    Name: LowBeamFollowMeCmd
-    Type: t_bool
-    MessageName:
-    SignalName:
-    Value: [
-         [0x00, LOWBEAMFOLLOWMECMD_OFF, Deactive function LowBeamFollowMeCmd ],
-         [0x01, LOWBEAMFOLLOWMECMD_ON, Active function LowBeamFollowMeCmd ]]
+    Source: Network
+    Type: CAN
+    MessageName: EXTERNAL_LIGHTS
+    SignalName: EXTERNAL_LIGHTSLowBeamSts_bit
+    Implemented: not
  -
-  Source: Physical
-  Type: PHY
-  Implemented: not
+  Name: LowBeamFollowMeCmd
+  Type: t_bool
+  Value: [
+         [LOWBEAMFOLLOWMECMD_OFF, 0x00, Deactive function LowBeamFollowMeCmd ],
+         [LOWBEAMFOLLOWMECMD_ON, 0x01, Active function LowBeamFollowMeCmd ]]
   Signal:
    -
-    Name: LowBeamFollowMeCmd
-    Type: t_bool
+    Source: Physical
+    Type: PHY
     ConnectorPinName:
     ProcessorPinName: M_VOLTAGE_STAB
-    Value: [
-         [0x00, LOWBEAMFOLLOWMECMD_OFF, Deactive function LowBeamFollowMeCmd ],
-         [0x01, LOWBEAMFOLLOWMECMD_ON, Active function LowBeamFollowMeCmd ]]
-
+    Implemented: not
 Output:
  -
   Name: LowBeamOut
   Type: t_bool
   Value: [
-         [0x00, LOWBEAMOUT_OFF, Deactive function LowBeamOut ],
-         [0x01, LOWBEAMOUT_ON, Active function LowBeamOut ]]
+         [LOWBEAMOUT_OFF, 0x00, Deactive function LowBeamOut ],
+         [LOWBEAMOUT_ON, 0x01, Active function LowBeamOut ]]
   Signal:
    -
     Destination: Physical
     Type: PHY
     ConnerctorPinName: AC-12
-    ProcessorPinName: [OUT_ANAB_SX]
+    ProcessorPinName: OUT_ANAB_SX
     Implemented: yes
  -
    Name: LowBeamSts
    Type: t_bool
    Value: [
-          [0x00, LOWBEAMSTS_OFF, Deactive function LowBeamSts ],
-          [0x01, LOWBEAMSTS_ON, Active function LowBeamSts ]]
-
-  Destination: Network
-  Type: CAN
-  Implemented: yes
-  Signal:
-  - 
-   MessageName: EXTERNAL_LIGHTS
-   NetName: [EXTERNAL_LIGHTSLowBeamSts_bit, STATUS_B_CAN2LowBeamSts_bit]
-   Async: yes
+          [LOWBEAMSTS_OFF, 0x00, Deactive function LowBeamSts ],
+          [LOWBEAMSTS_ON, 0x01, Active function LowBeamSts ]]
+   Signal:
+    - 
+     Destination: Network
+     Type: CAN
+     MessageName: EXTERNAL_LIGHTS
+     SignalName: EXTERNAL_LIGHTSLowBeamSts_bit
+     Implemented: yes
+    - 
+     Destination: Network
+     Type: CAN
+     MessageName: EXTERNAL_LIGHTS
+     SignalName: STATUS_B_CAN2LowBeamSts_bit
+     Implemented: yes

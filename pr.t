@@ -28,12 +28,12 @@
 #include "syst.h"
 #include "wkss.h"
 <% for input in descriptor["Input"] %>
-<% for item in input["Signal"] %>
-<% if input["Implemented"] != "not" %>
-#include "<%= input["Source"] %>.h"
+<% for signal in input["Signal"] %>
+<% if signal["Implemented"] != "not" %>
+#include "<%= signal["Source"] %>.h"
 <% else %>
-/* TODO When <%= input["Source"] %> implemented delete comment on following statement */
-//#include "<%= input["Source"] %>.h"
+/* TODO When <%= signal["Source"] %> implemented delete comment on following statement */
+//#include "<%= signal["Source"] %>.h"
 <% end %>
 <% end %>
 <% end %>
@@ -50,8 +50,8 @@
 /*______ L O C A L - D A T A _________________________________________________*/
 
 /*outputs */
-<% for item in descriptor["Output"] %>
-<%= item["Type"] %> <%= item["Name"] %>;
+<% for output in descriptor["Output"] %>
+<%= output["Type"] %> <%= output["Name"] %>;
 <% end %>
 u_int08 <%= descriptor["Module"] %>_ModelEventCounter;
 
@@ -80,43 +80,44 @@ void <%= descriptor["Module"] %>_Init(void)
 {
 	/* initialize inputs */
 <% for input in descriptor["Input"] %>
-<% for item in input["Signal"] %>
-<% if input["Implemented"] != "not" %>
-<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=<%= input["Source"] %>_<%= item["Value"][0][1] %>;
-<% else %>
-<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=<%= descriptor["Module"] %>_<%= item["Value"][0][1] %>;
-<% end %>
+<% for signal in input["Signal"] %>
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= descriptor["Module"] %>_<%= input["Value"][0][0] %>;
 <% end %>
 <% end %>
 
 	/* initialize outputs */
-<% for item in descriptor["Output"] %>
-<%= descriptor["Module"] %>_<%= item["Name"] %>=<%= descriptor["Module"] %>_<%= item["Value"][0][1] %>;
-<%= descriptor["Module"] %>_ModelOutputs.<%= item["Name"] %>=<%= descriptor["Module"] %>_<%= item["Name"] %>;
-<% if item["Destination"][0] == "PHY" %>
-<% for SignalName in item["ProcessorPin"] %>
-DOUP_Set<%= SignalName %>(<%= descriptor["Module"] %>_<%= item["Name"] %>);
+<% for output in descriptor["Output"] %>
+<%= descriptor["Module"] %>_<%= Output["Name"] %>=<%= descriptor["Module"] %>_<%= Output["Value"][0][0] %>;
+<%= descriptor["Module"] %>_ModelOutputs.<%= Output["Name"] %>=<%= descriptor["Module"] %>_<%= Output["Name"] %>;
+<% for signal in output["Signal"]%>
+<% if signal["Type"] == "PHY" %>
+DOUP_Set<%= signal["ProcessorPinName"] %>(<%= descriptor["Module"] %>_<%= Output["Name"] %>);
 <% end %>
-<% end %>
-<% if item["Destination"][0] == "CAN" %>
-<% for n in item["NetName"] %>
-NETC_TX_<%= n %>=<%= descriptor["Module"] %>_<%= item["Name"] %>);
+<% if signal["Type"] == "CAN" %>
+NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= Output["Name"] %>);
 <% end %>
 <% end %>
 <% end %>
 <%= descriptor["Module"] %>_ModelEventCounter = 1;
 }
 
+<% proxi_used=0 %>
 <% for input in descriptor["Input"] %>
-<% if input["Type"] == "PROXI" %>
+<% for signal in input["Signal"] %>
+<% if signal["Type"] == "PROXI" %>
+<% proxi_used=1 %>
+<% end %>
+<% end %>
+<% end %>
+<% if proxi_used == 1 %>
 /* NOTE
    Bind following callback
-   function: <%= descriptor["Module"] %>_<%= item["Name"] %>StatusChanged();
+   function: <%= descriptor["Module"] %>_ProxiStatusChanged();
    in file: <%= descriptor["Module"] %>_config.h
    at section: G L O B A L - M A C R O S  */
 /******************************************************************************/
 /**
- * \brief       <%= input["Source"] %> status changed callback function.
+ * \brief       <%= descriptor["Module"] %>_ProxiStatusChanged callback function.
  * \author      <%= descriptor["Author"] %>
  * \since       <%= descriptor["Date"] %>
  *}
@@ -124,12 +125,16 @@ NETC_TX_<%= n %>=<%= descriptor["Module"] %>_<%= item["Name"] %>);
 /******************************************************************************/
 void <%= descriptor["Module"] %>_ProxiStatusChanged(void)
 {
-<% for item in input["Signal"] %>
+<% for input in description["Input"] %>
+<% for signal in input["Signal"] %>
+<% if signal["Type"] == "PROXI" %>
 <% if input["Implemented"] != "not" %>
-<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=VERS_Get<%= item["Name"] %>();
+<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=VERS_Get<%= signal["Source"] %>();
 <% else %>
 /* TODO  Delete following comment when <%= input["Source"] %> implemented*/
-//<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=VERS_Get<%= item["Name"] %>();
+//<% descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=VERS_Get<%= signal["Source"] %>();
+<% end %>
+<% end %>
 <% end %>
 <% end %>
 <%= descriptor["Module"] %>_ModelEventCounter++;
@@ -138,29 +143,31 @@ void <%= descriptor["Module"] %>_ProxiStatusChanged(void)
 
 
 <% end %>
+
 <%# NBC SIGNAL callback (START SECTION) %>
-<% if input["Type"] == "NBC" %>
-<% for item in input["Signal"] %>
+<% for input in descriptor["Input"] %>
+<% for signal in input["Signal"] %>
+<% if signal["Type"] == "NBC" %>
 /* NOTE
    Bind following callback
-   function: <%= descriptor["Module"] %>_<%= item["Name"] %>StatusChanged();
-   in file: <%= descriptor["Module"] %>_config.h
+   function: <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged();
+   in file: <%= signal["Source"] %>_config.h
    at section: G L O B A L - M A C R O S  */
 /******************************************************************************/
 /**
- * \brief       <%= item["Name"] %> status changed callback function.
+ * \brief       <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged callback function.
  * \author      <%= descriptor["Author"] %>
  * \since       <%= descriptor["Date"] %>
  *}
  */
 /******************************************************************************/
-void <%= descriptor["Module"] %>_<%= item["Name"] %>StatusChanged(void)
+void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void)
 {
-<% if input["Implemented"] != "not" %>
-<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=<%= input["Source"] %>_Get<%= item["Name"] %>();
+<% if signal["Implemented"] != "not" %>
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= signal["Source"] %>_Get<%= input["Name"] %>();
 <% else %>
-/* TODO  Delete following comment when <%= input["Source"] %> implemented*/
-//<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=<%= input["Source"] %>_Get<%= item["Name"] %>();
+/* TODO  Delete following comment when <%= signal["Source"] %> implemented*/
+//<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= signal["Source"] %>_Get<%= input["Name"] %>();
 <% end %>
 <%= descriptor["Module"] %>_ModelEventCounter++;
 }
@@ -169,7 +176,9 @@ void <%= descriptor["Module"] %>_<%= item["Name"] %>StatusChanged(void)
 
 <% end %>
 <% end %>
+<% end %>
 <%# NBC SIGNAL callback (STOP SECTION) %>
+
 <%# PHYSICAL SIGNAL callback (START SECTION) %>
 <% if input["Type"] == "PHY" %>
 <% for item in input["Signal"] %>
@@ -252,6 +261,8 @@ void <%= descriptor["Module"] %>_<%= item["MessageName"] %>_Confirmation(void)
 /******************************************************************************/
 void <%= descriptor["Module"] %>_ReadOutputs(void)
 {
-<% for input in descriptor["Input"] %>
-<% for item in descriptor["Output"] %>
+<% for Output in descriptor["Output"] %>
+<% for Signal in Output["Signal"] %>
+<% end %>
+<% end %>
 
