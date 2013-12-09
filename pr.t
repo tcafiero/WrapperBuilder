@@ -205,4 +205,39 @@ void <%= descriptor["Module"] %>_<%= item["Name"] %>StatusChanged(void)
 <% end %>
 <% end %>
 <%# PHYSICAL SIGNAL callback (STOP SECTION) %>
+<%# NETWORK SIGNAL callback (START SECTION) %>
+<% if input["Type"] == "CAN" %>
+<% for item in input["Signal"] %>
+/* NOTE
+   Bind following callback
+   function: <%= descriptor["Module"] %>_<%= item["MessageName"] %>_Confirmation();
+   in file: linp_config.h
+   at section: Logical Input CALLBACK function mapping
+   changing macro: #define Linp_EVENT_CALLBACK_<%= item["ProcessorPinName"] %>        LINP_DummyDirect
+   into this:      #define Linp_EVENT_CALLBACK_<%= item["ProcessorPinName"] %>        <%= descriptor["Module"] %>_<%= item["Name"] %>StatusChanged
+*/
+/******************************************************************************/
+/**
+ * \brief       <%= descriptor["Module"] %>_<%= item["MessageName"] %>_Confirmation callback function.
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ *}
+ */
+/******************************************************************************/
+void <%= descriptor["Module"] %>_<%= item["MessageName"] %>_Confirmation(void)
+{
+<% if input["Implemented"] != "not" %>
+<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=NETC_RX_<%= item["MessageName"] %><%= item["SignalName"] %>;
+<% else %>
+/* TODO  Delete following comment when <%= input["Source"] %> has binding on this callback routine*/
+//<<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=NETC_RX_<%= item["MessageName"] %><%= item["SignalName"] %>;
+<% end %>
+<%= descriptor["Module"] %>_ModelEventCounter++;
+}
+
+
+
+<% end %>
+<% end %>
+<%# PHYSICAL SIGNAL callback (STOP SECTION) %>
 <% end %>
