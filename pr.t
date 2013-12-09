@@ -241,3 +241,17 @@ void <%= descriptor["Module"] %>_<%= item["MessageName"] %>_Confirmation(void)
 <% end %>
 <%# PHYSICAL SIGNAL callback (STOP SECTION) %>
 <% end %>
+
+
+/******************************************************************************/
+/**
+ * \brief       Read output signals from the model and call status changed callback if needed.
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+*/
+/******************************************************************************/
+void <%= descriptor["Module"] %>_ReadOutputs(void)
+{
+<% for input in descriptor["Input"] %>
+<% for item in descriptor["Output"] %>
+

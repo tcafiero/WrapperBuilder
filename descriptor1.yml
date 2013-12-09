@@ -66,22 +66,30 @@ Input:
 
 Output:
  -
-  Destination: [PHY, ]
   Name: LowBeamOut
   Type: t_bool
-  ConnectorPin: AC-12
-  ProcessorPin: [OUT_ANAB_SX]  
   Value: [
          [0x00, LOWBEAMOUT_OFF, Deactive function LowBeamOut ],
          [0x01, LOWBEAMOUT_ON, Active function LowBeamOut ]]
+  Signal:
+   -
+    Destination: Physical
+    Type: PHY
+    ConnerctorPinName: AC-12
+    ProcessorPinName: [OUT_ANAB_SX]
+    Implemented: yes
  -
-  Destination: [CAN, ]
-  Name: LowBeamSts
-  Message: EXTERNAL_LIGHTS
-  Type: t_bool
-  NetName: [EXTERNAL_LIGHTSLowBeamSts_bit, STATUS_B_CAN2LowBeamSts_bit]
-  Async: yes
-  DefaultValue: LOWBEAMSTS_OFF
-  Value: [
-         [0x00, LOWBEAMSTS_OFF, Deactive function LowBeamSts ],
-         [0x01, LOWBEAMSTS_ON, Active function LowBeamSts ]]
+   Name: LowBeamSts
+   Type: t_bool
+   Value: [
+          [0x00, LOWBEAMSTS_OFF, Deactive function LowBeamSts ],
+          [0x01, LOWBEAMSTS_ON, Active function LowBeamSts ]]
+
+  Destination: Network
+  Type: CAN
+  Implemented: yes
+  Signal:
+  - 
+   MessageName: EXTERNAL_LIGHTS
+   NetName: [EXTERNAL_LIGHTSLowBeamSts_bit, STATUS_B_CAN2LowBeamSts_bit]
+   Async: yes
