@@ -87,20 +87,22 @@ void <%= descriptor["Module"] %>_Init(void)
 
 	/* initialize outputs */
 <% for output in descriptor["Output"] %>
-<%= descriptor["Module"] %>_<%= Output["Name"] %>=<%= descriptor["Module"] %>_<%= Output["Value"][0][0] %>;
-<%= descriptor["Module"] %>_ModelOutputs.<%= Output["Name"] %>=<%= descriptor["Module"] %>_<%= Output["Name"] %>;
+<%= descriptor["Module"] %>_<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Value"][0][0] %>;
+<%= descriptor["Module"] %>_Modeloutputs.<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
 <% for signal in output["Signal"]%>
 <% if signal["Type"] == "PHY" %>
-DOUP_Set<%= signal["ProcessorPinName"] %>(<%= descriptor["Module"] %>_<%= Output["Name"] %>);
+DOUP_Set<%= signal["ProcessorPinName"] %>(<%= descriptor["Module"] %>_<%= output["Name"] %>);
 <% end %>
 <% if signal["Type"] == "CAN" %>
-NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= Output["Name"] %>);
+NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>);
 <% end %>
 <% end %>
 <% end %>
 <%= descriptor["Module"] %>_ModelEventCounter = 1;
 }
 
+
+<%# PROXI callback (START SECTION) %>
 <% proxi_used=0 %>
 <% for input in descriptor["Input"] %>
 <% for signal in input["Signal"] %>
@@ -113,7 +115,7 @@ NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= Output["Name
 /* NOTE
    Bind following callback
    function: <%= descriptor["Module"] %>_ProxiStatusChanged();
-   in file: <%= descriptor["Module"] %>_config.h
+   in file: ...\BCM_APP_L7_F142M\BCML7_CLIENT\CONFIGURATION_FILES\vers_config.h
    at section: G L O B A L - M A C R O S  */
 /******************************************************************************/
 /**
@@ -143,6 +145,8 @@ void <%= descriptor["Module"] %>_ProxiStatusChanged(void)
 
 
 <% end %>
+<%# PROXI callback (STOP SECTION) %>
+
 
 <%# NBC SIGNAL callback (START SECTION) %>
 <% for input in descriptor["Input"] %>
@@ -180,31 +184,32 @@ void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void)
 <%# NBC SIGNAL callback (STOP SECTION) %>
 
 <%# PHYSICAL SIGNAL callback (START SECTION) %>
-<% if input["Type"] == "PHY" %>
-<% for item in input["Signal"] %>
+<% for input in descriptor["Input"] %>
+<% for signal in input["Signal"] %>
+<% if signal["Type"] == "PHY" %>
 /* NOTE
    Bind following callback
-   function: <%= descriptor["Module"] %>_<%= item["Name"] %>StatusChanged();
+   function: <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged();
    in file: linp_config.h
    at section: Logical Input CALLBACK function mapping
-   changing macro: #define Linp_EVENT_CALLBACK_<%= item["ProcessorPinName"] %>        LINP_DummyDirect
-   into this:      #define Linp_EVENT_CALLBACK_<%= item["ProcessorPinName"] %>        <%= descriptor["Module"] %>_<%= item["Name"] %>StatusChanged
+   changing macro: #define Linp_EVENT_CALLBACK_<%= signal["ProcessorPinName"] %>        LINP_DummyDirect
+   into this:      #define Linp_EVENT_CALLBACK_<%= signal["ProcessorPinName"] %>        <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged
 */
 /******************************************************************************/
 /**
- * \brief       <%= item["Name"] %> status changed callback function.
+ * \brief       <%= input["Name"] %> status changed callback function.
  * \author      <%= descriptor["Author"] %>
  * \since       <%= descriptor["Date"] %>
  *}
  */
 /******************************************************************************/
-void <%= descriptor["Module"] %>_<%= item["Name"] %>StatusChanged(void)
+void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void)
 {
-<% if input["Implemented"] != "not" %>
-<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=(<%= item["Type"] %>) LINP_Get<%= item["Name"] %>();
+<% if signal["Implemented"] != "not" %>
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=(<%= input["Type"] %>) LINP_Get<%= signal["ProcessorPinName"] %>();
 <% else %>
 /* TODO  Delete following comment when <%= input["Source"] %> has binding on this callback routine*/
-//<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=(<%= item["Type"] %>) LINP_Get<%= item["Name"] %>();
+//<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=(<%= input["Type"] %>) LINP_Get<%= signal["ProcessorPinName"] %>();
 <% end %>
 <%= descriptor["Module"] %>_ModelEventCounter++;
 }
@@ -213,43 +218,63 @@ void <%= descriptor["Module"] %>_<%= item["Name"] %>StatusChanged(void)
 
 <% end %>
 <% end %>
+<% end %>
 <%# PHYSICAL SIGNAL callback (STOP SECTION) %>
+
+
 <%# NETWORK SIGNAL callback (START SECTION) %>
-<% if input["Type"] == "CAN" %>
-<% for item in input["Signal"] %>
+<% mset = Hash.new %>
+<% mset.default=0 %>
+<% for input in descriptor["Input"] %>
+<% for signal in input["Signal"] %>
+<% if signal["Type"] == "CAN" %>
+<% if  mset[signal["MessageName"]] == 0 %>
+<% mset[signal["MessageName"]]=[] %>
+<% end %>
+<% mset[signal["MessageName"]] << signal %>
+<% end %>
+<% end %>
+<% end %>
+
+<% mset.each_key { | messagename | %>
 /* NOTE
    Bind following callback
-   function: <%= descriptor["Module"] %>_<%= item["MessageName"] %>_Confirmation();
-   in file: linp_config.h
-   at section: Logical Input CALLBACK function mapping
-   changing macro: #define Linp_EVENT_CALLBACK_<%= item["ProcessorPinName"] %>        LINP_DummyDirect
-   into this:      #define Linp_EVENT_CALLBACK_<%= item["ProcessorPinName"] %>        <%= descriptor["Module"] %>_<%= item["Name"] %>StatusChanged
+   function: <%= descriptor["Module"] %>_<%= messagename %>_Confirmation();
+   in file: ...\BCM_NET_DIAG\L7\CAN\Presentation\NETP\netp_config.c
+   at section: where <%= messagename %> is evalued
+   put at the end ov block this call: <%= descriptor["Module"] %>_<%= messagename %>_Confirmation();
 */
 /******************************************************************************/
 /**
- * \brief       <%= descriptor["Module"] %>_<%= item["MessageName"] %>_Confirmation callback function.
+ * \brief       <%= descriptor["Module"] %>_<%= messagename %>_Confirmation callback function.
  * \author      <%= descriptor["Author"] %>
  * \since       <%= descriptor["Date"] %>
  *}
  */
 /******************************************************************************/
-void <%= descriptor["Module"] %>_<%= item["MessageName"] %>_Confirmation(void)
+void <%= descriptor["Module"] %>_<%= messagename %>_Confirmation(void)
 {
+<% for input in descriptor["Input"] %>
+<% for signal in input["Signal"] %>
+<% if signal["Type"] == "CAN" %>
+<% if signal["MessageName"] == messagename %>
 <% if input["Implemented"] != "not" %>
-<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=NETC_RX_<%= item["MessageName"] %><%= item["SignalName"] %>;
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=NETC_RX_<%= signal["SignalName"] %>;
 <% else %>
 /* TODO  Delete following comment when <%= input["Source"] %> has binding on this callback routine*/
-//<<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=NETC_RX_<%= item["MessageName"] %><%= item["SignalName"] %>;
+//<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=NETC_RX_<%= signal["SignalName"] %>;
+<% end %>
+<% end %>
+<% end %>
+<% end %>
 <% end %>
 <%= descriptor["Module"] %>_ModelEventCounter++;
 }
 
 
 
-<% end %>
-<% end %>
-<%# PHYSICAL SIGNAL callback (STOP SECTION) %>
-<% end %>
+<% } %>
+<%# NETWORK SIGNAL callback (STOP SECTION) %>
 
 
 /******************************************************************************/
@@ -261,8 +286,8 @@ void <%= descriptor["Module"] %>_<%= item["MessageName"] %>_Confirmation(void)
 /******************************************************************************/
 void <%= descriptor["Module"] %>_ReadOutputs(void)
 {
-<% for Output in descriptor["Output"] %>
-<% for Signal in Output["Signal"] %>
+<% for output in descriptor["Output"] %>
+<% for signal in output["Signal"] %>
 <% end %>
 <% end %>
 
