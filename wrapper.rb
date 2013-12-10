@@ -4,5 +4,9 @@ descriptor = YAML.load_file('descriptor1.yml')
 
 details="bla bla"
 pr=File.read('pr.t')
+out=File.open('wrapper.c','w')
 eruby=Erubis::Eruby.new(pr)
-puts eruby.result(binding())
+out.puts eruby.result(binding())
+system 'astyle.exe wrapper.c'
+
+

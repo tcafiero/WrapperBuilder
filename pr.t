@@ -288,6 +288,20 @@ void <%= descriptor["Module"] %>_ReadOutputs(void)
 {
 <% for output in descriptor["Output"] %>
 <% for signal in output["Signal"] %>
+if (<%= descriptor["Module"] %>_<%= output["Name"] %> != <%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>)
+{
+<%= descriptor["Module"] %>_Modeloutputs.<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
+<% for signal in output["Signal"]%>
+<% if signal["Type"] == "PHY" %>
+DOUP_Set<%= signal["ProcessorPinName"] %>(<%= descriptor["Module"] %>_<%= output["Name"] %>);
+<% end %>
+<% if signal["Type"] == "CAN" %>
+NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>);
 <% end %>
 <% end %>
+}
+
+<% end %>
+<% end %>
+}
 
