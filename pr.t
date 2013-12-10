@@ -10,9 +10,11 @@
  * \author      <%= descriptor["Author"] %>
  * \since       <%= descriptor["Date"] %>
  * \history{     
- *              <%= descriptor["Date"] %>,
- *              <%= descriptor["Author"] %>,
- *              first release
+                <% for history in descriptor["History"] %>
+ *              <%= history["Author"] %>,
+ *              <%= history["Date"] %>,
+ *              <%= history["Description"] %>,
+                <% end %>
  *}
  */
 /******************************************************************************/
@@ -81,20 +83,27 @@ void <%= descriptor["Module"] %>_Init(void)
 	/* initialize inputs */
 <% for input in descriptor["Input"] %>
 <% for signal in input["Signal"] %>
-<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= descriptor["Module"] %>_<%= input["Value"][0][0] %>;
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (input["Value"][0][0]).upcase %>;
+<% end %>
+<% end %>
+
+	/* initialize timers */
+<% for timer in descriptor["Timer"] %>
+<% if timer["Implemented"] != "not" %>
+<%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %>=VERS_TIMER_STOPPED;
 <% end %>
 <% end %>
 
 	/* initialize outputs */
 <% for output in descriptor["Output"] %>
-<%= descriptor["Module"] %>_<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Value"][0][0] %>;
+<%= descriptor["Module"] %>_<%= output["Name"] %>=<%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (input["Value"][0][0]).upcase %>;
 <%= descriptor["Module"] %>_Modeloutputs.<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
 <% for signal in output["Signal"]%>
 <% if signal["Type"] == "PHY" %>
-DOUP_Set<%= signal["ProcessorPinName"] %>(<%= descriptor["Module"] %>_<%= output["Name"] %>);
+DOUP_Set<%= signal["ProcessorPinName"] %>(<%= descriptor["Module"] %>_Modeloutputs.<%= output["Name"] %>);
 <% end %>
 <% if signal["Type"] == "CAN" %>
-NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>);
+NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_Modeloutputs.<%= output["Name"] %>;
 <% end %>
 <% end %>
 <% end %>
@@ -290,13 +299,13 @@ void <%= descriptor["Module"] %>_ReadOutputs(void)
 <% for signal in output["Signal"] %>
 if (<%= descriptor["Module"] %>_<%= output["Name"] %> != <%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>)
 {
-<%= descriptor["Module"] %>_Modeloutputs.<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
+<%= descriptor["Module"] %>_<%= output["Name"] %> = <%= descriptor["Module"] %>_Modeloutputs.<%= output["Name"] %>;
 <% for signal in output["Signal"]%>
 <% if signal["Type"] == "PHY" %>
 DOUP_Set<%= signal["ProcessorPinName"] %>(<%= descriptor["Module"] %>_<%= output["Name"] %>);
 <% end %>
 <% if signal["Type"] == "CAN" %>
-NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>);
+NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
 <% end %>
 <% end %>
 }
@@ -304,4 +313,81 @@ NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= output["Name
 <% end %>
 <% end %>
 }
+<%# Timer Management (START SECTION) %>
+<% for timer in descriptor["Timer"] %>
+<% if timer["Implemented"] != "not" %>
+
+/******************************************************************************/
+/**
+ * \brief       Start Timer<%= timer["Name"] %> with specified time. If Timer was already running it will be restarted
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ * \param       time to wait
+ */
+/******************************************************************************/
+void <%= descriptor["Module"] %>_SetTimer<%= timer["Name"] %>(u_int32 time)
+{
+  CancelAlarm(<%= descriptor["Module"] %>_Timer<%= timer["Name"] %>_al);
+  SetRelAlarm(<%= descriptor["Module"] %>_Timer<%= timer["Name"] %>_al,MSEC(time),0);
+  <%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %> = VERS_TIMER_RUNNING;
+  <%= descriptor["Module"] %>_ModelEventCounter++;
+}
+
+/******************************************************************************/
+/**
+ * \brief       Reset Timer<%= timer["Name"] %> function.
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ */
+/******************************************************************************/
+void <%= descriptor["Module"] %>_ResetTimer<%= timer["Name"] %>(void)
+{
+  CancelAlarm(<%= descriptor["Module"] %>_Timer<%= timer["Name"] %>_al);
+  <%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %> = VERS_TIMER_STOPPED;
+  <%= descriptor["Module"] %>_ModelEventCounter++;
+}
+
+/******************************************************************************/
+/**
+ * \brief       Timer<%= timer["Name"] %> expired callback function. Called when Timer expires.
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ */
+/******************************************************************************/
+void <%= descriptor["Module"] %>_Timer<%= timer["Name"] %>Expired(void)
+{
+  <%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %> = VERS_TIMER_EXPIRED;
+  <%= descriptor["Module"] %>_ModelEventCounter++;
+}
+<% end %>
+<% end %>
+<%# Timer Management (STOP SECTION) %>
+
+/******************************************************************************/
+/**
+ * \brief       Function to request the system to stay active.
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ */
+/******************************************************************************/
+void <%= descriptor["Module"] %>_StayActive(void)
+{
+  WKSS_TaskState(<%= descriptor["Module"] %>_ApplicationTask, WKSS_ACTIVE_TASK);
+}
+
+/******************************************************************************/
+/**
+ * \brief       Function to allow the system to go to sleep.
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ */
+/******************************************************************************/
+void <%= descriptor["Module"] %>_GoToSleep(void)
+{
+  WKSS_TaskState(<%= descriptor["Module"] %>_ApplicationTask, WKSS_INACTIVE_TASK);
+}
+
+/*______ E N D _____ (<%= descriptor["Module"] %>.c) _______________________________________________*/
+
+
 

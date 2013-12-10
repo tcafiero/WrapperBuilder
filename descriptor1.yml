@@ -3,13 +3,19 @@ Module: VF042
 Description: Gestione relè anabaglianti [F042.Vf4]
 Date: 2013-12-03
 Platform: Body Platform F142M L7
+MIL: yes
+History:
+ -
+  Author: T. Cafiero
+  Date: 2013-12-10
+  Description: first release
 Input:
  -
   Name: LowBeamFollowMeCarCmd
   Type: t_bool
   Value: [
-         [LOWBEAMFOLLOWMECARCMD_OFF, 0x00, Deactive function LowBeamFollowMeCarCmd],
-         [LOWBEAMFOLLOWMECARCMD_ON, 0x01, Active function LowBeamFollowMeCarCmd]]
+         ['OFF', '0x00', 'Deactive function LowBeamFollowMeCarCmd'],
+         ['ON', '0x01', 'Active function LowBeamFollowMeCarCmd']]
   Signal:
    -
     Source: VF036
@@ -19,8 +25,8 @@ Input:
   Name: LowBeamCmd
   Type: t_bool
   Value: [
-         [LOWBEAMCMD_OFF, 0x00, Deactive function LowBeamCmd ],
-         [LOWBEAMCMD_ON, 0x01, Active function LowBeamCmd ]]
+         ['OFF', '0x00', 'Deactive function LowBeamCmd' ],
+         ['ON', '0x01', 'Active function LowBeamCmd' ]]
   Signal:
    -
     Source: VF247
@@ -31,8 +37,8 @@ Input:
   Name: LowBeamFollowMeCmd
   Type: t_bool
   Value: [
-         [LOWBEAMFOLLOWMECMD_OFF, 0x00, Deactive function LowBeamFollowMeCmd ],
-         [LOWBEAMFOLLOWMECMD_ON, 0x01, Active function LowBeamFollowMeCmd ]]
+         ['OFF', '0x00', 'Deactive function LowBeamFollowMeCmd' ],
+         ['ON', '0x01', 'Active function LowBeamFollowMeCmd' ]]
   Signal:
    -
     Source: VF048
@@ -43,8 +49,8 @@ Input:
   Type: t_bool
   MessageName:
   Value: [
-         [LOWBEAMFOLLOWMECMD_OFF, 0x00, Deactive function LowBeamFollowMeCmd ],
-         [LOWBEAMFOLLOWMECMD_ON, 0x01, Active function LowBeamFollowMeCmd ]]
+         ['OFF', '0x00', 'Deactive function LowBeamFollowMeCmd' ],
+         ['ON', '0x01', 'Active function LowBeamFollowMeCmd' ]]
   Signal:
    -
     Source: Network
@@ -56,8 +62,8 @@ Input:
   Name: LowBeamFollowMeCmd
   Type: t_bool
   Value: [
-         [LOWBEAMFOLLOWMECMD_OFF, 0x00, Deactive function LowBeamFollowMeCmd ],
-         [LOWBEAMFOLLOWMECMD_ON, 0x01, Active function LowBeamFollowMeCmd ]]
+         ['OFF', '0x00', 'Deactive function LowBeamFollowMeCmd' ],
+         ['ON', '0x01', 'Active function LowBeamFollowMeCmd' ]]
   Signal:
    -
     Source: Physical
@@ -70,8 +76,8 @@ Output:
   Name: LowBeamOut
   Type: t_bool
   Value: [
-         [LOWBEAMOUT_OFF, 0x00, Deactive function LowBeamOut ],
-         [LOWBEAMOUT_ON, 0x01, Active function LowBeamOut ]]
+         ['OFF', '0x00', 'Deactive function LowBeamOut' ],
+         ['ON', '0x01', 'Active function LowBeamOut' ]]
   Signal:
    -
     Destination: Physical
@@ -83,8 +89,8 @@ Output:
    Name: LowBeamSts
    Type: t_bool
    Value: [
-          [LOWBEAMSTS_OFF, 0x00, Deactive function LowBeamSts ],
-          [LOWBEAMSTS_ON, 0x01, Active function LowBeamSts ]]
+          ['OFF', '0x00', 'Deactive function LowBeamSts' ],
+          ['ON', '0x01', 'Active function LowBeamSts' ]]
    Signal:
     - 
      Destination: Network
@@ -98,3 +104,8 @@ Output:
      MessageName: EXTERNAL_LIGHTS
      SignalName: STATUS_B_CAN2LowBeamSts_bit
      Implemented: yes
+Timer:
+ -
+  Name: Primo
+  Implemented: yes
+ 

@@ -7,6 +7,7 @@ pr=File.read('pr.t')
 out=File.open('wrapper.c','w')
 eruby=Erubis::Eruby.new(pr)
 out.puts eruby.result(binding())
+out.close();
 system 'astyle.exe wrapper.c'
 
 
