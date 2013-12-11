@@ -1,6 +1,7 @@
 Author: Antonio Cafiero
 Module: VF042
 Description: Gestione relè anabaglianti [F042.Vf4]
+Details: (not)
 Date: 2013-12-03
 Platform: Body Platform F142M L7
 MIL: yes
@@ -11,6 +12,19 @@ History:
   Description: first release
 Input:
  -
+  Name: KeySts
+  Type: u_int08
+  Value: [
+         ['OFF', '0x01','KEY_OFF_STATUS','Deactive function LowBeamFollowMeCarCmd'],
+         ['PARK', '0x02','KEY_PARK_STATUS','Deactive function LowBeamFollowMeCarCmd'],
+         ['ON', '0x04','KEY_ON_STATUS','Deactive function LowBeamFollowMeCarCmd'],
+         ['CRANK', '0x0C','CRANK_ON_STATUS','Active function LowBeamFollowMeCarCmd']]
+  Signal:
+   -
+    Source: VF040
+    Type: NBC
+    Implemented: yes
+-
   Name: LowBeamFollowMeCarCmd
   Type: t_bool
   Value: [

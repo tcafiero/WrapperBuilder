@@ -1,7 +1,7 @@
 /******************************************************************************/
 /**
  * \brief       <%= descriptor["Module"] %>.
- * \details     <%= details %>...  
+ * \details     <%= descriptor["Details"] %>  
  *
  * \file        <%= descriptor["Module"] %>.h
  * \project{
