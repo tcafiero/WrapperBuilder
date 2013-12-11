@@ -31,7 +31,7 @@
 #include "wkss.h"
 <% for input in descriptor["Input"] %>
 <% for signal in input["Signal"] %>
-<% if signal["Implemented"] != "not" %>
+<% if signal["Implemented"] %>
 #include "<%= signal["Source"] %>.h"
 <% else %>
 /* TODO When <%= signal["Source"] %> implemented delete comment on following statement */
@@ -89,7 +89,7 @@ void <%= descriptor["Module"] %>_Init(void)
 
 	/* initialize timers */
 <% for timer in descriptor["Timer"] %>
-<% if timer["Implemented"] != "not" %>
+<% if timer["Implemented"] %>
 <%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %>=VERS_TIMER_STOPPED;
 <% end %>
 <% end %>
@@ -139,7 +139,7 @@ void <%= descriptor["Module"] %>_ProxiStatusChanged(void)
 <% for input in description["Input"] %>
 <% for signal in input["Signal"] %>
 <% if signal["Type"] == "PROXI" %>
-<% if input["Implemented"] != "not" %>
+<% if input["Implemented"] %>
 <%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=VERS_Get<%= signal["Source"] %>();
 <% else %>
 /* TODO  Delete following comment when <%= input["Source"] %> implemented*/
@@ -176,7 +176,7 @@ void <%= descriptor["Module"] %>_ProxiStatusChanged(void)
 /******************************************************************************/
 void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void)
 {
-<% if signal["Implemented"] != "not" %>
+<% if signal["Implemented"] %>
 <%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= signal["Source"] %>_Get<%= input["Name"] %>();
 <% else %>
 /* TODO  Delete following comment when <%= signal["Source"] %> implemented*/
@@ -214,7 +214,7 @@ void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void)
 /******************************************************************************/
 void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void)
 {
-<% if signal["Implemented"] != "not" %>
+<% if signal["Implemented"] %>
 <%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=(<%= input["Type"] %>) LINP_Get<%= signal["ProcessorPinName"] %>();
 <% else %>
 /* TODO  Delete following comment when <%= input["Source"] %> has binding on this callback routine*/
@@ -267,7 +267,7 @@ void <%= descriptor["Module"] %>_<%= messagename %>_Confirmation(void)
 <% for signal in input["Signal"] %>
 <% if signal["Type"] == "CAN" %>
 <% if signal["MessageName"] == messagename %>
-<% if input["Implemented"] != "not" %>
+<% if input["Implemented"] %>
 <%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=NETC_RX_<%= signal["SignalName"] %>;
 <% else %>
 /* TODO  Delete following comment when <%= input["Source"] %> has binding on this callback routine*/
@@ -316,7 +316,7 @@ GPEP_Net1EvtMsgTxReq( GPEP_<%= signal["SignalName"] %>_MASK);
 }
 <%# Timer Management (START SECTION) %>
 <% for timer in descriptor["Timer"] %>
-<% if timer["Implemented"] != "not" %>
+<% if timer["Implemented"] %>
 
 /******************************************************************************/
 /**

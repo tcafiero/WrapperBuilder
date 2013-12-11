@@ -24,7 +24,7 @@
 
 /*______ I N C L U D E - F I L E S ___________________________________________*/
 
-<% if descriptor["MIL"] == "not" %>
+<% if !descriptor["MIL"] %>
 #include "syst.h"
 <% end %>
 
@@ -34,7 +34,7 @@
 
 /* value used for signal from <%= signal["Source"] %> */
 <% for value in input["Value"] %>
-<% if signal["Implemented"] == "not" %>
+<% if !signal["Implemented"] %>
 /* TODO when <%= signal["Source"] %> implemented comment next line */
 #define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[1] %> /* for signal: <%= input["Name"] %> */
 <%# if value[2] != '' %>
@@ -59,7 +59,7 @@
 
 
 <% for timer in descriptor["Timer"] %>
-<% if timer["Implemented"] != "not" %>
+<% if timer["Implemented"] %>
 extern void <%= descriptor["Module"] %>_SetTimer<%= timer["Name"] %>(u_int32);
 extern void <%= descriptor["Module"] %>_ResetTimer<%= timer["Name"] %>(void);
 <% end %>

@@ -24,7 +24,7 @@ Input:
     Source: VF040
     Type: NBC
     Implemented: yes
--
+ -
   Name: LowBeamFollowMeCarCmd
   Type: t_bool
   Value: [
@@ -34,7 +34,7 @@ Input:
    -
     Source: VF036
     Type: NBC
-    Implemented: not
+    Implemented: no
  -
   Name: LowBeamCmd
   Type: t_bool
@@ -45,7 +45,7 @@ Input:
    -
     Source: VF247
     Type: NBC
-    Implemented: not
+    Implemented: no
 
  -
   Name: LowBeamFollowMeCmd
@@ -57,7 +57,7 @@ Input:
    -
     Source: VF048
     Type: NBC
-    Implemented: not
+    Implemented: no
 Output:
  -
   Name: LowBeamOut
@@ -89,7 +89,7 @@ Output:
     - 
      Destination: Network
      Type: CAN
-     Async: not
+     Async: no
      MessageName: EXTERNAL_LIGHTS
      SignalName: STATUS_B_CAN2LowBeamSts_bit
      Implemented: yes
