@@ -1,0 +1,78 @@
+/******************************************************************************/
+/**
+ * \brief       <%= descriptor["Module"] %>.
+ * \details     <%= details %>...  
+ *
+ * \file        <%= descriptor["Module"] %>.h
+ * \project{
+ *              <%= descriptor["Platform"] %>
+ *}
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ * \history{     
+                <% for history in descriptor["History"] %>
+ *              <%= history["Author"] %>,
+ *              <%= history["Date"] %>,
+ *              <%= history["Description"] %>,
+                <% end %>
+ *}
+ */
+/******************************************************************************/
+
+#ifndef<%= descriptor["Module"] %>_H
+#define <%= descriptor["Module"] %>_H
+
+/*______ I N C L U D E - F I L E S ___________________________________________*/
+
+<% if descriptor["MIL"] == "not" %>
+#include "syst.h"
+<% end %>
+
+/*______ G L O B A L - D E F I N E S _________________________________________*/
+<% for input in descriptor["Input"] %>
+<% for signal in input["Signal"] %>
+
+/* value used for signal from <%= signal["Source"] %> */
+<% for value in input["Value"] %>
+<% if signal["Implemented"] == "not" %>
+/* TODO when <%= signal["Source"] %> implemented comment next line */
+#define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[1] %> /* for signal: <%= input["Name"] %> */
+<%# if value[2] != '' %>
+/* TODO when <%= signal["Source"] %> implemented delete comment next line and eventually associate right symbol present in <%= signal["Source"] %>.h*/
+//#define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[2] %> /* for signal: <%= input["Name"] %> */
+<%# end %>
+<% else %>
+#define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[2] %>
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+
+
+/*______ G L O B A L - T Y P E S _____________________________________________*/
+
+/*______ G L O B A L - D A T A _______________________________________________*/
+
+/*______ G L O B A L - M A C R O S ___________________________________________*/
+
+/*______ G L O B A L - F U N C T I O N S - P R O T O T Y P E S _______________*/
+
+
+<% for timer in descriptor["Timer"] %>
+<% if timer["Implemented"] != "not" %>
+extern void <%= descriptor["Module"] %>_SetTimer<%= timer["Name"] %>(u_int32);
+extern void <%= descriptor["Module"] %>_ResetTimer<%= timer["Name"] %>(void);
+<% end %>
+<% end %>
+
+extern void <%= descriptor["Module"] %>_Init(void);
+extern void <%= descriptor["Module"] %>_WakeUp(void);
+extern void <%= descriptor["Module"] %>_Sleep(void);
+extern void <%= descriptor["Module"] %>_Task_ts(void);
+extern void <%= descriptor["Module"] %>_StayActive(void);
+extern void <%= descriptor["Module"] %>_GoToSleep(void);
+
+
+#endif /* <%= descriptor["Module"] %>_H */
+
+/*______ E N D _____ (<%= descriptor["Module"] %>.h) ________________________________________________*/

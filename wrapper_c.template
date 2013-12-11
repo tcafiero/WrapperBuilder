@@ -296,7 +296,6 @@ void <%= descriptor["Module"] %>_<%= messagename %>_Confirmation(void)
 void <%= descriptor["Module"] %>_ReadOutputs(void)
 {
 <% for output in descriptor["Output"] %>
-<% for signal in output["Signal"] %>
 if (<%= descriptor["Module"] %>_<%= output["Name"] %> != <%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>)
 {
 <%= descriptor["Module"] %>_<%= output["Name"] %> = <%= descriptor["Module"] %>_Modeloutputs.<%= output["Name"] %>;
@@ -306,11 +305,13 @@ DOUP_Set<%= signal["ProcessorPinName"] %>(<%= descriptor["Module"] %>_<%= output
 <% end %>
 <% if signal["Type"] == "CAN" %>
 NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
+<% if signal["Async"] == true %>
+GPEP_Net1EvtMsgTxReq( GPEP_<%= signal["SignalName"] %>_MASK);
+<% end %>
 <% end %>
 <% end %>
 }
 
-<% end %>
 <% end %>
 }
 <%# Timer Management (START SECTION) %>
