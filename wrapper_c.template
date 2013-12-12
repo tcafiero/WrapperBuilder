@@ -53,9 +53,9 @@
 
 /*outputs */
 <% for output in descriptor["Output"] %>
-<%= output["Type"] %> <%= output["Name"] %>;
+static <%= output["Type"] %> <%= descriptor["Module"] %>_<%= output["Name"] %>;
 <% end %>
-u_int08 <%= descriptor["Module"] %>_ModelEventCounter;
+static u_int08 <%= descriptor["Module"] %>_ModelEventCounter;
 
 /*______ L O C A L - M A C R O S _____________________________________________*/
 
@@ -314,6 +314,25 @@ GPEP_Net1EvtMsgTxReq( GPEP_<%= signal["SignalName"] %>_MASK);
 
 <% end %>
 }
+
+<%# Get functions (START SECTION) %>
+<% for output in descriptor["Output"] %>
+/******************************************************************************/
+/**
+ * \brief       <%= descriptor["Module"] %>_Get<%= output["Name"] %> return <%= descriptor["Module"] %>_<%= output["Name"] %> signal value
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ */
+/******************************************************************************/
+<%= descriptor["Module"] %>_<%= output["Name"] %>_t <%= descriptor["Module"] %>_Get<%= output["Name"] %>(void)
+{
+  return <%= descriptor["Module"] %>_<%= output["Name"] %>;
+}
+<% end %>
+<%# Get functions (STOP SECTION) %>
+
+
+
 <%# Timer Management (START SECTION) %>
 <% for timer in descriptor["Timer"] %>
 <% if timer["Implemented"] %>

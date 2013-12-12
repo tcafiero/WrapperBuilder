@@ -19,7 +19,7 @@
  */
 /******************************************************************************/
 
-#ifndef<%= descriptor["Module"] %>_H
+#ifndef <%= descriptor["Module"] %>_H
 #define <%= descriptor["Module"] %>_H
 
 /*______ I N C L U D E - F I L E S ___________________________________________*/
@@ -34,15 +34,13 @@
 
 /* value used for signal from <%= signal["Source"] %> */
 <% for value in input["Value"] %>
-<% if !signal["Implemented"] %>
+<% if !signal["Implemented"]  || descriptor["MIL"] %>
 /* TODO when <%= signal["Source"] %> implemented comment next line */
 #define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[1] %> /* for signal: <%= input["Name"] %> */
-<%# if value[2] != '' %>
 /* TODO when <%= signal["Source"] %> implemented delete comment next line and eventually associate right symbol present in <%= signal["Source"] %>.h*/
 //#define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[2] %> /* for signal: <%= input["Name"] %> */
-<%# end %>
 <% else %>
-#define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[2] %>
+#define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= signal["Source"] %>_<%= value[2] %>
 <% end %>
 <% end %>
 <% end %>
@@ -50,12 +48,63 @@
 
 
 /*______ G L O B A L - T Y P E S _____________________________________________*/
+<% for output in descriptor["Output"] %>
+typedef <%= output["Type"] %> <%= descriptor["Module"] %>_<%= output["Name"] %>_t ;
+<% end %>
 
 /*______ G L O B A L - D A T A _______________________________________________*/
 
 /*______ G L O B A L - M A C R O S ___________________________________________*/
 
 /*______ G L O B A L - F U N C T I O N S - P R O T O T Y P E S _______________*/
+<% proxi_used=0 %>
+<% for input in descriptor["Input"] %>
+<% for signal in input["Signal"] %>
+<% if signal["Type"] == "PROXI" %>
+<% proxi_used=1 %>
+<% end %>
+<% end %>
+<% end %>
+<% if proxi_used == 1 %>
+extern void <%= descriptor["Module"] %>_ProxiStatusChanged(void);
+<% end %>
+
+<% for input in descriptor["Input"] %>
+<% for signal in input["Signal"] %>
+<% if signal["Type"] == "NBC" %>
+extern void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void);
+<% end %>
+<% end %>
+<% end %>
+
+<% for input in descriptor["Input"] %>
+<% for signal in input["Signal"] %>
+<% if signal["Type"] == "PHY" %>
+extern void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void);
+<% end %>
+<% end %>
+<% end %>
+
+<% mset = Hash.new %>
+<% mset.default=0 %>
+<% for input in descriptor["Input"] %>
+<% for signal in input["Signal"] %>
+<% if signal["Type"] == "CAN" %>
+<% if  mset[signal["MessageName"]] == 0 %>
+<% mset[signal["MessageName"]]=[] %>
+<% end %>
+<% mset[signal["MessageName"]] << signal %>
+<% end %>
+<% end %>
+<% end %>
+<% mset.each_key do | messagename | %>
+extern void <%= descriptor["Module"] %>_<%= messagename %>_Confirmation(void);
+<% end %>
+
+
+<% for output in descriptor["Output"] %>
+extern void <%= descriptor["Module"] %>_<%= output["Name"] %>_t <%= descriptor["Module"] %>_Get<%= output["Name"] %>(void);
+<% end %>
 
 
 <% for timer in descriptor["Timer"] %>
