@@ -22,13 +22,27 @@
 
 /*______ I N C L U D E - F I L E S ___________________________________________*/
 
+/* Application (Myself)*/
 #include "<%= descriptor["Module"] %>.h"
 #include "<%= descriptor["Module"] %>_config.h"
 #include "<%= descriptor["Module"] %>_Model.h"
-#include "doup.h"
-#include "gpep.h"
+
+/* PTF_STD */
 #include "syst.h"
 #include "wkss.h"
+
+/* I_O */
+#include "linp.h"
+
+/* NET_DIAG */
+#include "netc.h"
+#include "gpep.h"
+
+/* VERS (at least for timers) */
+#include "vers.h"
+
+
+/* Application (Others)*/
 <% for input in descriptor["Input"] %>
 <% for signal in input["Signal"] %>
 <% if signal["Implemented"] %>
@@ -383,6 +397,35 @@ void <%= descriptor["Module"] %>_Timer<%= timer["Name"] %>Expired(void)
 <% end %>
 <%# Timer Management (STOP SECTION) %>
 
+/* NOTE
+   Bind following callback
+   function: <%= descriptor["Module"] %>_Task_ts(void)
+   in file: ...\BCM_APP_L7_F142M\BCML7_CLIENT\CONFIGURATION_FILES\task_config.c
+   put following line: <%= descriptor["Module"] %>_Task_ts(void);
+   into routine: void TASK_XXXmsCallServiceRunning(void) where XXX is calling time period in ms. 
+*/
+/******************************************************************************/
+/**
+ * \brief       Task to manage model events.
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ */
+/******************************************************************************/
+void <%= descriptor["Module"] %>_Task_ts(void)
+{
+  if (<%= descriptor["Module"] %>_ModelEventCounter > 0)
+  {
+    <%= descriptor["Module"] %>_Model();
+    <%= descriptor["Module"] %>_ReadOutputs();
+    <%= descriptor["Module"] %>_ModelEventCounter--;
+  }
+}
+
+
+/* NOTE
+   put this line into mandatory idle state of Stateflow of Model
+   exit: <%= descriptor["Module"] %>_StayActive(void);
+*/
 /******************************************************************************/
 /**
  * \brief       Function to request the system to stay active.
@@ -395,6 +438,10 @@ void <%= descriptor["Module"] %>_StayActive(void)
   WKSS_TaskState(<%= descriptor["Module"] %>_ApplicationTask, WKSS_ACTIVE_TASK);
 }
 
+/* NOTE
+   put this line into mandatory idle state of Stateflow of Model
+   entry: <%= descriptor["Module"] %>_GoToSleep(void);
+*/
 /******************************************************************************/
 /**
  * \brief       Function to allow the system to go to sleep.
