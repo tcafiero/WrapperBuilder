@@ -12,19 +12,28 @@ out.puts eruby.result(binding())
 out.close();
 system 'astyle.exe '+ARGV[0]+'.c'
 
+descriptor["MIL"]=false
 pr=File.read('wrapper_h.template')
-if descriptor["MIL"]
-out=File.open('external_link.h','w')
-else
 out=File.open(ARGV[0]+'.h','w')
-end
 eruby=Erubis::Eruby.new(pr)
 out.puts eruby.result(binding())
 out.close();
-if descriptor["MIL"]
-system 'astyle.exe external_link.h'
-else
 system 'astyle.exe '+ARGV[0]+'.h'
-end
+
+pr=File.read('external_link_c.template')
+out=File.open('external_link.c','w')
+eruby=Erubis::Eruby.new(pr)
+out.puts eruby.result(binding())
+out.close();
+system 'astyle.exe external_link.c'
+
+
+descriptor["MIL"]=true
+pr=File.read('wrapper_h.template')
+out=File.open('external_link.h','w')
+eruby=Erubis::Eruby.new(pr)
+out.puts eruby.result(binding())
+out.close();
+system 'astyle.exe external_link.h'
 
 

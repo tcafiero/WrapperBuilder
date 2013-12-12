@@ -1,0 +1,41 @@
+/******************************************************************************/
+/**
+ * \brief       external_link.c for <%= descriptor["Module"] %>.
+ * \details     <%= descriptor["Details"] %>  
+ *
+ * \project{
+ *              <%= descriptor["Platform"] %>
+ *}
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ * \history{     
+                <% for history in descriptor["History"] %>
+ *              <%= history["Author"] %>,
+ *              <%= history["Date"] %>,
+ *              <%= history["Description"] %>,
+                <% end %>
+ *}
+ */
+/******************************************************************************/
+
+#include "external_link.h"
+
+<% for timer in descriptor["Timer"] %>
+<% if timer["Implemented"] %>
+void <%= descriptor["Module"] %>_SetTimer<%= timer["Name"] %>(u_int32)
+{
+}
+void <%= descriptor["Module"] %>_ResetTimer<%= timer["Name"] %>(void)
+{
+}
+<% end %>
+<% end %>
+
+
+void <%= descriptor["Module"] %>_StayActive(void)
+{
+}
+
+void <%= descriptor["Module"] %>_GoToSleep(void)
+{
+}

@@ -24,10 +24,6 @@
 
 /*______ I N C L U D E - F I L E S ___________________________________________*/
 
-<% if !descriptor["MIL"] %>
-#include "syst.h"
-<% end %>
-
 /*______ G L O B A L - D E F I N E S _________________________________________*/
 <% for input in descriptor["Input"] %>
 <% for signal in input["Signal"] %>
