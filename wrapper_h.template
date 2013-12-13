@@ -32,15 +32,23 @@
 <% for value in input["Value"] %>
 <% if !signal["Implemented"]  || descriptor["MIL"] %>
 /* TODO when <%= signal["Source"] %> implemented comment next line */
-#define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[1] %> /* for signal: <%= input["Name"] %> */
+#define <%= (signal["Source"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[1] %> /* for signal: <%= input["Name"] %> */
 /* TODO when <%= signal["Source"] %> implemented delete comment next line and eventually associate right symbol present in <%= signal["Source"] %>.h*/
-//#define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[2] %> /* for signal: <%= input["Name"] %> */
+//#define <%= (signal["Source"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[2] %> /* for signal: <%= input["Name"] %> */
 <% else %>
-#define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= signal["Source"] %>_<%= value[2] %>
+//#define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= signal["Source"] %>_<%= value[2] %>
 <% end %>
 <% end %>
 <% end %>
 <% end %>
+
+
+<% for output in descriptor["Output"] %>
+<% for value in output["Value"] %>
+#define <%= (descriptor["Module"]).upcase %>_<%= (output["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[1] %> /* for signal: <%= output["Name"] %> */
+<% end %>
+<% end %>
+
 
 
 /*______ G L O B A L - T Y P E S _____________________________________________*/
