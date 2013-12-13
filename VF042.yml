@@ -26,7 +26,7 @@ Input:
     Implemented: yes
  -
   Name: LowBeamFollowMeCarCmd
-  Type: t_bool
+  Type: bool_t
   Value: [
          ['OFF', '0x00','','Deactive function LowBeamFollowMeCarCmd'],
          ['ON', '0x01','','Active function LowBeamFollowMeCarCmd']]
@@ -37,7 +37,7 @@ Input:
     Implemented: no
  -
   Name: LowBeamCmd
-  Type: t_bool
+  Type: bool_t
   Value: [
          ['OFF', '0x00','','Deactive function LowBeamCmd' ],
          ['ON', '0x01','','Active function LowBeamCmd' ]]
@@ -49,7 +49,7 @@ Input:
 
  -
   Name: LowBeamFollowMeCmd
-  Type: t_bool
+  Type: bool_t
   Value: [
          ['OFF', '0x00','','Deactive function LowBeamFollowMeCmd' ],
          ['ON', '0x01','','Active function LowBeamFollowMeCmd' ]]
@@ -61,7 +61,7 @@ Input:
 Output:
  -
   Name: LowBeamOut
-  Type: t_bool
+  Type: bool_t
   Value: [
          ['OFF', '0x00','','Deactive function LowBeamOut' ],
          ['ON', '0x01','','Active function LowBeamOut' ]]
@@ -74,7 +74,7 @@ Output:
     Implemented: yes
  -
    Name: LowBeamSts
-   Type: t_bool
+   Type: bool_t
    Value: [
           ['OFF', '0x00','','Deactive function LowBeamSts' ],
           ['ON', '0x01','','Active function LowBeamSts' ]]

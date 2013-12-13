@@ -44,9 +44,32 @@
 
 
 /*______ G L O B A L - T Y P E S _____________________________________________*/
+
+<% if descriptor["MIL"] %>
+/* basic types definition */
+typedef unsigned char       u_int08;  /* unsigned byte       (1 byte ) */
+typedef unsigned short int  u_int16;  /* short unsigned word (2 bytes) */
+typedef unsigned long  int  u_int32;  /* long unsigned word  (4 bytes) */
+typedef signed   char       s_int08;  /* signed byte         (1 byte ) */
+typedef signed   short int  s_int16;  /* short signed word   (2 bytes) */
+typedef signed   long  int  s_int32;  /* long signed word    (4 bytes) */
+typedef unsigned            bitfield; /* bitfield            (1 bit)   */
+typedef float               float_t;
+/* boolean type definition */
+#ifndef FALSE
+#define FALSE 0
+#endif
+#ifndef TRUE
+#define TRUE  1
+#endif
+typedef u_int08 bool_t;
+<% end %>
+
 <% for output in descriptor["Output"] %>
 typedef <%= output["Type"] %> <%= descriptor["Module"] %>_<%= output["Name"] %>_t ;
 <% end %>
+
+
 
 /*______ G L O B A L - D A T A _______________________________________________*/
 
@@ -99,7 +122,7 @@ extern void <%= descriptor["Module"] %>_<%= messagename %>_Confirmation(void);
 
 
 <% for output in descriptor["Output"] %>
-extern void <%= descriptor["Module"] %>_<%= output["Name"] %>_t <%= descriptor["Module"] %>_Get<%= output["Name"] %>(void);
+extern <%= descriptor["Module"] %>_<%= output["Name"] %>_t <%= descriptor["Module"] %>_Get<%= output["Name"] %>(void);
 <% end %>
 
 

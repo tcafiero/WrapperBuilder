@@ -1,7 +1,11 @@
 /******************************************************************************/
 /**
  * \brief       external_link.c for <%= descriptor["Module"] %>.
- * \details     <%= descriptor["Details"] %>  
+ * \details     Declare variables, macro and functions useful to simulate the 
+ *              model.
+ *              -------------------- IMPORTANT ---------------------------------
+ *              This file shouldn't be included in the project's workspace. 
+ *              ----------------------------------------------------------------
  *
  * \project{
  *              <%= descriptor["Platform"] %>
@@ -18,15 +22,36 @@
  */
 /******************************************************************************/
 
+/*______ I N C L U D E - F I L E S ___________________________________________*/
 #include "external_link.h"
+
+/*______ V A R I A B L E S ___________________________________________________*/
 
 <% for timer in descriptor["Timer"] %>
 <% if timer["Implemented"] %>
-void <%= descriptor["Module"] %>_SetTimer<%= timer["Name"] %>(u_int32)
+u_int32 Time<%= timer["Name"] %>;
+bool_t SetTimer<%= timer["Name"] %>Event;
+bool_t ResetTimer<%= timer["Name"] %>Event;
+<% end %>
+<% end %>
+
+bool_t ApplTaskSts = 0;
+
+/*______ F U N C T I O N S ___________________________________________________*/
+
+<% for timer in descriptor["Timer"] %>
+<% if timer["Implemented"] %>
+void <%= descriptor["Module"] %>_SetTimer<%= timer["Name"] %>(u_int32 time)
 {
+  SetTimer<%= timer["Name"] %>Event = 1;
+  ResetTimer<%= timer["Name"] %>Event = 0;
+  Time<%= timer["Name"] %> = time;
 }
+
 void <%= descriptor["Module"] %>_ResetTimer<%= timer["Name"] %>(void)
 {
+  ResetTimer<%= timer["Name"] %>Event = 1;
+  SetTimer<%= timer["Name"] %>Event = 0;
 }
 <% end %>
 <% end %>
@@ -34,8 +59,10 @@ void <%= descriptor["Module"] %>_ResetTimer<%= timer["Name"] %>(void)
 
 void <%= descriptor["Module"] %>_StayActive(void)
 {
+  ApplTaskSts = 1;
 }
 
 void <%= descriptor["Module"] %>_GoToSleep(void)
 {
+  ApplTaskSts = 0;
 }
