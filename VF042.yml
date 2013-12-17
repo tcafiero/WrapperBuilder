@@ -4,7 +4,7 @@ Description: Gestione relè anabaglianti [F042.Vf4]
 Details: (not)
 Date: 2013-12-03
 Platform: Body Platform F142M L7
-MIL: yes
+MIL: no
 History:
  -
   Author: T. Cafiero
@@ -45,7 +45,7 @@ Input:
    -
     Source: VF247
     Type: NBC
-    Implemented: no
+    Implemented: yes
 
  -
   Name: LowBeamFollowMeCmd

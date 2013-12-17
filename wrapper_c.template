@@ -57,6 +57,10 @@
 
 /*______ L O C A L - D E F I N E S ___________________________________________*/
 
+
+/* max number of events */
+#define <%= descriptor["Module"] %>_EVENT_COUNT_MAX  255
+
 /*______ L O C A L - T Y P E S _______________________________________________*/
 
 /*______ G L O B A L - D A T A _______________________________________________*/
@@ -97,7 +101,15 @@ void <%= descriptor["Module"] %>_Init(void)
 	/* initialize inputs */
 <% for input in descriptor["Input"] %>
 <% for signal in input["Signal"] %>
-<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (input["Value"][0][0]).upcase %>;
+<% if !signal["Implemented"]  || descriptor["MIL"] %>
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= (signal["Source"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (input["Value"][0][0]).upcase %>;
+<% else %>
+<% if input["Value"][0][2] == '' %>
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= (signal["Source"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (input["Value"][0][0]).upcase %>;
+<% else %>
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= (signal["Source"]).upcase %>_<%= (input["Value"][0][2]).upcase %>;
+<% end %>
+<% end %>
 <% end %>
 <% end %>
 
@@ -110,14 +122,14 @@ void <%= descriptor["Module"] %>_Init(void)
 
 	/* initialize outputs */
 <% for output in descriptor["Output"] %>
-<%= descriptor["Module"] %>_<%= output["Name"] %>=<%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (input["Value"][0][0]).upcase %>;
-<%= descriptor["Module"] %>_Modeloutputs.<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
+<%= descriptor["Module"] %>_<%= output["Name"] %>=<%= (descriptor["Module"]).upcase %>_<%= (output["Name"]).upcase %>_<%= (input["Value"][0][0]).upcase %>;
+<%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
 <% for signal in output["Signal"]%>
 <% if signal["Type"] == "PHY" %>
-DOUP_Set<%= signal["ProcessorPinName"] %>(<%= descriptor["Module"] %>_Modeloutputs.<%= output["Name"] %>);
+DOUP_Set<%= output["Name"] %>(<%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>);
 <% end %>
 <% if signal["Type"] == "CAN" %>
-NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_Modeloutputs.<%= output["Name"] %>;
+NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>;
 <% end %>
 <% end %>
 <% end %>
@@ -162,7 +174,10 @@ void <%= descriptor["Module"] %>_ProxiStatusChanged(void)
 <% end %>
 <% end %>
 <% end %>
+if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
+{
 <%= descriptor["Module"] %>_ModelEventCounter++;
+}
 }
 
 
@@ -196,7 +211,10 @@ void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void)
 /* TODO  Delete following comment when <%= signal["Source"] %> implemented*/
 //<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= signal["Source"] %>_Get<%= input["Name"] %>();
 <% end %>
+if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
+{
 <%= descriptor["Module"] %>_ModelEventCounter++;
+}
 }
 
 
@@ -234,7 +252,10 @@ void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void)
 /* TODO  Delete following comment when <%= input["Source"] %> has binding on this callback routine*/
 //<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=(<%= input["Type"] %>) LINP_Get<%= signal["ProcessorPinName"] %>();
 <% end %>
+if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
+{
 <%= descriptor["Module"] %>_ModelEventCounter++;
+}
 }
 
 
@@ -291,7 +312,10 @@ void <%= descriptor["Module"] %>_<%= messagename %>_Confirmation(void)
 <% end %>
 <% end %>
 <% end %>
+if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
+{
 <%= descriptor["Module"] %>_ModelEventCounter++;
+}
 }
 
 
@@ -312,15 +336,15 @@ void <%= descriptor["Module"] %>_ReadOutputs(void)
 <% for output in descriptor["Output"] %>
 if (<%= descriptor["Module"] %>_<%= output["Name"] %> != <%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>)
 {
-<%= descriptor["Module"] %>_<%= output["Name"] %> = <%= descriptor["Module"] %>_Modeloutputs.<%= output["Name"] %>;
+<%= descriptor["Module"] %>_<%= output["Name"] %> = <%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>;
 <% for signal in output["Signal"]%>
 <% if signal["Type"] == "PHY" %>
-DOUP_Set<%= signal["ProcessorPinName"] %>(<%= descriptor["Module"] %>_<%= output["Name"] %>);
+DOUP_Set<%= output["Name"] %>(<%= descriptor["Module"] %>_<%= output["Name"] %>);
 <% end %>
 <% if signal["Type"] == "CAN" %>
 NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
 <% if signal["Async"] == true %>
-GPEP_Net1EvtMsgTxReq( GPEP_<%= signal["SignalName"] %>_MASK);
+GPEP_Net1EvtMsgTxReq( GPEP_<%= signal["MessageName"] %>_MASK);
 <% end %>
 <% end %>
 <% end %>
@@ -364,7 +388,10 @@ void <%= descriptor["Module"] %>_SetTimer<%= timer["Name"] %>(u_int32 time)
   CancelAlarm(<%= descriptor["Module"] %>_Timer<%= timer["Name"] %>_al);
   SetRelAlarm(<%= descriptor["Module"] %>_Timer<%= timer["Name"] %>_al,MSEC(time),0);
   <%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %> = VERS_TIMER_RUNNING;
-  <%= descriptor["Module"] %>_ModelEventCounter++;
+if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
+{
+<%= descriptor["Module"] %>_ModelEventCounter++;
+}
 }
 
 /******************************************************************************/
@@ -378,7 +405,10 @@ void <%= descriptor["Module"] %>_ResetTimer<%= timer["Name"] %>(void)
 {
   CancelAlarm(<%= descriptor["Module"] %>_Timer<%= timer["Name"] %>_al);
   <%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %> = VERS_TIMER_STOPPED;
-  <%= descriptor["Module"] %>_ModelEventCounter++;
+if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
+{
+<%= descriptor["Module"] %>_ModelEventCounter++;
+}
 }
 
 /******************************************************************************/
@@ -391,7 +421,10 @@ void <%= descriptor["Module"] %>_ResetTimer<%= timer["Name"] %>(void)
 void <%= descriptor["Module"] %>_Timer<%= timer["Name"] %>Expired(void)
 {
   <%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %> = VERS_TIMER_EXPIRED;
-  <%= descriptor["Module"] %>_ModelEventCounter++;
+if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
+{
+<%= descriptor["Module"] %>_ModelEventCounter++;
+}
 }
 <% end %>
 <% end %>
@@ -424,7 +457,14 @@ void <%= descriptor["Module"] %>_Task_ts(void)
 
 /* NOTE
    put this line into mandatory idle state of Stateflow of Model
-   exit: <%= descriptor["Module"] %>_StayActive(void);
+   exit: VF042_StayActive(void);
+   
+   Modify file: ...\BCM_APP_L7_F142M\PTF_STD\System\WKSS\PublicInt\wkss.h
+   
+   adding line: VF042_ApplicationTask,
+   before following code fragment:
+   WKSS_NUM_OF_TASKS 
+} WKSS_ApplicationTask_t;
 */
 /******************************************************************************/
 /**
