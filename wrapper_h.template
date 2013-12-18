@@ -23,6 +23,7 @@
 #define <%= descriptor["Module"] %>_H
 
 /*______ I N C L U D E - F I L E S ___________________________________________*/
+#include "syst.h"
 
 /*______ G L O B A L - D E F I N E S _________________________________________*/
 <% for input in descriptor["Input"] %>
@@ -36,7 +37,9 @@
 /* TODO when <%= signal["Source"] %> implemented delete comment next line and eventually associate right symbol present in <%= signal["Source"] %>.h*/
 //#define <%= (signal["Source"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[2] %> /* for signal: <%= input["Name"] %> */
 <% else %>
-//#define <%= (descriptor["Module"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= signal["Source"] %>_<%= value[2] %>
+<% if  value[2] != '' %>
+#define <%= (signal["Source"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= signal["Source"] %>_<%= value[2] %>
+<% end %>
 <% end %>
 <% end %>
 <% end %>

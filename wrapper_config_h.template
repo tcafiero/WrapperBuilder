@@ -1,0 +1,60 @@
+/******************************************************************************/
+/**
+ * \brief       <%= descriptor["Module"] %>.
+ * \details     Configuration file for the <%= descriptor["Module"] %>
+                NOTE: put this file into directory: ...\BCM_APP_L7_F142M\BCML7_CLIENT\CONFIGURATION_FILES 
+ *
+ * \file        <%= descriptor["Module"] %>_config.h
+ * \project{
+ *              <%= descriptor["Platform"] %>
+ *}
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ * \history{     
+                <% for history in descriptor["History"] %>
+ *              <%= history["Author"] %>,
+ *              <%= history["Date"] %>,
+ *              <%= history["Description"] %>,
+                <% end %>
+ *}
+ */
+/******************************************************************************/
+
+#ifndef <%= descriptor["Module"] %>_CONFIG_H
+#define <%= descriptor["Module"] %>_CONFIG_H
+
+/*______ I N C L U D E - F I L E S ___________________________________________*/
+
+/* Includes use by the model */
+#include "vers.h"
+<% for input in descriptor["Input"] %>
+<% for signal in input["Signal"] %>
+<% if signal["Implemented"] %>
+#include "<%= signal["Source"] %>.h"
+<% else %>
+/* TODO When <%= signal["Source"] %> implemented delete comment on following statement */
+//#include "<%= signal["Source"] %>.h"
+<% end %>
+<% end %>
+<% end %>
+
+/*______ G L O B A L - D E F I N E S _________________________________________*/
+
+
+
+/*______ G L O B A L - T Y P E S _____________________________________________*/
+
+
+
+/*______ G L O B A L - D A T A _______________________________________________*/
+
+/*______ G L O B A L - M A C R O S ___________________________________________*/
+
+
+/*______ G L O B A L - F U N C T I O N S - P R O T O T Y P E S _______________*/
+
+
+#endif /* <%= descriptor["Module"] %>_CONFIG_H */
+
+/*______ E N D _____ (<%= descriptor["Module"] %>_config.h) ________________________________________*/
+

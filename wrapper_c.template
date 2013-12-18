@@ -126,6 +126,10 @@ void <%= descriptor["Module"] %>_Init(void)
 <%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
 <% for signal in output["Signal"]%>
 <% if signal["Type"] == "PHY" %>
+/* NOTE
+ * in file: ...\BCM_I_O\CONF\doup_cfg.h
+ * add macro: #define DOUP_Set<%= output["Name"] %>(x)  DOUP_SetOutVal(<%= signal["ProcessorPinName"] %>,x)
+*/
 DOUP_Set<%= output["Name"] %>(<%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>);
 <% end %>
 <% if signal["Type"] == "CAN" %>
