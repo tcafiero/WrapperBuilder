@@ -15,10 +15,10 @@ Input:
   Name: KeySts
   Type: u_int08
   Value: [
-         ['OFF', '0x01','KEY_OFF_STATUS','Deactive function LowBeamFollowMeCarCmd'],
-         ['PARK', '0x02','KEY_PARK_STATUS','Deactive function LowBeamFollowMeCarCmd'],
-         ['ON', '0x04','KEY_ON_STATUS','Deactive function LowBeamFollowMeCarCmd'],
-         ['CRANK', '0x0C','CRANK_ON_STATUS','Active function LowBeamFollowMeCarCmd']]
+         ['OFF', '0x01','KEY_OFF_STATUS','Key is in OFF status'],
+         ['PARK', '0x02','KEY_PARK_STATUS','Key is in PARK status'],
+         ['ON', '0x04','KEY_ON_STATUS','Key is in ON status'],
+         ['CRANK', '0x0C','CRANK_ON_STATUS','Key is in CRANK status']]
   Signal:
    -
     Source: VF040
