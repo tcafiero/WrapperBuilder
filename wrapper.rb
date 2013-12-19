@@ -44,4 +44,9 @@ out.puts eruby.result(binding())
 out.close();
 system 'astyle.exe external_link.h'
 
+pr=File.read('SWCC_csv.template')
+out=File.open(ARGV[0]+'_SVCC.csv','w')
+eruby=Erubis::Eruby.new(pr)
+out.puts eruby.result(binding())
+out.close();
 
