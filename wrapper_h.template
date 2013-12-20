@@ -38,6 +38,10 @@
 //#define <%= (signal["Source"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= value[2] %> /* for signal: <%= input["Name"] %> */
 <% else %>
 <% if  value[2] != '' %>
+/* NOTE if you want you can also use the "given rule" and using value <%= (signal["Source"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> for signal <%= input["Name"] %>
+ * as synonymous for value: <%= signal["Source"] %>_<%= value[2] %>
+ * comment next line if into model you only use value:  <%= signal["Source"] %>_<%= value[2] %>
+*/
 #define <%= (signal["Source"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (value[0]).upcase %> <%= signal["Source"] %>_<%= value[2] %>
 <% end %>
 <% end %>
