@@ -84,14 +84,14 @@ Output:
      Type: CAN
      Async: yes
      MessageName: EXTERNAL_LIGHTS
-     SignalName: EXTERNAL_LIGHTSLowBeamSts_bit
+     SignalName: LowBeamSts_bit
      Implemented: yes
     - 
      Destination: Network
      Type: CAN
      Async: no
-     MessageName: EXTERNAL_LIGHTS
-     SignalName: STATUS_B_CAN2LowBeamSts_bit
+     MessageName: STATUS_B_CAN2
+     SignalName: LowBeamSts_bit
      Implemented: yes
 Timer:
  -

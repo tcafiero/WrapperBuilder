@@ -133,7 +133,7 @@ void <%= descriptor["Module"] %>_Init(void)
 DOUP_Set<%= output["Name"] %>(<%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>);
 <% end %>
 <% if signal["Type"] == "CAN" %>
-NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>;
+NETC_TX_<%= signal["MessageName"] %><%= signal["SignalName"] %>=<%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>;
 <% end %>
 <% end %>
 <% end %>
@@ -307,10 +307,10 @@ void <%= descriptor["Module"] %>_<%= messagename %>_Confirmation(void)
 <% if signal["Type"] == "CAN" %>
 <% if signal["MessageName"] == messagename %>
 <% if input["Implemented"] %>
-<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=NETC_RX_<%= signal["SignalName"] %>;
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=NETC_RX_<%= signal["MessageName"] %><%= signal["SignalName"] %>;
 <% else %>
 /* TODO  Delete following comment when <%= input["Source"] %> has binding on this callback routine*/
-//<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=NETC_RX_<%= signal["SignalName"] %>;
+//<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=NETC_RX_<%= signal["MessageName"] %><%= signal["SignalName"] %>;
 <% end %>
 <% end %>
 <% end %>
@@ -346,7 +346,7 @@ if (<%= descriptor["Module"] %>_<%= output["Name"] %> != <%= descriptor["Module"
 DOUP_Set<%= output["Name"] %>(<%= descriptor["Module"] %>_<%= output["Name"] %>);
 <% end %>
 <% if signal["Type"] == "CAN" %>
-NETC_TX_<%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
+NETC_TX_<%= signal["MessageName"] %><%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
 <% if signal["Async"] == true %>
 GPEP_Net1EvtMsgTxReq( GPEP_<%= signal["MessageName"] %>_MASK);
 <% end %>
