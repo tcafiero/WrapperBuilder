@@ -45,7 +45,7 @@
 /* Application (Others)*/
 <% for input in descriptor["Input"] %>
 <% for signal in input["Signal"] %>
-<% if signal["Implemented"] %>
+<% if signal["Implemented"] && signal["Source"]!='Network' %>
 #include "<%= signal["Source"] %>.h"
 <% else %>
 /* TODO When <%= signal["Source"] %> implemented delete comment on following statement */

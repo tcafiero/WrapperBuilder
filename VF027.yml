@@ -11,20 +11,20 @@ History:
   Date: 2013-12-10
   Description: first release
 Input:
--
+ -
   Name: KeySts
   Type: u_int08
   Value: [
-         ['OFF', '0x01','KEY_OFF_STATUS','Deactive function LowBeamFollowMeCarCmd'],
-         ['PARK', '0x02','KEY_PARK_STATUS','Deactive function LowBeamFollowMeCarCmd'],
-         ['ON', '0x04','KEY_ON_STATUS','Deactive function LowBeamFollowMeCarCmd'],
-         ['CRANK', '0x0C','CRANK_ON_STATUS','Active function LowBeamFollowMeCarCmd']]
+         ['OFF', '0x01','KEY_OFF_STATUS','Key is in OFF status'],
+         ['PARK', '0x02','KEY_PARK_STATUS','Key is in PARK status'],
+         ['ON', '0x04','KEY_ON_STATUS','Key is in ON status'],
+         ['CRANK', '0x0C','CRANK_ON_STATUS','Key is in CRANK status']]
   Signal:
    -
     Source: VF040
     Type: NBC
     Implemented: yes
--
+ -
   Name: PosLightCmd
   Type: bool_t
   Value: [
@@ -35,7 +35,7 @@ Input:
     Source: VF247
     Type: NBC
     Implemented: yes
--
+ -
   Name: LPosLightParkCmd
   Type: bool_t  
   Value: [
@@ -46,7 +46,7 @@ Input:
     Source: VF032
     Type: NBC
     Implemented: no
--
+ -
   Name: RPosLightParkCmd
   Type: bool_t  
   Value: [
@@ -57,7 +57,7 @@ Input:
     Source: VF032
     Type: NBC
     Implemented: no
--
+ -
   Name: TrunkSts
   Type: bool_t  
   Value: [
@@ -68,7 +68,7 @@ Input:
     Source: VF806
     Type: NBC
     Implemented: yes
--
+ -
   Name: PosLightFollowMeCmd
   Type: bool_t  
   Value: [
@@ -79,7 +79,7 @@ Input:
     Source: VF048
     Type: NBC
     Implemented: no
--
+ -
   Name: PosLightFollowMeCarCmd
   Type: bool_t  
   Value: [
@@ -90,27 +90,23 @@ Input:
     Source: VF036
     Type: NBC
     Implemented: no
--
+ -
   Name: DRL_Enable
   Type: bool_t 
   Value: [
          ['OFF', '0x00','','OFF value'],
          ['ON', '0x01','','ON value']]
   Signal:
-    - 
-     Destination: Network
+   - 
+     Source: Network
      Type: CAN
      Async: no
-	 Note: first search which is MessageName contains DRL_Enable into file:"Z:\GBA-BodyElectronics\Specifiche\FerrariMaserati\F142M_(L7)\Spec.1A\F142M_1A\Sistema\05a - Mappe Messaggi\B-CAN\Common_x_SignalList_B_CAN_1A.xls"
+#     Note: first search which is MessageName contains DRL_Enable into file ..\GBA-BodyElectronics\Specifiche\FerrariMaserati\F142M_(L7)\Spec.1A\F142M_1A\Sistema\05a - Mappe Messaggi\B-CAN\Common_x_SignalList_B_CAN_1A.xls
      MessageName: NQS_VEHICLE_SETUP
-	 Note2: then search the CAN signal name of DRL_Enable into file: "...\BCM_NET_DIAG\L7\TOOLS\CANGEN\Sources\signals.txt"
+#     Note: then search the CAN signal name of DRL_Enable into file ...\BCM_NET_DIAG\L7\TOOLS\CANGEN\Sources\signals.txt
      SignalName: DRL_Enable_bit
      Implemented: yes
-   -
-    Source: F230
-    Type: CAN
-    Implemented: no
--
+ -
   Name: EngineSts
   Type: u_int08 
   Value: [
@@ -123,7 +119,7 @@ Input:
     Source: VF506
     Type: NBC
     Implemented: yes
--
+ -
   Name: StopStartSts
   Type: u_int08 
   Value: [
@@ -137,24 +133,18 @@ Input:
     Type: NBC
     Implemented: no
 
--
+ -
   Name: DRL
   Type: u_int08
   Value: [
-         ['OFF_MenuOFF', '0x00',,'DRLOFF-MenuOFF'],
-         ['ON_MenuOFF', '0x02',,'DRLON-MenuOFF'],
-         ['ON_MenuON', '0x01',,'DRLON-MenuON']]
+         ['OFF_MenuOFF', '0x00','','DRLOFF-MenuOFF'],
+         ['ON_MenuOFF', '0x02','','DRLON-MenuOFF'],
+         ['ON_MenuON', '0x01','','DRLON-MenuON']]
   Signal:
    -
     Source: VERS
     Type: NBC
     Implemented: no
-Timer:
- -
-  Name: A
-  Implemented: yes
-    Implemented: no
-
 Output:
  -
   Name: LHFParkTailLightFailSts
@@ -165,7 +155,7 @@ Output:
   Signal:
    -
     Destination: Network
-    Type: Network
+    Type: CAN
     Async: no
     ConnerctorPinName: EXTERNAL_LIGHTS
     ProcessorPinName: LHFParkTailLightFailSts_bit
@@ -179,7 +169,7 @@ Output:
   Signal:
    -
     Destination: Network
-    Type: Network
+    Type: CAN
     Async: no
     ConnerctorPinName: EXTERNAL_LIGHTS
     ProcessorPinName: RHFParkTailLightFailSts_bit
@@ -193,7 +183,7 @@ Output:
   Signal:
    -
     Destination: Network
-    Type: Network
+    Type: CAN
     Async: no
     ConnerctorPinName: EXTERNAL_LIGHTS
     ProcessorPinName: LHRParkTailLightFailSts_bit
@@ -207,32 +197,11 @@ Output:
   Signal:
    -
     Destination: Network
-    Type: Network
+    Type: CAN
     Async: no
     ConnerctorPinName: EXTERNAL_LIGHTS
     ProcessorPinName: RHRParkTailLightFailSts_bit
     Implemented: yes
- -
-   Name: LowBeamSts
-   Type: bool_t
-   Value: [
-          ['OFF', '0x00','','Deactive function LowBeamSts' ],
-          ['ON', '0x01','','Active function LowBeamSts' ]]
-   Signal:
-    - 
-     Destination: Network
-     Type: Network
-     Async: yes
-     MessageName: EXTERNAL_LIGHTS
-     SignalName: EXTERNAL_LIGHTSLowBeamSts_bit
-     Implemented: yes
-    - 
-     Destination: Network
-     Type: CAN
-     Async: no
-     MessageName: EXTERNAL_LIGHTS
-     SignalName: STATUS_B_CAN2LowBeamSts_bit
-     Implemented: yes
  -
   Name: DRL_Activation
   Type: bool_t
@@ -313,7 +282,7 @@ Output:
   Signal:
    -
     Destination: Network
-    Type: Network
+    Type: CAN
     Async: no
     ConnerctorPinName: EXTERNAL_LIGHTS
     ProcessorPinName: LHParkTailLightSts_bit
@@ -327,13 +296,13 @@ Output:
   Signal:
    -
     Destination: Network
-    Type: Network
+    Type: CAN
     Async: no
     ConnerctorPinName: EXTERNAL_LIGHTS
     ProcessorPinName: RHParkTailLightSts_bit
     Implemented: yes
 Timer:
  -
-  Name: Primo
-  Implemented: no
+  Name: A
+  Implemented: yes
  
