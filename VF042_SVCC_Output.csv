@@ -1,7 +1,0 @@
-Port Name;Requirements Signal Name;S/R Com Modes;IsQueued;queueLength;initValue;InvalidValue;SignalType [Simple, Array, Record];ArraySize;RecordComponent;Primitive ASR Types;SWC Types;Scaling;Min Max;Parameters & Values;Description
-VF042_ModelOutputs;LowBeamOut;Explicit;FALSE;NA;PHYSICAL_LOWBEAMOUT_OFF;None;Record;None;LowBeamOut;;bool_t;None;None;PHYSICAL_LOWBEAMOUT_OFF;Deactive function LowBeamOut
-;;;;;;;;;;;;;;PHYSICAL_LOWBEAMOUT_ON;Active function LowBeamOut
-;LowBeamSts;Explicit;FALSE;NA;NETWORK_LOWBEAMSTS_OFF;None;Record;None;LowBeamSts;;bool_t;None;None;NETWORK_LOWBEAMSTS_OFF;Deactive function LowBeamSts
-;;;;;;;;;;;;;;NETWORK_LOWBEAMSTS_ON;Active function LowBeamSts
-;;;;;;;;;;;;;;NETWORK_LOWBEAMSTS_OFF;Deactive function LowBeamSts
-;;;;;;;;;;;;;;NETWORK_LOWBEAMSTS_ON;Active function LowBeamSts
