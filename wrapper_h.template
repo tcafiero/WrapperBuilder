@@ -1,3 +1,6 @@
+/* NOTE
+   put this file into dir: ...\BCM_APP_L7_F142M\BCML7_CLIENT\CONFIGURATION_FILES\
+*/
 /******************************************************************************/
 /**
  * \brief       <%= descriptor["Module"] %>.
@@ -93,6 +96,21 @@ typedef <%= output["Type"] %> <%= descriptor["Module"] %>_<%= output["Name"] %>_
 /*______ G L O B A L - D A T A _______________________________________________*/
 
 /*______ G L O B A L - M A C R O S ___________________________________________*/
+<% for output in descriptor["Output"] %>
+<% for signal in output["Signal"]%>
+<% if signal["Type"] == "NBC"%>
+<% if signal.has_key?("VFTarget") %>
+#define <%= descriptor["Module"].upcase %>_<%= output["Name"].upcase %>_STATUS_CHANGED()\
+{\
+<% for target in signal["VFTarget"]%>
+/* delete comment in following line when <%= target["Name"] %> is implemented and integrated */
+//<%= target["Name"] %>_<%= output["Name"]%>StatusChanged();\
+<% end %>
+}
+<% end %>
+<% end %>
+<% end %>
+<% end %>
 
 /*______ G L O B A L - F U N C T I O N S - P R O T O T Y P E S _______________*/
 <% proxi_used=0 %>

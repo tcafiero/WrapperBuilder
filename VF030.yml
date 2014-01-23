@@ -112,3 +112,20 @@ Output:
     ConnerctorPinName: EXTERNAL_LIGHTS
     ProcessorPinName: PlateLightFailSts_bit
     Implemented: yes
+ -
+  Name: pippo
+  Type: bool_t
+  Value: [
+         ['OFF', '0x00','','Switch off lamp LHFParkTailLightFailSts' ],
+         ['ON', '0x01','',Switch on lamp LHFParkTailLightFailSts' ]]
+  Signal:
+   -
+    Destination: Internal
+    Type: NBC
+    Diagnosis: yes
+    Implemented: yes
+    VFTarget:
+     -
+      Name: VFxxx
+     -
+      Name: VFyyy

@@ -33,6 +33,7 @@
 
 /* I_O */
 #include "linp.h"
+#include "doup.h"
 
 /* NET_DIAG */
 #include "netc.h"
@@ -89,6 +90,13 @@ void <%= descriptor["Module"] %>_ReadOutputs(void);
 
 /*______ G L O B A L - F U N C T I O N S _____________________________________*/
 
+/* NOTE
+   Bind following callback
+   function: <%= descriptor["Module"] %>_Init(void)
+   in file: ...\BCM_APP_L7_F142M\BCML7_CLIENT\CONFIGURATION_FILES\syst_config.c
+   put following line: <%= descriptor["Module"] %>_Init();
+   into routine: void Syst_StartUpHookClient(void) at applications section.
+*/
 /******************************************************************************/
 /**
  * \brief       Initialize module.
@@ -145,7 +153,7 @@ NETC_TX_<%= signal["MessageName"] %><%= signal["SignalName"] %>=<%= descriptor["
 <% for signal in output["Signal"]%>
 <% if signal.has_key?("Diagnosis") %>
 <% if signal["Type"] == "PHY" && signal["Diagnosis"]%>
-<%= descriptor["Module"] %>_ModelInputs.<%= output["Name"] %>Feedback=FEEDBACK_OK;
+<%= descriptor["Module"] %>_ModelInputs.<%= output["Name"] %>Feedback=(u_int08) DOUP_NO_TYPE_ERR;
 <% end %>
 <% end %>
 <% end %>
@@ -297,7 +305,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
    in file: ...\BCM_I_O\CONF\linp_config.h
    
    put into file: ...\BCM_I_O\CONF\doup_cfg.h
-   at section /* <%= descriptor["Module"] %> */
+   at section: <%= descriptor["Module"] %>
    following define
    #define DOUP_GetErrorType<%= output["Name"] %>()      DOUP_GetErrorType(<%= signal["ProcessorPinName"]%>)
 */
@@ -407,6 +415,9 @@ NETC_TX_<%= signal["MessageName"] %><%= signal["SignalName"] %>=<%= descriptor["
 GPEP_Net1EvtMsgTxReq( GPEP_<%= signal["MessageName"] %>_MASK);
 <% end %>
 <% end %>
+<% if signal["Type"] == "NBC" %>
+<%= descriptor["Module"].upcase %>_<%= output["Name"].upcase %>_STATUS_CHANGED();
+<% end %>
 <% end %>
 }
 
@@ -496,7 +507,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
    Bind following callback
    function: <%= descriptor["Module"] %>_Task_ts(void)
    in file: ...\BCM_APP_L7_F142M\BCML7_CLIENT\CONFIGURATION_FILES\task_config.c
-   put following line: <%= descriptor["Module"] %>_Task_ts(void);
+   put following line: <%= descriptor["Module"] %>_Task_ts();
    into routine: void TASK_XXXmsCallServiceRunning(void) where XXX is calling time period in ms. 
 */
 /******************************************************************************/
