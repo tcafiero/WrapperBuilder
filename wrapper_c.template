@@ -114,9 +114,11 @@ void <%= descriptor["Module"] %>_Init(void)
 <% end %>
 
 	/* initialize timers */
+<% if descriptor.has_key?("Timer") %>
 <% for timer in descriptor["Timer"] %>
 <% if timer["Implemented"] %>
 <%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %>=VERS_TIMER_STOPPED;
+<% end %>
 <% end %>
 <% end %>
 
@@ -137,7 +139,21 @@ NETC_TX_<%= signal["MessageName"] %><%= signal["SignalName"] %>=<%= descriptor["
 <% end %>
 <% end %>
 <% end %>
+
+    /* initialize output feedback */
+<% for output in descriptor["Output"] %>
+<% for signal in output["Signal"]%>
+<% if signal.has_key?("Diagnosis") %>
+<% if signal["Type"] == "PHY" && signal["Diagnosis"]%>
+<%= descriptor["Module"] %>_ModelInputs.<%= output["Name"] %>Feedback=FEEDBACK_OK;
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+
 <%= descriptor["Module"] %>_ModelEventCounter = 1;
+
+
 }
 
 
@@ -235,7 +251,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 /* NOTE
    Bind following callback
    function: <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged();
-   in file: linp_config.h
+   in file: ...\BCM_I_O\CONF\linp_config.h
    at section: Logical Input CALLBACK function mapping
    changing macro: #define Linp_EVENT_CALLBACK_<%= signal["ProcessorPinName"] %>        LINP_DummyDirect
    into this:      #define Linp_EVENT_CALLBACK_<%= signal["ProcessorPinName"] %>        <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged
@@ -268,6 +284,46 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 <% end %>
 <% end %>
 <%# PHYSICAL SIGNAL callback (STOP SECTION) %>
+
+
+<%# Diagnosis callback (START SECTION) %>
+<% for output in descriptor["Output"] %>
+<% for signal in output["Signal"]%>
+<% if signal.has_key?("Diagnosis") %>
+<% if signal["Type"] == "PHY" && signal["Diagnosis"]%>
+/* NOTE
+   Check if following callback
+   function: <%= descriptor["Module"] %>_<%= output["Name"] %>Diagnosis();
+   in file: ...\BCM_I_O\CONF\linp_config.h
+   
+   put into file: ...\BCM_I_O\CONF\doup_cfg.h
+   at section /* <%= descriptor["Module"] %> */
+   following define
+   #define DOUP_GetErrorType<%= output["Name"] %>()      DOUP_GetErrorType(<%= signal["ProcessorPinName"]%>)
+*/
+/******************************************************************************/
+/**
+ * \brief       <%= output["Name"] %> diagnosis callback function.
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ *}
+ */
+/******************************************************************************/
+void <%= descriptor["Module"] %>_<%= output["Name"] %>Diagnosis(void)
+{
+<%= descriptor["Module"] %>_ModelInputs.<%= output["Name"] %>Feedback=(u_int08) DOUP_GetErrorType<%= output["Name"] %>();
+if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
+{
+<%= descriptor["Module"] %>_ModelEventCounter++;
+}
+}
+
+
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+<%# Diagnosis callback (STOP SECTION) %>
 
 
 <%# NETWORK SIGNAL callback (START SECTION) %>
@@ -376,6 +432,7 @@ GPEP_Net1EvtMsgTxReq( GPEP_<%= signal["MessageName"] %>_MASK);
 
 
 <%# Timer Management (START SECTION) %>
+<% if descriptor.has_key?("Timer") %>
 <% for timer in descriptor["Timer"] %>
 <% if timer["Implemented"] %>
 
@@ -430,6 +487,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 <%= descriptor["Module"] %>_ModelEventCounter++;
 }
 }
+<% end %>
 <% end %>
 <% end %>
 <%# Timer Management (STOP SECTION) %>

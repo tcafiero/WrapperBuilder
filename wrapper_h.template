@@ -56,7 +56,11 @@
 <% end %>
 <% end %>
 
-
+<% if descriptor.has_key?("Timer") %>
+#define VERS_TIMER_STOPPED 0
+#define VERS_TIMER_RUNNING 1
+#define VERS_TIMER_EXPIRED 2
+<% end %>
 
 /*______ G L O B A L - T Y P E S _____________________________________________*/
 
@@ -119,6 +123,17 @@ extern void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void);
 <% end %>
 <% end %>
 
+<% for output in descriptor["Output"] %>
+<% for signal in output["Signal"]%>
+<% if signal.has_key?("Diagnosis") %>
+<% if signal["Type"] == "PHY" && signal["Diagnosis"]%>
+extern void <%= descriptor["Module"] %>_<%= output["Name"] %>Diagnosis(void);
+<% end %>
+<% end %>
+<% end %>
+<% end %>
+
+
 <% mset = Hash.new %>
 <% mset.default=0 %>
 <% for input in descriptor["Input"] %>
@@ -140,11 +155,12 @@ extern void <%= descriptor["Module"] %>_<%= messagename %>_Confirmation(void);
 extern <%= descriptor["Module"] %>_<%= output["Name"] %>_t <%= descriptor["Module"] %>_Get<%= output["Name"] %>(void);
 <% end %>
 
-
+<% if descriptor.has_key?("Timer") %>
 <% for timer in descriptor["Timer"] %>
 <% if timer["Implemented"] %>
 extern void <%= descriptor["Module"] %>_SetTimer<%= timer["Name"] %>(u_int32);
 extern void <%= descriptor["Module"] %>_ResetTimer<%= timer["Name"] %>(void);
+<% end %>
 <% end %>
 <% end %>
 

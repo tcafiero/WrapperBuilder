@@ -1,0 +1,114 @@
+Author: Antonio Cafiero
+Module: VF030
+Description: Luci targa [F030.Vf7]
+Details: (not)
+Date: 2014-01-21
+Platform: Body Platform F142M L7
+MIL: no
+History:
+ -
+  Author: T. Cafiero
+  Date: 2014-01-21
+  Description: first release
+Input:
+ -
+  Name: KeySts
+  Type: u_int08
+  Value: [
+         ['OFF', '0x01','KEY_OFF_STATUS','Key is in OFF status'],
+         ['PARK', '0x02','KEY_PARK_STATUS','Key is in PARK status'],
+         ['ON', '0x04','KEY_ON_STATUS','Key is in ON status'],
+         ['CRANK', '0x0C','CRANK_ON_STATUS','Key is in CRANK status']]
+  Signal:
+   -
+    Source: VF040
+    Type: NBC
+    Implemented: yes
+ -
+  Name: PosLightCmd
+  Type: bool_t
+  Value: [
+         ['OFF', '0x00','','OFF value'],
+         ['ON', '0x01','','ON value']]
+  Signal:
+   -
+    Source: VF247
+    Type: NBC
+    Implemented: yes
+ -
+  Name: Luci_targa_cmd
+  Type: u_int08
+  Value: [
+         ['OFF', '0x00','','Value for OFF'],
+         ['ON', '0x01','','Value for ON']]
+  Signal:
+   -
+    Source: VF048
+    Type: NBC
+    Implemented: no
+ -
+  Name: Targa_cmd
+  Type: u_int08
+  Value: [
+         ['OFF', '0x00','','Value for OFF'],
+         ['ON', '0x01','','Value for ON']]
+  Signal:
+   -
+    Source: VF036
+    Type: NBC
+    Implemented: no
+ -
+  Name: EngineSts
+  Type: u_int08 
+  Value: [
+         ['OFF', '0x00','ENGINE_OFF','value for engine off status'],
+         ['ON', '0x01','ENGINE_ON','value for engine on status'],
+         ['CRANKING', '0x02','ENGINE_CRANKING','value for engine cranking status'],
+         ['SHUT_DOWN', '0x03','ENGINE_SHUT_DOWN','value for engine shut down status']]
+  Signal:
+   -
+    Source: VF506
+    Type: NBC
+    Implemented: yes
+ -
+  Name: StopStartSts
+  Type: u_int08 
+  Value: [
+         ['OFF', '0x00','SS_OFF','value for StopStart off status'],
+         ['ON', '0x01','SS_ON','value for StopStart on status'],
+         ['ENG_RESTART', '0x02','SS_ENG_RESTART','value for StopStart restart status'],
+         ['STOP_REQ', '0x03','SS_STOP_REQ','value for StopStart stop request status']]
+  Signal:
+   -
+    Source: VF506
+    Type: NBC
+    Implemented: yes
+Output:
+ -
+  Name: PlateLightOut
+  Type: bool_t
+  Value: [
+         ['OFF', '0x00','','Switch off lamp LHFParkTailLightFailSts' ],
+         ['ON', '0x01','',Switch on lamp LHFParkTailLightFailSts' ]]
+  Signal:
+   -
+    Destination: Physical
+    Type: PHY
+    ConnerctorPinName: LF-06
+    ProcessorPinName: OUT_TARGA
+    Diagnosis: yes
+    Implemented: yes
+ -
+  Name: PlateLightFailSts
+  Type: bool_t
+  Value: [
+         ['OFF', '0x00','','Switch off lamp RHFParkTailLightFailSts' ],
+         ['ON', '0x01','',Switch on lamp RHFParkTailLightFailSts' ]]
+  Signal:
+   -
+    Destination: Network
+    Type: CAN
+    Async: no
+    ConnerctorPinName: EXTERNAL_LIGHTS
+    ProcessorPinName: PlateLightFailSts_bit
+    Implemented: yes

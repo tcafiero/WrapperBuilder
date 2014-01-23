@@ -27,6 +27,7 @@
 
 /*______ V A R I A B L E S ___________________________________________________*/
 
+<% if descriptor.has_key?("Timer") %>
 <% for timer in descriptor["Timer"] %>
 <% if timer["Implemented"] %>
 u_int32 Time<%= timer["Name"] %>;
@@ -34,11 +35,13 @@ bool_t SetTimer<%= timer["Name"] %>Event;
 bool_t ResetTimer<%= timer["Name"] %>Event;
 <% end %>
 <% end %>
+<% end %>
 
 bool_t ApplTaskSts = 0;
 
 /*______ F U N C T I O N S ___________________________________________________*/
 
+<% if descriptor.has_key?("Timer") %>
 <% for timer in descriptor["Timer"] %>
 <% if timer["Implemented"] %>
 void <%= descriptor["Module"] %>_SetTimer<%= timer["Name"] %>(u_int32 time)
@@ -53,6 +56,7 @@ void <%= descriptor["Module"] %>_ResetTimer<%= timer["Name"] %>(void)
   ResetTimer<%= timer["Name"] %>Event = 1;
   SetTimer<%= timer["Name"] %>Event = 0;
 }
+<% end %>
 <% end %>
 <% end %>
 
