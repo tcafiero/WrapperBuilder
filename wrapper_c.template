@@ -165,11 +165,11 @@ NETC_TX_<%= signal["MessageName"] %><%= signal["SignalName"] %>=<%= descriptor["
 }
 
 
-<%# PROXI callback (START SECTION) %>
+<%# PROXY callback (START SECTION) %>
 <% proxi_used=0 %>
 <% for input in descriptor["Input"] %>
 <% for signal in input["Signal"] %>
-<% if signal["Type"] == "PROXI" %>
+<% if signal["Type"] == "PROXY" %>
 <% proxi_used=1 %>
 <% end %>
 <% end %>
@@ -190,14 +190,14 @@ NETC_TX_<%= signal["MessageName"] %><%= signal["SignalName"] %>=<%= descriptor["
 /******************************************************************************/
 void <%= descriptor["Module"] %>_ProxiStatusChanged(void)
 {
-<% for input in description["Input"] %>
+<% for input in descriptor["Input"] %>
 <% for signal in input["Signal"] %>
-<% if signal["Type"] == "PROXI" %>
+<% if signal["Type"] == "PROXY" %>
 <% if input["Implemented"] %>
-<%= descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=VERS_Get<%= signal["Source"] %>();
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=VERS_Get<%= input["Name"] %>();
 <% else %>
-/* TODO  Delete following comment when <%= input["Source"] %> implemented*/
-//<% descriptor["Module"] %>_ModelInputs.<%= item["Name"] %>=VERS_Get<%= signal["Source"] %>();
+/* TODO  Delete following comment when VERS_Get<%= input["Name"] %>() is implemented*/
+//<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=VERS_Get<%= input["Name"] %>();
 <% end %>
 <% end %>
 <% end %>
@@ -211,7 +211,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 
 
 <% end %>
-<%# PROXI callback (STOP SECTION) %>
+<%# PROXY callback (STOP SECTION) %>
 
 
 <%# NBC SIGNAL callback (START SECTION) %>

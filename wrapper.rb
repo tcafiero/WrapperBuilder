@@ -24,6 +24,7 @@ descriptor["MIL"]=false
 pr=File.read('wrapper_h.template')
 out=File.open(ARGV[0]+'.h','w')
 eruby=Erubis::Eruby.new(pr)
+external_link=false
 out.puts eruby.result(binding())
 out.close();
 system 'astyle.exe '+ARGV[0]+'.h'
@@ -40,6 +41,7 @@ descriptor["MIL"]=true
 pr=File.read('wrapper_h.template')
 out=File.open('external_link.h','w')
 eruby=Erubis::Eruby.new(pr)
+external_link=true
 out.puts eruby.result(binding())
 out.close();
 system 'astyle.exe external_link.h'

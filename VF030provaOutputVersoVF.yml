@@ -83,17 +83,6 @@ Input:
     Source: VF506
     Type: NBC
     Implemented: yes
- -
-  Name: CarConfiguration4StopAndStart
-  Type: bool_t 
-  Value: [
-         ['SS_NOT_INCLUDED', '0x00','','value Stop and Start feature not included'],
-         ['SS_INCLUDED', '0x01','','value Stop and Start feature included']]
-  Signal:
-   -
-    Source: VERS
-    Type: PROXY
-    Implemented: no
 Output:
  -
   Name: PlateLightOut
@@ -123,3 +112,20 @@ Output:
     ConnerctorPinName: EXTERNAL_LIGHTS
     ProcessorPinName: PlateLightFailSts_bit
     Implemented: yes
+ -
+  Name: pippo
+  Type: bool_t
+  Value: [
+         ['OFF', '0x00','','Switch off lamp LHFParkTailLightFailSts' ],
+         ['ON', '0x01','',Switch on lamp LHFParkTailLightFailSts' ]]
+  Signal:
+   -
+    Destination: Internal
+    Type: NBC
+    Diagnosis: yes
+    Implemented: yes
+    VFTarget:
+     -
+      Name: VFxxx
+     -
+      Name: VFyyy

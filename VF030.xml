@@ -126,6 +126,21 @@
     </Value>
     <Signal Source="VF506" Type="NBC" Implemented="true" />
   </Input>
+  <Input Name="CarConfiguration4StopAndStart" Type="bool_t">
+    <Value>
+      <anon>SS_NOT_INCLUDED</anon>
+      <anon>0x00</anon>
+      <anon></anon>
+      <anon>value Stop and Start feature not included</anon>
+    </Value>
+    <Value>
+      <anon>SS_INCLUDED</anon>
+      <anon>0x01</anon>
+      <anon></anon>
+      <anon>value Stop and Start feature included</anon>
+    </Value>
+    <Signal Source="VERS" Type="PROXY" Implemented="false" />
+  </Input>
   <Output Name="PlateLightOut" Type="bool_t">
     <Value>
       <anon>OFF</anon>
@@ -155,23 +170,5 @@
       <anon>Switch on lamp RHFParkTailLightFailSts&apos;</anon>
     </Value>
     <Signal Destination="Network" Type="CAN" Async="false" ConnerctorPinName="EXTERNAL_LIGHTS" ProcessorPinName="PlateLightFailSts_bit" Implemented="true" />
-  </Output>
-  <Output Name="pippo" Type="bool_t">
-    <Value>
-      <anon>OFF</anon>
-      <anon>0x00</anon>
-      <anon></anon>
-      <anon>Switch off lamp LHFParkTailLightFailSts</anon>
-    </Value>
-    <Value>
-      <anon>ON</anon>
-      <anon>0x01</anon>
-      <anon></anon>
-      <anon>Switch on lamp LHFParkTailLightFailSts&apos;</anon>
-    </Value>
-    <Signal Destination="Internal" Type="NBC" Diagnosis="true" Implemented="true">
-      <VFTarget Name="VFxxx" />
-      <VFTarget Name="VFyyy" />
-    </Signal>
   </Output>
 </opt>

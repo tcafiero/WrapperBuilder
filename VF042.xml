@@ -1,0 +1,107 @@
+<opt Author="Antonio Cafiero" Module="VF042" Description="Gestione relè anabaglianti [F042.Vf4]" Details="(not)" Date="2013-12-03" Platform="Body Platform F142M L7" MIL="true">
+  <History Author="T. Cafiero" Date="2013-12-10" Description="first release" />
+  <Input Name="KeySts" Type="u_int08">
+    <Value>
+      <anon>OFF</anon>
+      <anon>0x01</anon>
+      <anon>KEY_OFF_STATUS</anon>
+      <anon>Key is in OFF status</anon>
+    </Value>
+    <Value>
+      <anon>PARK</anon>
+      <anon>0x02</anon>
+      <anon>KEY_PARK_STATUS</anon>
+      <anon>Key is in PARK status</anon>
+    </Value>
+    <Value>
+      <anon>ON</anon>
+      <anon>0x04</anon>
+      <anon>KEY_ON_STATUS</anon>
+      <anon>Key is in ON status</anon>
+    </Value>
+    <Value>
+      <anon>CRANK</anon>
+      <anon>0x0C</anon>
+      <anon>CRANK_ON_STATUS</anon>
+      <anon>Key is in CRANK status</anon>
+    </Value>
+    <Signal Source="VF040" Type="NBC" Implemented="true" />
+  </Input>
+  <Input Name="LowBeamFollowMeCarCmd" Type="bool_t">
+    <Value>
+      <anon>OFF</anon>
+      <anon>0x00</anon>
+      <anon></anon>
+      <anon>Deactive function LowBeamFollowMeCarCmd</anon>
+    </Value>
+    <Value>
+      <anon>ON</anon>
+      <anon>0x01</anon>
+      <anon></anon>
+      <anon>Active function LowBeamFollowMeCarCmd</anon>
+    </Value>
+    <Signal Source="VF036" Type="NBC" Implemented="false" />
+  </Input>
+  <Input Name="LowBeamCmd" Type="bool_t">
+    <Value>
+      <anon>OFF</anon>
+      <anon>0x00</anon>
+      <anon></anon>
+      <anon>Deactive function LowBeamCmd</anon>
+    </Value>
+    <Value>
+      <anon>ON</anon>
+      <anon>0x01</anon>
+      <anon></anon>
+      <anon>Active function LowBeamCmd</anon>
+    </Value>
+    <Signal Source="VF247" Type="NBC" Implemented="true" />
+  </Input>
+  <Input Name="LowBeamFollowMeCmd" Type="bool_t">
+    <Value>
+      <anon>OFF</anon>
+      <anon>0x00</anon>
+      <anon></anon>
+      <anon>Deactive function LowBeamFollowMeCmd</anon>
+    </Value>
+    <Value>
+      <anon>ON</anon>
+      <anon>0x01</anon>
+      <anon></anon>
+      <anon>Active function LowBeamFollowMeCmd</anon>
+    </Value>
+    <Signal Source="VF048" Type="NBC" Implemented="false" />
+  </Input>
+  <Output Name="LowBeamOut" Type="bool_t">
+    <Value>
+      <anon>OFF</anon>
+      <anon>0x00</anon>
+      <anon></anon>
+      <anon>Deactive function LowBeamOut</anon>
+    </Value>
+    <Value>
+      <anon>ON</anon>
+      <anon>0x01</anon>
+      <anon></anon>
+      <anon>Active function LowBeamOut</anon>
+    </Value>
+    <Signal Destination="Physical" Type="PHY" ConnerctorPinName="AC-12" ProcessorPinName="OUT_ANAB_SX" Implemented="true" />
+  </Output>
+  <Output Name="LowBeamSts" Type="bool_t">
+    <Value>
+      <anon>OFF</anon>
+      <anon>0x00</anon>
+      <anon></anon>
+      <anon>Deactive function LowBeamSts</anon>
+    </Value>
+    <Value>
+      <anon>ON</anon>
+      <anon>0x01</anon>
+      <anon></anon>
+      <anon>Active function LowBeamSts</anon>
+    </Value>
+    <Signal Destination="Network" Type="CAN" Async="true" MessageName="EXTERNAL_LIGHTS" SignalName="LowBeamSts_bit" Implemented="true" />
+    <Signal Destination="Network" Type="CAN" Async="false" MessageName="STATUS_B_CAN2" SignalName="LowBeamSts_bit" Implemented="true" />
+  </Output>
+  <Timer Name="Primo" Implemented="false" />
+</opt>
