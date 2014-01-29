@@ -31,13 +31,13 @@
     <Value>
       <anon>OFF</anon>
       <anon>0x00</anon>
-      <anon></anon>
+      <anon>POS_LIGHT_OFF</anon>
       <anon>OFF value</anon>
     </Value>
     <Value>
       <anon>ON</anon>
       <anon>0x01</anon>
-      <anon></anon>
+      <anon>POS_LIGHT_ON</anon>
       <anon>ON value</anon>
     </Value>
     <Signal Source="VF247" Type="NBC" Implemented="true" />
@@ -169,6 +169,6 @@
       <anon></anon>
       <anon>Switch on lamp RHFParkTailLightFailSts&apos;</anon>
     </Value>
-    <Signal Destination="Network" Type="CAN" Async="false" ConnerctorPinName="EXTERNAL_LIGHTS" ProcessorPinName="PlateLightFailSts_bit" Implemented="true" />
+    <Signal Destination="Network" Type="CAN" Async="false" MessageName="EXTERNAL_LIGHTS" SignalName="PlateLightFailSts_bit" Implemented="true" />
   </Output>
 </opt>

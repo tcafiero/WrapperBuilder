@@ -28,8 +28,8 @@ Input:
   Name: PosLightCmd
   Type: bool_t
   Value: [
-         ['OFF', '0x00','','OFF value'],
-         ['ON', '0x01','','ON value']]
+         ['OFF', '0x00','POS_LIGHT_OFF','OFF value'],
+         ['ON', '0x01','POS_LIGHT_ON','ON value']]
   Signal:
    -
     Source: VF247
@@ -120,6 +120,6 @@ Output:
     Destination: Network
     Type: CAN
     Async: no
-    ConnerctorPinName: EXTERNAL_LIGHTS
-    ProcessorPinName: PlateLightFailSts_bit
+    MessageName: EXTERNAL_LIGHTS
+    SignalName: PlateLightFailSts_bit
     Implemented: yes

@@ -132,7 +132,7 @@ void <%= descriptor["Module"] %>_Init(void)
 
 	/* initialize outputs */
 <% for output in descriptor["Output"] %>
-<%= descriptor["Module"] %>_<%= output["Name"] %>=<%= (descriptor["Module"]).upcase %>_<%= (output["Name"]).upcase %>_<%= (input["Value"][0][0]).upcase %>;
+<%= descriptor["Module"] %>_<%= output["Name"] %>=<%= (descriptor["Module"]).upcase %>_<%= (output["Name"]).upcase %>_<%= (output["Value"][0][0]).upcase %>;
 <%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
 <% for signal in output["Signal"]%>
 <% if signal["Type"] == "PHY" %>
@@ -530,11 +530,11 @@ void <%= descriptor["Module"] %>_Task_ts(void)
 
 /* NOTE
    put this line into mandatory idle state of Stateflow of Model
-   exit: VF042_StayActive(void);
+   exit: <%= descriptor["Module"] %>_StayActive(void);
    
    Modify file: ...\BCM_APP_L7_F142M\PTF_STD\System\WKSS\PublicInt\wkss.h
    
-   adding line: VF042_ApplicationTask,
+   adding line: <%= descriptor["Module"] %>_ApplicationTask,
    before following code fragment:
    WKSS_NUM_OF_TASKS 
 } WKSS_ApplicationTask_t;

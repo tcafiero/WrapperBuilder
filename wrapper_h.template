@@ -28,6 +28,8 @@
 /*______ I N C L U D E - F I L E S ___________________________________________*/
 <% if !external_link %>
 #include "syst.h"
+#include "doup.h"
+#include "<%= descriptor["Module"] %>_config.h"
 <% end %>
 
 /*______ G L O B A L - D E F I N E S _________________________________________*/
