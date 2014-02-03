@@ -157,8 +157,8 @@ Output:
     Destination: Network
     Type: CAN
     Async: no
-    ConnerctorPinName: EXTERNAL_LIGHTS
-    ProcessorPinName: LHFParkTailLightFailSts_bit
+    MessageName: EXTERNAL_LIGHTS
+    SignalName: LHFParkTailLightFailSts_bit
     Implemented: yes
  -
   Name: RHFParkTailLightFailSts
@@ -171,8 +171,8 @@ Output:
     Destination: Network
     Type: CAN
     Async: no
-    ConnerctorPinName: EXTERNAL_LIGHTS
-    ProcessorPinName: RHFParkTailLightFailSts_bit
+    MessageName: EXTERNAL_LIGHTS
+    SignalName: RHFParkTailLightFailSts_bit
     Implemented: yes
  -
   Name: LHRParkTailLightFailSts
@@ -185,8 +185,8 @@ Output:
     Destination: Network
     Type: CAN
     Async: no
-    ConnerctorPinName: EXTERNAL_LIGHTS
-    ProcessorPinName: LHRParkTailLightFailSts_bit
+    MessageName: EXTERNAL_LIGHTS
+    SignalName: LHRParkTailLightFailSts_bit
     Implemented: yes
  -
   Name: RHRParkTailLightFailSts
@@ -199,8 +199,8 @@ Output:
     Destination: Network
     Type: CAN
     Async: no
-    ConnerctorPinName: EXTERNAL_LIGHTS
-    ProcessorPinName: RHRParkTailLightFailSts_bit
+    MessageName: EXTERNAL_LIGHTS
+    SignalName: RHRParkTailLightFailSts_bit
     Implemented: yes
  -
   Name: DRL_Activation
@@ -284,8 +284,8 @@ Output:
     Destination: Network
     Type: CAN
     Async: no
-    ConnerctorPinName: EXTERNAL_LIGHTS
-    ProcessorPinName: LHParkTailLightSts_bit
+    MessageName: EXTERNAL_LIGHTS
+    SignalName: LHParkTailLightSts_bit
     Implemented: yes
  -
   Name: RHParkTailLightSts
@@ -298,11 +298,11 @@ Output:
     Destination: Network
     Type: CAN
     Async: no
-    ConnerctorPinName: EXTERNAL_LIGHTS
-    ProcessorPinName: RHParkTailLightSts_bit
+    MessageName: EXTERNAL_LIGHTS
+    SignalName: RHParkTailLightSts_bit
     Implemented: yes
 Timer:
  -
-  Name: A
+  Name: 1
   Implemented: yes
  

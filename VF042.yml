@@ -92,9 +92,4 @@ Output:
      Async: no
      MessageName: STATUS_B_CAN2
      SignalName: LowBeamSts_bit
-     Implemented: yes
-Timer:
- -
-  Name: Primo
-  Implemented: no
- 
+     Implemented: yes 
