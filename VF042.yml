@@ -1,95 +1,70 @@
-Author: Antonio Cafiero
-Module: VF042
-Description: Gestione relè anabaglianti [F042.Vf4]
-Details: (not)
-Date: 2013-12-03
-Platform: Body Platform F142M L7
-MIL: no
-History:
- -
-  Author: T. Cafiero
-  Date: 2013-12-10
-  Description: first release
-Input:
- -
-  Name: KeySts
-  Type: u_int08
-  Value: [
-         ['OFF', '0x01','KEY_OFF_STATUS','Key is in OFF status'],
-         ['PARK', '0x02','KEY_PARK_STATUS','Key is in PARK status'],
-         ['ON', '0x04','KEY_ON_STATUS','Key is in ON status'],
-         ['CRANK', '0x0C','CRANK_ON_STATUS','Key is in CRANK status']]
-  Signal:
-   -
-    Source: VF040
-    Type: NBC
-    Implemented: yes
- -
-  Name: LowBeamFollowMeCarCmd
-  Type: bool_t
-  Value: [
+Interface:
+  Author: Antonio Cafiero
+  Module: VF042
+  Description: Gestione relè anabaglianti [F042.Vf4]
+  Details: (not)
+  Date: 2013-12-03
+  Platform: Body Platform F142M L7
+  MIL: no
+  History:
+  - Author: T. Cafiero
+    Date: 2013-12-10
+    Description: first release
+  Input:
+  - Name: KeySts
+    Type: u_int08
+    Value: [
+         ['KEY_OFF_STATUS', '0x01','Key is in OFF status'],
+         ['KEY_PARK_STATUS', '0x02','Key is in PARK status'],
+         ['KEY_ON_STATUS', '0x04','Key is in ON status'],
+         ['CRANK_ON_STATUS', '0x0C','Key is in CRANK status']]
+    NBC:
+    - VF: VF040
+      Implemented: yes
+  - Name: LowBeamFollowMeCarCmd
+    Type: bool_t
+    Value: [
          ['OFF', '0x00','','Deactive function LowBeamFollowMeCarCmd'],
          ['ON', '0x01','','Active function LowBeamFollowMeCarCmd']]
-  Signal:
-   -
-    Source: VF036
-    Type: NBC
-    Implemented: no
- -
-  Name: LowBeamCmd
-  Type: bool_t
-  Value: [
-         ['OFF', '0x00','','Deactive function LowBeamCmd' ],
-         ['ON', '0x01','','Active function LowBeamCmd' ]]
-  Signal:
-   -
-    Source: VF247
-    Type: NBC
-    Implemented: yes
+    NBC:
+    - VF: VF036
+      Implemented: no
+  - Name: LowBeamCmd
+    Type: bool_t
+    Value: [
+         ['&OFF', '0x00','Deactive function LowBeamCmd' ],
+         ['&ON', '0x01','Active function LowBeamCmd' ]]
+    NBC:
+    - VF: VF247
+      Implemented: yes
 
- -
-  Name: LowBeamFollowMeCmd
-  Type: bool_t
-  Value: [
-         ['OFF', '0x00','','Deactive function LowBeamFollowMeCmd' ],
-         ['ON', '0x01','','Active function LowBeamFollowMeCmd' ]]
-  Signal:
-   -
-    Source: VF048
-    Type: NBC
-    Implemented: no
-Output:
- -
-  Name: LowBeamOut
-  Type: bool_t
-  Value: [
-         ['OFF', '0x00','','Deactive function LowBeamOut' ],
-         ['ON', '0x01','','Active function LowBeamOut' ]]
-  Signal:
-   -
-    Destination: Physical
-    Type: PHY
-    ConnerctorPinName: AC-12
-    ProcessorPinName: OUT_ANAB_SX
-    Implemented: yes
- -
-   Name: LowBeamSts
-   Type: bool_t
-   Value: [
-          ['OFF', '0x00','','Deactive function LowBeamSts' ],
-          ['ON', '0x01','','Active function LowBeamSts' ]]
-   Signal:
-    - 
-     Destination: Network
-     Type: CAN
-     Async: yes
-     MessageName: EXTERNAL_LIGHTS
-     SignalName: LowBeamSts_bit
-     Implemented: yes
-    - 
-     Destination: Network
-     Type: CAN
-     Async: no
-     MessageName: STATUS_B_CAN2
-     SignalName: LowBeamSts_bit
-     Implemented: yes 
+  - Name: LowBeamFollowMeCmd
+    Type: bool_t
+    Value: [
+         ['&OFF', '0x00','Deactive function LowBeamFollowMeCmd' ],
+         ['&ON', '0x01','Active function LowBeamFollowMeCmd' ]]
+    NBC:
+    - VF: VF048
+      Implemented: no
+  Output:
+  - Name: LowBeamOut
+    Type: bool_t
+    Value: [
+         ['&OFF', '0x00','Deactive function LowBeamOut' ],
+         ['&ON', '0x01','Active function LowBeamOut' ]]
+    Pin:
+    - ProcessorPinName: OUT_ANAB_SX
+  - Name: LowBeamSts
+    Type: bool_t
+    Value: [
+          ['&OFF', '0x00','Deactive function LowBeamSts' ],
+          ['&ON', '0x01','Active function LowBeamSts' ]]
+    Network:
+    - MessageName: EXTERNAL_LIGHTS
+      SignalName: LowBeamSts_bit
+      Async: yes
+      Implemented: yes
+    - MessageName: STATUS_B_CAN2
+      SignalName: LowBeamSts_bit
+      Async: no
+      Implemented: yes 

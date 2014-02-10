@@ -1,62 +1,38 @@
 Port Name;Requirements Signal Name;S/R Com Modes;IsQueued;queueLength;initValue;InvalidValue;SignalType [Simple, Array, Record];ArraySize;RecordComponent;Primitive ASR Types;SWC Types;Scaling;Min Max;Parameters & Values;Description
-<% modelprinted=0 %>
-<% for output in descriptor["Output"] %>
-<% signalprinted=0 %>
-<% for signal in output["Signal"] %>
-<% for value in output["Value"] %>
-<% if modelprinted == 0 %>
-<% c1 = descriptor["Module"]+'_ModelOutputs' %>
-<% modelprinted=1 %>
-<% else %>
-<% c1 = '' %>
-<% end %>
-<% if signalprinted == 0 %>
-<% signalprinted=1 %>
-<% c2=output["Name"] %>
-<% c3='Explicit' %>
-<% c4='FALSE' %>
-<% c5='NA' %>
-<% if output["Value"][0][2] == '' %>
-<% c6 = (signal["Destination"]).upcase + '_' + (output["Name"]).upcase + '_' + (output["Value"][0][0]).upcase %>
-<% else %>
-<% c6=(signal["Destination"]).upcase+'_'+(output["Value"][0][2]).upcase %>
-<% end %>
-<% c7='None' %>
-<% c8='Record' %>
-<% c9='None' %>
-<% c10=output["Name"] %>
-<% c11='' %>
-<% c12=output["Type"] %>
-<% c13='None' %>
-<% c14='None' %>
-<% if  value[2] != '' %>
-<% c15= signal["Destination"]+'_'+value[2] %>
-<% else %>
-<% c15=(signal["Destination"]).upcase+'_'+(output["Name"]).upcase+'_'+(value[0]).upcase %>
-<% end %>
-<% c16=value[3] %>
-<% else %>
-<% c2='' %>
-<% c3='' %>
-<% c4='' %>
-<% c5='' %>
-<% c6='' %>
-<% c7='' %>
-<% c8='' %>
-<% c9='' %>
-<% c10='' %>
-<% c11='' %>
-<% c12='' %>
-<% c13='' %>
-<% c14='' %>
-<% if  value[2] != '' %>
-<% c15= signal["Destination"]+'_'+value[2] %>
-<% else %>
-<% c15=(signal["Destination"]).upcase+'_'+(output["Name"]).upcase+'_'+(value[0]).upcase %>
-<% end %>
-<% c16=value[3] %>
-<% end %>
-<%= c1 %>;<%= c2 %>;<%= c3 %>;<%= c4 %>;<%= c5 %>;<%= c6 %>;<%= c7 %>;<%= c8 %>;<%= c9 %>;<%= c10 %>;<%= c11 %>;<%= c12 %>;<%= c13 %>;<%= c14 %>;<%= c15 %>;<%= c16 %>
-<% end %>
-<% end %>
-<% end %>
+<%
+for output in descriptor["Output"]
+for signal in output["NBC"] || output["Pin"] || output["Network"]
+c1 = descriptor["Module"]+'_ModelOutputs'
+c2=output["Name"]
+c3='Explicit'
+c4='FALSE'
+c5='NA'
+c6=output["Value"][0][0]
+c7='Record'
+c8='None'
+c9=output["Name"]
+c10=''
+c11=output["Type"]
+c12='None'
+c13='None'
+for value in output["Value"]
+c14=value[0]+' = '+value[1]
+c15=value[2] %>
+<%= c1 %>;<%= c2 %>;<%= c3 %>;<%= c4 %>;<%= c5 %>;<%= c6 %>;<%= c7 %>;<%= c8 %>;<%= c9 %>;<%= c10 %>;<%= c11 %>;<%= c12 %>;<%= c13 %>;<%= c14 %>;<%= c15 %>
+<%
+c1=''
+c2=''
+c3=''
+c4=''
+c5=''
+c6=''
+c7=''
+c8=''
+c9=''
+c10=''
+c11=''
+c12=''
+c13=''
+end
+end
+end %>

@@ -1,125 +1,139 @@
-Author: Antonio Cafiero
-Module: VF030
-Description: Luci targa [F030.Vf7]
-Details: (not)
-Date: 2014-01-21
-Platform: Body Platform F142M L7
-MIL: no
-History:
- -
-  Author: T. Cafiero
+Interface:
+  Author: Antonio Cafiero
+  Module: VF030
+  Description: Luci targa [F030.Vf7]
+  Details: (not)
   Date: 2014-01-21
-  Description: first release
-Input:
- -
-  Name: KeySts
-  Type: u_int08
-  Value: [
-         ['OFF', '0x01','KEY_OFF_STATUS','Key is in OFF status'],
-         ['PARK', '0x02','KEY_PARK_STATUS','Key is in PARK status'],
-         ['ON', '0x04','KEY_ON_STATUS','Key is in ON status'],
-         ['CRANK', '0x0C','CRANK_ON_STATUS','Key is in CRANK status']]
-  Signal:
-   -
-    Source: VF040
-    Type: NBC
-    Implemented: yes
- -
-  Name: PosLightCmd
-  Type: bool_t
-  Value: [
-         ['OFF', '0x00','POS_LIGHT_OFF','OFF value'],
-         ['ON', '0x01','POS_LIGHT_ON','ON value']]
-  Signal:
-   -
-    Source: VF247
-    Type: NBC
-    Implemented: yes
- -
-  Name: Luci_targa_cmd
-  Type: u_int08
-  Value: [
-         ['OFF', '0x00','','Value for OFF'],
-         ['ON', '0x01','','Value for ON']]
-  Signal:
-   -
-    Source: VF048
-    Type: NBC
-    Implemented: no
- -
-  Name: Targa_cmd
-  Type: u_int08
-  Value: [
-         ['OFF', '0x00','','Value for OFF'],
-         ['ON', '0x01','','Value for ON']]
-  Signal:
-   -
-    Source: VF036
-    Type: NBC
-    Implemented: no
- -
-  Name: EngineSts
-  Type: u_int08 
-  Value: [
-         ['OFF', '0x00','ENGINE_OFF','value for engine off status'],
-         ['ON', '0x01','ENGINE_ON','value for engine on status'],
-         ['CRANKING', '0x02','ENGINE_CRANKING','value for engine cranking status'],
-         ['SHUT_DOWN', '0x03','ENGINE_SHUT_DOWN','value for engine shut down status']]
-  Signal:
-   -
-    Source: VF506
-    Type: NBC
-    Implemented: yes
- -
-  Name: StopStartSts
-  Type: u_int08 
-  Value: [
-         ['OFF', '0x00','SS_OFF','value for StopStart off status'],
-         ['ON', '0x01','SS_ON','value for StopStart on status'],
-         ['ENG_RESTART', '0x02','SS_ENG_RESTART','value for StopStart restart status'],
-         ['STOP_REQ', '0x03','SS_STOP_REQ','value for StopStart stop request status']]
-  Signal:
-   -
-    Source: VF506
-    Type: NBC
-    Implemented: yes
- -
-  Name: CarConfiguration4StopAndStart
-  Type: bool_t 
-  Value: [
-         ['SS_NOT_INCLUDED', '0x00','','value Stop and Start feature not included'],
-         ['SS_INCLUDED', '0x01','','value Stop and Start feature included']]
-  Signal:
-   -
-    Source: VERS
-    Type: PROXY
-    Implemented: no
-Output:
- -
-  Name: PlateLightOut
-  Type: bool_t
-  Value: [
-         ['OFF', '0x00','','Switch off lamp LHFParkTailLightFailSts' ],
-         ['ON', '0x01','',Switch on lamp LHFParkTailLightFailSts' ]]
-  Signal:
-   -
-    Destination: Physical
-    Type: PHY
-    ConnerctorPinName: LF-06
-    ProcessorPinName: OUT_TARGA
-    Diagnosis: yes
-    Implemented: yes
- -
-  Name: PlateLightFailSts
-  Type: bool_t
-  Value: [
-         ['OFF', '0x00','','Switch off lamp RHFParkTailLightFailSts' ],
-         ['ON', '0x01','',Switch on lamp RHFParkTailLightFailSts' ]]
-  Signal:
-   -
-    Destination: Network
-    Type: CAN
-    Async: no
-    MessageName: EXTERNAL_LIGHTS
-    SignalName: PlateLightFailSts_bit
-    Implemented: yes
+  Platform: Body Platform F142M L7
+  History:
+  - Author: T. Cafiero
+    Date: 2014-01-21
+    Description: first release
+  Input:
+  - Name: KeySts
+    Type: u_int08
+    Value:
+    - - VF040_KEY_OFF_STATUS
+      - '0x01'
+      - Key is in OFF status
+    - - VF040_KEY_PARK_STATUS
+      - '0x02'
+      - Key is in PARK status
+    - - VF040_KEY_ON_STATUS
+      - '0x04'
+      - Key is in ON status
+    - - VF040_CRANK_ON_STATUS
+      - '0x0C'
+      - Key is in CRANK status
+    NBC:
+    - VF: VF040
+      Implemented: true
+  - Name: PosLightCmd
+    Type: bool_t
+    Value:
+    - - VF247_POS_LIGHT_OFF
+      - '0x00'
+      - OFF value
+    - - VF247_POS_LIGHT_ON
+      - '0x01'
+      - ON value
+    NBC:
+    - VF: VF247
+      Implemented: true
+  - Name: Luci_targa_cmd
+    Type: u_int08
+    Value:
+    - - VF048_LUCI_TARGA_CMD_OFF
+      - '0x00'
+      - Value for OFF
+    - - VF048_LUCI_TARGA_CMD_ON
+      - '0x01'
+      - Value for ON
+    NBC:
+    - VF: VF048
+      Implemented: false
+  - Name: Targa_cmd
+    Type: u_int08
+    Value:
+    - - VF036_TARGA_CMD_OFF
+      - '0x00'
+      - Value for OFF
+    - - VF036_TARGA_CMD_ON
+      - '0x01'
+      - Value for ON
+    NBC:
+    - VF: VF036
+      Implemented: false
+  - Name: EngineSts
+    Type: u_int08
+    Value:
+    - - VF506_ENGINE_OFF
+      - '0x00'
+      - value for engine off status
+    - - VF506_ENGINE_ON
+      - '0x01'
+      - value for engine on status
+    - - VF506_ENGINE_CRANKING
+      - '0x02'
+      - value for engine cranking status
+    - - VF506_ENGINE_SHUT_DOWN
+      - '0x03'
+      - value for engine shut down status
+    NBC:
+    - VF: VF506
+      Implemented: true
+  - Name: StopStartSts
+    Type: u_int08
+    Value:
+    - - VF506_SS_OFF
+      - '0x00'
+      - value for StopStart off status
+    - - VF506_SS_ON
+      - '0x01'
+      - value for StopStart on status
+    - - VF506_SS_ENG_RESTART
+      - '0x02'
+      - value for StopStart restart status
+    - - VF506_SS_STOP_REQ
+      - '0x03'
+      - value for StopStart stop request status
+    NBC:
+    - VF: VF506
+      Implemented: true
+  - Name: CarConfiguration4StopAndStart
+    Type: bool_t
+    Value:
+    - - VERS_CARCONFIGURATION4STOPANDSTART_SS_NOT_INCLUDED
+      - '0x00'
+      - value Stop and Start feature not included
+    - - VERS_CARCONFIGURATION4STOPANDSTART_SS_INCLUDED
+      - '0x01'
+      - value Stop and Start feature included
+    Proxy:
+    - Implemented: false
+  Output:
+  - Name: PlateLightOut
+    Type: bool_t
+    Value:
+    - - VF030_PLATELIGHTOUT_OFF
+      - '0x00'
+      - Switch off lamp LHFParkTailLightFailSts
+    - - VF030_PLATELIGHTOUT_ON
+      - '0x01'
+      - Switch on lamp LHFParkTailLightFailSts'
+    Pin:
+    - ProcessorPinName: OUT_TARGA
+      Diagnosis: true
+  - Name: PlateLightFailSts
+    Type: bool_t
+    Value:
+    - - VF030_PLATELIGHTFAILSTS_OFF
+      - '0x00'
+      - Switch off lamp RHFParkTailLightFailSts
+    - - VF030_PLATELIGHTFAILSTS_ON
+      - '0x01'
+      - Switch on lamp RHFParkTailLightFailSts'
+    Network:
+    - MessageName: EXTERNAL_LIGHTS
+      SignalName: PlateLightFailSts_bit
+      Async: false

@@ -1,0 +1,133 @@
+/******************************************************************************/
+/**
+ * \brief       <%= descriptor["Module"] %>.
+ * \details     <%= descriptor["Details"] %>  
+ *
+ * \file        <%= descriptor["Module"] %>.h
+ * \project{
+ *              <%= descriptor["Platform"] %>
+ *}
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ * \history{     
+                <% for history in descriptor["History"] %>
+ *              <%= history["Author"] %>,
+ *              <%= history["Date"] %>,
+ *              <%= history["Description"] %>,
+                <% end %>
+ *}
+ */
+/******************************************************************************/
+
+#ifndef EXTERNAL_LINK_H
+#define EXTERNAL_LINK_H
+
+
+/*______ I N C L U D E - F I L E S ___________________________________________*/
+
+/*______ T Y P E - D E F I N E S _____________________________________________*/
+
+/* System type definition */
+typedef unsigned char bool_t;
+typedef unsigned char u_int08;
+typedef unsigned short int u_int16;
+typedef unsigned long int u_int32;
+typedef signed char s_int08;
+typedef signed short int s_int16;
+typedef signed long int s_int32;
+typedef float float_t;
+
+/* LINP defintions */
+typedef enum
+{
+LINP_INACTIVE = 0,
+LINP_ACTIVE0 = 1,
+LINP_ACTIVE1 = 2,
+LINP_ACTIVE2 = 3,
+LINP_ACTIVE3 = 4,
+LINP_ACTIVE4 = 5,
+LINP_ACTIVE5 = 6,
+LINP_UNKNOWN = 255
+} LINP_State_t;
+
+enum DOUP_ErrorType_e
+{
+    DOUP_NO_TYPE_ERR        = 0x00,
+    DOUP_CA_ERR             = 0x01,
+    DOUP_CC_GND_ERR         = 0x02,
+    DOUP_CC_VB_ERR          = 0x03,
+    DOUP_CA_CC_GND_ERR      = 0x04,
+    DOUP_CA_CC_VB_ERR       = 0x05,
+    DOUP_MAX_RANGE_ERR      = 0x06,
+    DOUP_MIN_RANGE_ERR      = 0x07,
+    DOUP_MAX_DELTA_ERR      = 0x08,
+    DOUP_CA_CC_GEN_ERR      = 0x09,
+    DOUP_NOT_VALIDATED_ERR  = 0x0a,
+    DOUP_RETRY_CMD_FAIL     = 0x40,   /* usato per strategia di stacco del carico */
+    DOUP_DESTRUCTIVE_FAIL   = 0x80,   /* usato per strategia di stacco del carico */
+    DOUP_RESTART_DIAG       = 0xff,
+} DOUP_ErrorType_t;
+
+/* Stati di errore */
+enum DOUP_ErrorStatus_e
+{
+    DOUP_NO_STATUS_ERR  = 0x00,    /* Errore assente */
+    DOUP_VALID_ERR      = 0x07     /* Errore presente */
+} DOUP_ErrorStatus_t;
+
+
+
+/*______ VALUE DEFINES _____________________________________________*/
+
+/* INPUT SECTION */
+<% for input in descriptor["Input"] %>
+/* Value valid for <%= input["Name"] %> */ 
+<% for value in input["Value"] %>
+#define <%= value[0] %> <%= value[1] %> /* <%= value[2] %> */
+<% end %>
+
+<% end %>
+
+
+/* OUTPUT SECTION */
+<% for output in descriptor["Output"] %>
+/* Value valid for <%= output["Name"] %> */ 
+<% for value in output["Value"] %>
+#define <%= value[0] %> <%= value[1] %> /* <%= value[2] %> */
+<% end %>
+
+<% end %>
+
+/*______ V A R I A B L E S ___________________________________________________*/
+
+<% if descriptor.has_key?("Timer") %>
+<% for timer in descriptor["Timer"] %>
+<% if timer["Implemented"] %>
+extern u_int32 Time<%= timer["Name"] %>;
+extern bool_t SetTimer<%= timer["Name"] %>Event;
+extern bool_t ResetTimer<%= timer["Name"] %>Event;
+<% end %>
+<% end %>
+<% end %>
+
+extern bool_t ApplTaskSts;
+
+/*______ F U N C T I O N S ___________________________________________________*/
+
+<% if descriptor.has_key?("Timer") %>
+<% for timer in descriptor["Timer"] %>
+<% if timer["Implemented"] %>
+
+void <%= descriptor["Module"] %>_SetTimer<%= timer["Name"] %>(u_int32 time);
+void <%= descriptor["Module"] %>_ResetTimer<%= timer["Name"] %>(void);
+<% end %>
+<% end %>
+<% end %>
+
+void <%= descriptor["Module"] %>_StayActive(void);
+
+void <%= descriptor["Module"] %>_GoToSleep(void);
+
+#endif /* <%= descriptor["Module"] %>_H */
+
+/*______ E N D _____ (<%= descriptor["Module"] %>.h) ________________________________________________*/

@@ -1,60 +1,38 @@
 Port Name;Requirements Signal Name;S/R Com Modes;IsQueued;queueLength;initValue;SignalType [Simple, Array, Record];ArraySize;RecordComponent;Primitive ASR Types;SWC Types;Scaling;Min Max;Parameters & Values;Description
-<% modelprinted=0 %>
-<% for input in descriptor["Input"] %>
-<% signalprinted=0 %>
-<% for signal in input["Signal"] %>
-<% for value in input["Value"] %>
-<% if modelprinted == 0 %>
-<% c1 = descriptor["Module"]+'_ModelInputs' %>
-<% modelprinted=1 %>
-<% else %>
-<% c1 = '' %>
-<% end %>
-<% if signalprinted == 0 %>
-<% signalprinted=1 %>
-<% c2=input["Name"] %>
-<% c3='Explicit' %>
-<% c4='FALSE' %>
-<% c5='NA' %>
-<% if input["Value"][0][2] == '' %>
-<% c6=(signal["Source"]).upcase+'_'+(input["Name"]).upcase+'_'+(input["Value"][0][0]).upcase %>
-<% else %>
-<% c6=(signal["Source"]).upcase+'_'+(input["Value"][0][2]).upcase %>
-<% end %>
-<% c7='Record' %>
-<% c8='NA' %>
-<% c9=input["Name"] %>
-<% c10='' %>
-<% c11=input["Type"] %>
-<% c12='None' %>
-<% c13='None' %>
-<% if  value[2] != '' %>
-<% c14= signal["Source"]+'_'+value[2] %>
-<% else %>
-<% c14=(signal["Source"]).upcase+'_'+(input["Name"]).upcase+'_'+(value[0]).upcase %>
-<% end %>
-<% c15=value[3] %>
-<% else %>
-<% c2='' %>
-<% c3='' %>
-<% c4='' %>
-<% c5='' %>
-<% c6='' %>
-<% c7='' %>
-<% c8='' %>
-<% c9='' %>
-<% c10='' %>
-<% c11='' %>
-<% c12='' %>
-<% c13='' %>
-<% if  value[2] != '' %>
-<% c14= signal["Source"]+'_'+value[2] %>
-<% else %>
-<% c14=(signal["Source"]).upcase+'_'+(input["Name"]).upcase+'_'+(value[0]).upcase %>
-<% end %>
-<% c15=value[3] %>
-<% end %>
+<%
+for input in descriptor["Input"]
+for signal in input["NBC"] || input["Proxy"] || input["Pin"] || input["Network"] || input["Diagnosis"]
+c1 = descriptor["Module"]+'_ModelInputs'
+c2=input["Name"]
+c3='Explicit'
+c4='FALSE'
+c5='NA'
+c6=input["Value"][0][0]
+c7='Record'
+c8='NA'
+c9=input["Name"]
+c10=''
+c11=input["Type"]
+c12='None'
+c13='None'
+for value in input["Value"]
+c14=value[0]+' = '+value[1]
+c15=value[2] %>
 <%= c1 %>;<%= c2 %>;<%= c3 %>;<%= c4 %>;<%= c5 %>;<%= c6 %>;<%= c7 %>;<%= c8 %>;<%= c9 %>;<%= c10 %>;<%= c11 %>;<%= c12 %>;<%= c13 %>;<%= c14 %>;<%= c15 %>
-<% end %>
-<% end %>
-<% end %>
+<%
+c1=''
+c2=''
+c3=''
+c4=''
+c5=''
+c6=''
+c7=''
+c8=''
+c9=''
+c10=''
+c11=''
+c12=''
+c13=''
+end
+end
+end %>

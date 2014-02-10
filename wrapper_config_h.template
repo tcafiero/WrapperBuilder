@@ -25,30 +25,100 @@
 
 /*______ I N C L U D E - F I L E S ___________________________________________*/
 
+/* PTF_STD */
+#include "syst.h"
+#include "wkss.h"
+#include "doup.h"
+#include "syst.h"
+#include "linp.h"
+#include "sscs.h"
+
+/* I_O */
+#include "doup.h"
+#include "linp.h"
+
+/* NET_DIAG */
+#include "udsm.h"
+#include "netc.h"
+#include "netp.h"
+#include "netm.h"
+#include "gpep.h"
+#include "lnmp.h"
+#include "diagm.h"
+
+/* Application */
+
 /* Includes use by the model */
-#include "vers.h"
 <% for input in descriptor["Input"] %>
-<% for signal in input["Signal"] %>
+<% if input.has_key?("Proxy") %>
+#include "vers.h"
+<% end %>
+<% if input.has_key?("NBC") %>
+<% for signal in input["NBC"] %>
 <% if signal["Implemented"] %>
-#include "<%= signal["Source"] %>.h"
+#include "<%= signal["VF"] %>.h"
 <% else %>
-/* TODO When <%= signal["Source"] %> implemented delete comment on following statement */
-//#include "<%= signal["Source"] %>.h"
+/* TODO When <%= signal["VF"] %> is implemented delete comment on following statement */
+//#include "<%= signal["VF"] %>.h"
+<% end %>
 <% end %>
 <% end %>
 <% end %>
 
 /*______ G L O B A L - D E F I N E S _________________________________________*/
 
+/* INPUT SECTION */
+<% for input in descriptor["Input"] %>
+<% if !input["Implemented"] %>
+/* Value valid for <%= input["Name"] %> */ 
+<% for value in input["Value"] %>
+#define <%= value[0] %> <%= value[1] %> /* <%= value[2] %> */
+<% end %>
+<% end %>
+
+<% end %>
+
+
+<% if descriptor.has_key?("Timer") %>
+#define VERS_TIMER_STOPPED 0
+#define VERS_TIMER_RUNNING 1
+#define VERS_TIMER_EXPIRED 2
+<% end %>
 
 
 /*______ G L O B A L - T Y P E S _____________________________________________*/
 
+<% for input in descriptor["Input"] %>
+<% if input.has_key?("NBC") %>
+<% signal=input["NBC"][0] %>
+<% source=signal["VF"] %>
+<% end %>
+<% if input.has_key?("Proxy") %>
+<% signal=input["Proxy"][0] %>
+<% source="VERS" %>
+<% end %>
+<% if !signal["Implemented"] %>
+typedef <%= input["Type"] %> <%= source %>_<%= input["Name"] %>_t;
+<% end %>
+<% end %>
 
 
 /*______ G L O B A L - D A T A _______________________________________________*/
 
 /*______ G L O B A L - M A C R O S ___________________________________________*/
+
+<% for output in descriptor["Output"] %>
+<% if output.has_key? ("NBC") %>
+#define <%= descriptor["Module"].upcase %>_<%= output["Name"].upcase %>_STATUS_CHANGED\
+<% for signal in output["NBC"] %>
+<% if signal["Implemented"] %>
+<%= signal["VF"] %>_<%= output["Name"] %>StatusChanged();\
+<% else %>
+//<%= signal["VF"] %>_<%= output["Name"] %>StatusChanged();\
+<% end %>
+<% end %>
+<% end %>
+<% end %>
 
 
 /*______ G L O B A L - F U N C T I O N S - P R O T O T Y P E S _______________*/

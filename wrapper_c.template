@@ -27,37 +27,7 @@
 #include "<%= descriptor["Module"] %>_config.h"
 #include "<%= descriptor["Module"] %>_Model.h"
 
-/* PTF_STD */
-#include "syst.h"
-#include "wkss.h"
-
-/* I_O */
-#include "linp.h"
-#include "doup.h"
-
-/* NET_DIAG */
-#include "netc.h"
-#include "gpep.h"
-
-/* VERS (at least for timers) */
-#include "vers.h"
-
-
-/* Application (Others)*/
-<% for input in descriptor["Input"] %>
-<% for signal in input["Signal"] %>
-<% if signal["Implemented"] && signal["Source"]!='Network' %>
-#include "<%= signal["Source"] %>.h"
-<% else %>
-/* TODO When <%= signal["Source"] %> implemented delete comment on following statement */
-//#include "<%= signal["Source"] %>.h"
-<% end %>
-<% end %>
-<% end %>
-
-
 /*______ L O C A L - D E F I N E S ___________________________________________*/
-
 
 /* max number of events */
 #define <%= descriptor["Module"] %>_EVENT_COUNT_MAX  255
@@ -70,10 +40,12 @@
 
 /*______ L O C A L - D A T A _________________________________________________*/
 
-/*outputs */
+/* Outputs Defintions */
 <% for output in descriptor["Output"] %>
 static <%= output["Type"] %> <%= descriptor["Module"] %>_<%= output["Name"] %>;
 <% end %>
+
+/* Events defintion */
 static u_int08 <%= descriptor["Module"] %>_ModelEventCounter;
 
 /*______ L O C A L - M A C R O S _____________________________________________*/
@@ -106,22 +78,33 @@ void <%= descriptor["Module"] %>_ReadOutputs(void);
 /******************************************************************************/
 void <%= descriptor["Module"] %>_Init(void)
 {
-	/* initialize inputs */
+  /* Input signals */
+  
 <% for input in descriptor["Input"] %>
-<% for signal in input["Signal"] %>
-<% if !signal["Implemented"]  || descriptor["MIL"] %>
-<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= (signal["Source"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (input["Value"][0][0]).upcase %>;
-<% else %>
-<% if input["Value"][0][2] == '' %>
-<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= (signal["Source"]).upcase %>_<%= (input["Name"]).upcase %>_<%= (input["Value"][0][0]).upcase %>;
-<% else %>
-<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= (signal["Source"]).upcase %>_<%= (input["Value"][0][2]).upcase %>;
+<% value=input["Value"][0] %>
+<% for signal in input["NBC"] || input["Proxy"] || input["Network"] || input["Pin"] %>
+/* Init <%= input["Name"] %> */ 
+<% value=input["Value"][0] %>
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= value[0] %>;
+
 <% end %>
+<% end %>
+
+  /* initialize input for output pin feedback */
+
+<% for input in descriptor["Input"] %>
+<% value=input["Value"][0] %>
+<% if input.has_key?("Diagnosis") %>
+<% for signal in input["Diagnosis"] %>
+/* Init <%= input["Name"] %> */ 
+<% value=input["Value"][0] %>
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %> = (u_int08) DOUP_NO_TYPE_ERR;
+
 <% end %>
 <% end %>
 <% end %>
 
-	/* initialize timers */
+  /* initialize timers */
 <% if descriptor.has_key?("Timer") %>
 <% for timer in descriptor["Timer"] %>
 <% if timer["Implemented"] %>
@@ -130,34 +113,48 @@ void <%= descriptor["Module"] %>_Init(void)
 <% end %>
 <% end %>
 
-	/* initialize outputs */
+/* OUTPUT SECTION */
+
 <% for output in descriptor["Output"] %>
-<%= descriptor["Module"] %>_<%= output["Name"] %>=<%= (descriptor["Module"]).upcase %>_<%= (output["Name"]).upcase %>_<%= (output["Value"][0][0]).upcase %>;
+<% if output.has_key?("NBC") %>
+
+/* Init <%= output["Name"] %> */ 
+<% value=output["Value"][0] %>
+<%= descriptor["Module"] %>_<%= output["Name"] %>=<%= value[0] %>;
 <%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
-<% for signal in output["Signal"]%>
-<% if signal["Type"] == "PHY" %>
+<% end %>
+<% end %>
+<% for output in descriptor["Output"] %>
+<% if output.has_key?("Pin") %>
+
+/* Init <%= output["Name"] %> */ 
+<% value=output["Value"][0] %>
+<% s = value[0].clone %>
+<%= descriptor["Module"] %>_<%= output["Name"] %>=<%= value[0] %>;
+<%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
+<% for signal in output["Pin"]%>
 /* NOTE
  * in file: ...\BCM_I_O\CONF\doup_cfg.h
  * add macro: #define DOUP_Set<%= output["Name"] %>(x)  DOUP_SetOutVal(<%= signal["ProcessorPinName"] %>,x)
 */
 DOUP_Set<%= output["Name"] %>(<%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>);
 <% end %>
-<% if signal["Type"] == "CAN" %>
+<% end %>
+<% end %>
+<% for output in descriptor["Output"] %>
+<% if output.has_key?("Network") %>
+
+/* Init <%= output["Name"] %> */ 
+<% value=output["Value"][0] %>
+<% s = value[0].clone %>
+<%= descriptor["Module"] %>_<%= output["Name"] %>=<%= value[0] %>;
+<%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
+<% for signal in output["Network"]%>
 NETC_TX_<%= signal["MessageName"] %><%= signal["SignalName"] %>=<%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>;
 <% end %>
 <% end %>
 <% end %>
 
-    /* initialize output feedback */
-<% for output in descriptor["Output"] %>
-<% for signal in output["Signal"]%>
-<% if signal.has_key?("Diagnosis") %>
-<% if signal["Type"] == "PHY" && signal["Diagnosis"]%>
-<%= descriptor["Module"] %>_ModelInputs.<%= output["Name"] %>Feedback=(u_int08) DOUP_NO_TYPE_ERR;
-<% end %>
-<% end %>
-<% end %>
-<% end %>
 
 <%= descriptor["Module"] %>_ModelEventCounter = 1;
 
@@ -166,15 +163,13 @@ NETC_TX_<%= signal["MessageName"] %><%= signal["SignalName"] %>=<%= descriptor["
 
 
 <%# PROXY callback (START SECTION) %>
-<% proxi_used=0 %>
+<% trigger001=false %>
 <% for input in descriptor["Input"] %>
-<% for signal in input["Signal"] %>
-<% if signal["Type"] == "PROXY" %>
-<% proxi_used=1 %>
+<% if input.has_key?("Proxy") %>
+<% trigger001=true %>
 <% end %>
 <% end %>
-<% end %>
-<% if proxi_used == 1 %>
+<% if trigger001 %>
 /* NOTE
    Bind following callback
    function: <%= descriptor["Module"] %>_ProxiStatusChanged();
@@ -191,9 +186,9 @@ NETC_TX_<%= signal["MessageName"] %><%= signal["SignalName"] %>=<%= descriptor["
 void <%= descriptor["Module"] %>_ProxiStatusChanged(void)
 {
 <% for input in descriptor["Input"] %>
-<% for signal in input["Signal"] %>
-<% if signal["Type"] == "PROXY" %>
-<% if input["Implemented"] %>
+<% if input.has_key? ("Proxy") %>
+<% for signal in input["Proxy"] %>
+<% if signal["Implemented"] %>
 <%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=VERS_Get<%= input["Name"] %>();
 <% else %>
 /* TODO  Delete following comment when VERS_Get<%= input["Name"] %>() is implemented*/
@@ -216,8 +211,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 
 <%# NBC SIGNAL callback (START SECTION) %>
 <% for input in descriptor["Input"] %>
-<% for signal in input["Signal"] %>
-<% if signal["Type"] == "NBC" %>
+<% if input.has_key?("NBC") %>
 /* NOTE
    Bind following callback
    function: <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged();
@@ -233,11 +227,12 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 /******************************************************************************/
 void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void)
 {
+<% signal = input["NBC"][0] %>
 <% if signal["Implemented"] %>
-<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= signal["Source"] %>_Get<%= input["Name"] %>();
+<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= signal["VF"] %>_Get<%= input["Name"] %>();
 <% else %>
-/* TODO  Delete following comment when <%= signal["Source"] %> implemented*/
-//<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= signal["Source"] %>_Get<%= input["Name"] %>();
+/* TODO  Delete following comment when <%= signal["VF"] %> implemented*/
+//<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= signal["VF"] %>_Get<%= input["Name"] %>();
 <% end %>
 if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
 {
@@ -249,13 +244,11 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 
 <% end %>
 <% end %>
-<% end %>
 <%# NBC SIGNAL callback (STOP SECTION) %>
 
 <%# PHYSICAL SIGNAL callback (START SECTION) %>
 <% for input in descriptor["Input"] %>
-<% for signal in input["Signal"] %>
-<% if signal["Type"] == "PHY" %>
+<% if input.has_key?("Pin") %>
 /* NOTE
    Bind following callback
    function: <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged();
@@ -274,6 +267,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 /******************************************************************************/
 void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void)
 {
+<% signal = input["Pin"][0] %>
 <% if signal["Implemented"] %>
 <%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=(<%= input["Type"] %>) LINP_Get<%= signal["ProcessorPinName"] %>();
 <% else %>
@@ -290,15 +284,14 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 
 <% end %>
 <% end %>
-<% end %>
 <%# PHYSICAL SIGNAL callback (STOP SECTION) %>
 
 
 <%# Diagnosis callback (START SECTION) %>
 <% for output in descriptor["Output"] %>
-<% for signal in output["Signal"]%>
+<% if output.has_key?("Pin") %>
+<% for signal in output["Pin"]%>
 <% if signal.has_key?("Diagnosis") %>
-<% if signal["Type"] == "PHY" && signal["Diagnosis"]%>
 /* NOTE
    Check if following callback
    function: <%= descriptor["Module"] %>_<%= output["Name"] %>Diagnosis();
@@ -338,8 +331,8 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 <% mset = Hash.new %>
 <% mset.default=0 %>
 <% for input in descriptor["Input"] %>
-<% for signal in input["Signal"] %>
-<% if signal["Type"] == "CAN" %>
+<% if input.has_key? ("Network") %>
+<% for signal in input["Network"] %>
 <% if  mset[signal["MessageName"]] == 0 %>
 <% mset[signal["MessageName"]]=[] %>
 <% end %>
@@ -367,16 +360,9 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 void <%= descriptor["Module"] %>_<%= messagename %>_Confirmation(void)
 {
 <% for input in descriptor["Input"] %>
-<% for signal in input["Signal"] %>
-<% if signal["Type"] == "CAN" %>
+<% for signal in input["Network"] %>
 <% if signal["MessageName"] == messagename %>
-<% if input["Implemented"] %>
 <%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=NETC_RX_<%= signal["MessageName"] %><%= signal["SignalName"] %>;
-<% else %>
-/* TODO  Delete following comment when <%= input["Source"] %> has binding on this callback routine*/
-//<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=NETC_RX_<%= signal["MessageName"] %><%= signal["SignalName"] %>;
-<% end %>
-<% end %>
 <% end %>
 <% end %>
 <% end %>
@@ -405,17 +391,21 @@ void <%= descriptor["Module"] %>_ReadOutputs(void)
 if (<%= descriptor["Module"] %>_<%= output["Name"] %> != <%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>)
 {
 <%= descriptor["Module"] %>_<%= output["Name"] %> = <%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>;
-<% for signal in output["Signal"]%>
-<% if signal["Type"] == "PHY" %>
+<% if output.has_key? ("Pin") %>
+<% for signal in output["Pin"]%>
 DOUP_Set<%= output["Name"] %>(<%= descriptor["Module"] %>_<%= output["Name"] %>);
 <% end %>
-<% if signal["Type"] == "CAN" %>
+<% end %>
+<% if output.has_key? ("Network") %>
+<% for signal in output["Network"] %>
 NETC_TX_<%= signal["MessageName"] %><%= signal["SignalName"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
 <% if signal["Async"] == true %>
 GPEP_Net1EvtMsgTxReq( GPEP_<%= signal["MessageName"] %>_MASK);
 <% end %>
 <% end %>
-<% if signal["Type"] == "NBC" %>
+<% end %>
+<% if output.has_key? ("NBC") %>
+<% for signal in output["NBC"] %>
 <%= descriptor["Module"].upcase %>_<%= output["Name"].upcase %>_STATUS_CHANGED();
 <% end %>
 <% end %>
