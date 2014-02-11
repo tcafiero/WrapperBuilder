@@ -5,10 +5,11 @@ require 'vine'
 
 interface = YAML.load_file(ARGV[0]+'.yml')
 xmlfile=File.open(ARGV[0]+'.xml','w')
+xmlfile.puts XmlSimple.xml_out(interface)
 
 descriptor=interface["Interface"]
 for input in descriptor["Input"]
-for signal in input["NBC"] || input["Proxy"] || input["Pin"] || input["Network"] || input["Diagnosis"]
+for signal in input["NBC"] || input["Proxy"] || input["Pin"] || input["Network"]
 if signal["Implemented"]
 input["Implemented"]=signal["Implemented"]
 end
@@ -51,6 +52,20 @@ s = value[0].clone
 if s.include? '&'
 s = s.delete! '&'
 value[0] =  (descriptor["Module"]).upcase+'_'+(output["Name"]).upcase+'_'+s.upcase
+else
+value[0] =   s
+end
+end
+end
+end
+
+if descriptor.has_key?("Timer")
+for timer in descriptor["Timer"]
+for value in timer["Value"]
+s = value[0].clone
+if s.include? '&'
+s = s.delete! '&'
+value[0] =  (descriptor["Module"]).upcase+'_TIMER'+(timer["Name"]).upcase+'_'+s.upcase+'_TIMEOUT'
 else
 value[0] =   s
 end
@@ -118,6 +133,5 @@ pr=File.read('SWCC_Output_csv.template')
 out=File.open(ARGV[0]+'_SVCC_Output.csv','w')
 eruby=Erubis::Eruby.new(pr)
 out.puts eruby.result(binding())
-xmlfile.puts XmlSimple.xml_out(descriptor)
 out.close();
 end

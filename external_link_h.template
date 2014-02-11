@@ -98,6 +98,18 @@ enum DOUP_ErrorStatus_e
 
 <% end %>
 
+
+/* TIMER SECTION */
+<% if descriptor.has_key?("Timer") %>
+<% for timer in descriptor["Timer"] %>
+/* Value valid for Timer<%= timer["Name"] %> */ 
+<% for value in timer["Value"] %>
+#define <%= value[0] %> <%= value[1] %> /* <%= value[2] %> */
+<% end %>
+
+<% end %>
+<% end %>
+
 /*______ V A R I A B L E S ___________________________________________________*/
 
 <% if descriptor.has_key?("Timer") %>

@@ -1,0 +1,86 @@
+Interface:
+  Author: Antonio Cafiero
+  Module: VF036
+  Description: Follow me car [F036.Vf2]
+  Details: (not)
+  Date: 2014-02-11
+  Platform: Body Platform F142M L7
+  History:
+  - Author: T. Cafiero
+    Date: 2014-02-11
+    Description: first release
+  Input:
+  - Name: KeySts
+    Type: u_int08
+    Value:
+    - - 'VF040_KEY_OFF_STATUS'
+      - '0x01'
+      - 'Key is in OFF status'
+    - - 'VF040_KEY_PARK_STATUS'
+      - '0x02'
+      - 'Key is in PARK status'
+    - - 'VF040_KEY_ON_STATUS'
+      - '0x04'
+      - 'Key is in ON status'
+    - - 'VF040_CRANK_ON_STATUS'
+      - '0x0C'
+      - 'Key is in CRANK status'
+    NBC:
+    - VF: VF040
+      Implemented: true
+  - Name: FollowMeCarActCntrl
+    Type: bool_t
+    Value:
+    - - '&OFF'
+      - '0x00'
+      - 'Request disabled'
+    - - '&ON'
+      - '0x01'
+      - 'Request enabled'
+    NBC:
+    - VF: VF228
+      Implemented: false
+  - Name: FollowMeCarDisactCntrl
+    Type: bool_t
+    Value:
+    - - '&OFF'
+      - '0x00'
+      - 'Request disabled'
+    - - '&ON'
+      - '0x01'
+      - 'Request enabled'
+    NBC:
+    - VF: VF228
+      Implemented: false
+  Output:
+  - Name: Targa_cmd
+    Type: u_int08
+    Value:
+    - - '&OFF'
+      - '0x00'
+      - 'Value for OFF'
+    - - '&ON'
+      - '0x01'
+      - 'Value for ON'
+    NBC:
+    - VF: VF030
+  - Name: LowBeamFollowMeCarCmd
+    Type: bool_t
+    Value: [
+         ['&OFF', '0x00','Deactive function LowBeamFollowMeCarCmd'],
+         ['&ON', '0x01','Active function LowBeamFollowMeCarCmd']]
+    NBC:
+    - VF: VF042
+  - Name: PosLightFollowMeCarCmd
+    Type: bool_t  
+    Value: [
+         ['&OFF', '0x00','OFF value'],
+         ['&ON', '0x01','ON value']]
+    NBC:
+    - VF: VF027
+  Timer:
+  - Name: '1'
+    Value: [
+         ['&30SEC', '30*1000','30 sec timeout'],
+         ['&3MIN', '3*60*1000','3 min timeout']]
+    Implemented: yes

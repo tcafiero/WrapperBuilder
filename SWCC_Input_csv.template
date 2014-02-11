@@ -1,7 +1,7 @@
 Port Name;Requirements Signal Name;S/R Com Modes;IsQueued;queueLength;initValue;SignalType [Simple, Array, Record];ArraySize;RecordComponent;Primitive ASR Types;SWC Types;Scaling;Min Max;Parameters & Values;Description
 <%
 for input in descriptor["Input"]
-for signal in input["NBC"] || input["Proxy"] || input["Pin"] || input["Network"] || input["Diagnosis"]
+for signal in input["NBC"] || input["Proxy"] || input["Pin"] || input["Network"]
 c1 = descriptor["Module"]+'_ModelInputs'
 c2=input["Name"]
 c3='Explicit'
