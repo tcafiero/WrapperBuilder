@@ -10,49 +10,18 @@
 				<xs:element ref="Output" maxOccurs="unbounded"/>
 				<xs:element ref="Timer" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
-			<xs:attribute name="Platform" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="Body Platform F142M L7"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
 			<xs:attribute name="Module" use="required">
 				<xs:simpleType>
 					<xs:restriction base="xs:string">
-						<xs:enumeration value="VF030"/>
+						<xs:pattern value="VF\d\d\d"/>
 					</xs:restriction>
 				</xs:simpleType>
 			</xs:attribute>
-			<xs:attribute name="Description" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="Luci targa [F030.Vf7]"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
-			<xs:attribute name="Details" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="(not)"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
-			<xs:attribute name="Date" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:date">
-						<xs:enumeration value="2014-01-21"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
-			<xs:attribute name="Author" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="Antonio Cafiero"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
-			<xs:attribute name="MIL" type="xs:boolean" use="required"/>
+			<xs:attribute name="Description" type="xs:string" use="required"/>
+			<xs:attribute name="Details" type="xs:string" use="required"/>
+			<xs:attribute name="Platform" type="xs:string" use="required"/>
+			<xs:attribute name="Author" type="xs:string" use="required"/>
+			<xs:attribute name="Date" type="xs:date" use="required"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="anon">
@@ -110,7 +79,7 @@
 	</xs:element>
 	<xs:element name="Value">
 		<xs:complexType>
-			<xs:sequence minOccurs="4" maxOccurs="4">
+			<xs:sequence minOccurs="3" maxOccurs="3">
 				<xs:element name="anon" type="xs:string"/>
 			</xs:sequence>
 		</xs:complexType>
@@ -121,8 +90,7 @@
 				<xs:element ref="Value" maxOccurs="unbounded"/>
 				<xs:element name="NBC" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
-						<xs:attribute name="VFname" type="VFname_t" use="required"/>
-						<xs:attribute name="Implemented" type="xs:boolean" use="required"/>
+						<xs:attribute name="VF" type="VFname_t" use="required"/>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="Network" minOccurs="0" maxOccurs="unbounded">
@@ -132,29 +100,15 @@
 						<xs:attribute name="Async" type="xs:boolean" use="required"/>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="PIN" minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="Pin" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:attribute name="ProcessorPinName" type="xs:string" use="required"/>
 						<xs:attribute name="Diagnosis" type="xs:boolean" use="required"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
-			<xs:attribute name="Name" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="PlateLightFailSts"/>
-						<xs:enumeration value="PlateLightOut"/>
-						<xs:enumeration value="pippo"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
-			<xs:attribute name="Type" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="bool_t"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
+			<xs:attribute name="Name" type="xs:string" use="required"/>
+			<xs:attribute name="Type" type="Type_t" use="required"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="Input">
@@ -164,7 +118,7 @@
 				<xs:choice>
 					<xs:element name="NBC">
 						<xs:complexType>
-							<xs:attribute name="VFname" type="VFname_t" use="required"/>
+							<xs:attribute name="VF" type="VFname_t" use="required"/>
 							<xs:attribute name="Implemented" type="xs:boolean" use="required"/>
 						</xs:complexType>
 					</xs:element>
@@ -175,7 +129,7 @@
 							<xs:attribute name="Async" type="Bool_t" use="required"/>
 						</xs:complexType>
 					</xs:element>
-					<xs:element name="PIN">
+					<xs:element name="Pin">
 						<xs:complexType>
 							<xs:attribute name="ProcessorPinName" type="xs:string" use="required"/>
 						</xs:complexType>
@@ -193,31 +147,20 @@
 	</xs:element>
 	<xs:element name="Timer">
 		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Value" maxOccurs="unbounded"/>
+			</xs:sequence>
 			<xs:attribute name="Name" type="xs:string" use="required"/>
 			<xs:attribute name="Implemented" type="xs:boolean" use="required"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="History">
 		<xs:complexType>
-			<xs:attribute name="Description" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="first release"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
+			<xs:attribute name="Description" type="xs:string"/>
+			<xs:attribute name="Author" type="xs:string" use="required"/>
 			<xs:attribute name="Date" use="required">
 				<xs:simpleType>
-					<xs:restriction base="xs:date">
-						<xs:enumeration value="2014-01-21"/>
-					</xs:restriction>
-				</xs:simpleType>
-			</xs:attribute>
-			<xs:attribute name="Author" use="required">
-				<xs:simpleType>
-					<xs:restriction base="xs:string">
-						<xs:enumeration value="T. Cafiero"/>
-					</xs:restriction>
+					<xs:restriction base="xs:date"/>
 				</xs:simpleType>
 			</xs:attribute>
 		</xs:complexType>

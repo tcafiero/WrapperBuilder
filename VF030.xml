@@ -1,174 +1,150 @@
-<opt Author="Antonio Cafiero" Module="VF030" Description="Luci targa [F030.Vf7]" Details="(not)" Date="2014-01-21" Platform="Body Platform F142M L7" MIL="true">
+<Interface Author="Antonio Cafiero" Module="VF030" Description="Luci targa [F030.Vf7]" Details="(not)" Date="2014-01-21" Platform="Body Platform F142M L7">
   <History Author="T. Cafiero" Date="2014-01-21" Description="first release" />
   <Input Name="KeySts" Type="u_int08">
     <Value>
-      <anon>OFF</anon>
+      <anon>VF040_KEY_OFF_STATUS</anon>
       <anon>0x01</anon>
-      <anon>KEY_OFF_STATUS</anon>
       <anon>Key is in OFF status</anon>
     </Value>
     <Value>
-      <anon>PARK</anon>
+      <anon>VF040_KEY_PARK_STATUS</anon>
       <anon>0x02</anon>
-      <anon>KEY_PARK_STATUS</anon>
       <anon>Key is in PARK status</anon>
     </Value>
     <Value>
-      <anon>ON</anon>
+      <anon>VF040_KEY_ON_STATUS</anon>
       <anon>0x04</anon>
-      <anon>KEY_ON_STATUS</anon>
       <anon>Key is in ON status</anon>
     </Value>
     <Value>
-      <anon>CRANK</anon>
+      <anon>VF040_CRANK_ON_STATUS</anon>
       <anon>0x0C</anon>
-      <anon>CRANK_ON_STATUS</anon>
       <anon>Key is in CRANK status</anon>
     </Value>
-    <Signal Source="VF040" Type="NBC" Implemented="true" />
+    <NBC VF="VF040" Implemented="true" />
   </Input>
   <Input Name="PosLightCmd" Type="bool_t">
     <Value>
-      <anon>OFF</anon>
+      <anon>VF247_POS_LIGHT_OFF</anon>
       <anon>0x00</anon>
-      <anon>POS_LIGHT_OFF</anon>
       <anon>OFF value</anon>
     </Value>
     <Value>
-      <anon>ON</anon>
+      <anon>VF247_POS_LIGHT_ON</anon>
       <anon>0x01</anon>
-      <anon>POS_LIGHT_ON</anon>
       <anon>ON value</anon>
     </Value>
-    <Signal Source="VF247" Type="NBC" Implemented="true" />
+    <NBC VF="VF247" Implemented="true" />
   </Input>
   <Input Name="Luci_targa_cmd" Type="u_int08">
     <Value>
-      <anon>OFF</anon>
+      <anon>VF048_LUCI_TARGA_CMD_OFF</anon>
       <anon>0x00</anon>
-      <anon></anon>
       <anon>Value for OFF</anon>
     </Value>
     <Value>
-      <anon>ON</anon>
+      <anon>VF048_LUCI_TARGA_CMD_ON</anon>
       <anon>0x01</anon>
-      <anon></anon>
       <anon>Value for ON</anon>
     </Value>
-    <Signal Source="VF048" Type="NBC" Implemented="false" />
+    <NBC VF="VF048" Implemented="false" />
   </Input>
   <Input Name="Targa_cmd" Type="u_int08">
     <Value>
-      <anon>OFF</anon>
+      <anon>VF036_TARGA_CMD_OFF</anon>
       <anon>0x00</anon>
-      <anon></anon>
       <anon>Value for OFF</anon>
     </Value>
     <Value>
-      <anon>ON</anon>
+      <anon>VF036_TARGA_CMD_ON</anon>
       <anon>0x01</anon>
-      <anon></anon>
       <anon>Value for ON</anon>
     </Value>
-    <Signal Source="VF036" Type="NBC" Implemented="false" />
+    <NBC VF="VF036" Implemented="false" />
   </Input>
   <Input Name="EngineSts" Type="u_int08">
     <Value>
-      <anon>OFF</anon>
+      <anon>VF506_ENGINE_OFF</anon>
       <anon>0x00</anon>
-      <anon>ENGINE_OFF</anon>
       <anon>value for engine off status</anon>
     </Value>
     <Value>
-      <anon>ON</anon>
+      <anon>VF506_ENGINE_ON</anon>
       <anon>0x01</anon>
-      <anon>ENGINE_ON</anon>
       <anon>value for engine on status</anon>
     </Value>
     <Value>
-      <anon>CRANKING</anon>
+      <anon>VF506_ENGINE_CRANKING</anon>
       <anon>0x02</anon>
-      <anon>ENGINE_CRANKING</anon>
       <anon>value for engine cranking status</anon>
     </Value>
     <Value>
-      <anon>SHUT_DOWN</anon>
+      <anon>VF506_ENGINE_SHUT_DOWN</anon>
       <anon>0x03</anon>
-      <anon>ENGINE_SHUT_DOWN</anon>
       <anon>value for engine shut down status</anon>
     </Value>
-    <Signal Source="VF506" Type="NBC" Implemented="true" />
+    <NBC VF="VF506" Implemented="true" />
   </Input>
   <Input Name="StopStartSts" Type="u_int08">
     <Value>
-      <anon>OFF</anon>
+      <anon>VF506_SS_OFF</anon>
       <anon>0x00</anon>
-      <anon>SS_OFF</anon>
       <anon>value for StopStart off status</anon>
     </Value>
     <Value>
-      <anon>ON</anon>
+      <anon>VF506_SS_ON</anon>
       <anon>0x01</anon>
-      <anon>SS_ON</anon>
       <anon>value for StopStart on status</anon>
     </Value>
     <Value>
-      <anon>ENG_RESTART</anon>
+      <anon>VF506_SS_ENG_RESTART</anon>
       <anon>0x02</anon>
-      <anon>SS_ENG_RESTART</anon>
       <anon>value for StopStart restart status</anon>
     </Value>
     <Value>
-      <anon>STOP_REQ</anon>
+      <anon>VF506_SS_STOP_REQ</anon>
       <anon>0x03</anon>
-      <anon>SS_STOP_REQ</anon>
       <anon>value for StopStart stop request status</anon>
     </Value>
-    <Signal Source="VF506" Type="NBC" Implemented="true" />
+    <NBC VF="VF506" Implemented="true" />
   </Input>
   <Input Name="CarConfiguration4StopAndStart" Type="bool_t">
     <Value>
-      <anon>SS_NOT_INCLUDED</anon>
+      <anon>VERS_CARCONFIGURATION4STOPANDSTART_SS_NOT_INCLUDED</anon>
       <anon>0x00</anon>
-      <anon></anon>
       <anon>value Stop and Start feature not included</anon>
     </Value>
     <Value>
-      <anon>SS_INCLUDED</anon>
+      <anon>VERS_CARCONFIGURATION4STOPANDSTART_SS_INCLUDED</anon>
       <anon>0x01</anon>
-      <anon></anon>
       <anon>value Stop and Start feature included</anon>
     </Value>
-    <Signal Source="VERS" Type="PROXY" Implemented="false" />
+    <Proxy Implemented="false" />
   </Input>
   <Output Name="PlateLightOut" Type="bool_t">
     <Value>
-      <anon>OFF</anon>
+      <anon>VF030_PLATELIGHTOUT_OFF</anon>
       <anon>0x00</anon>
-      <anon></anon>
       <anon>Switch off lamp LHFParkTailLightFailSts</anon>
     </Value>
     <Value>
-      <anon>ON</anon>
+      <anon>VF030_PLATELIGHTOUT_ON</anon>
       <anon>0x01</anon>
-      <anon></anon>
       <anon>Switch on lamp LHFParkTailLightFailSts&apos;</anon>
     </Value>
-    <Signal Destination="Physical" Type="PHY" ConnerctorPinName="LF-06" ProcessorPinName="OUT_TARGA" Diagnosis="true" Implemented="true" />
+    <Pin ProcessorPinName="OUT_TARGA" Diagnosis="true" />
   </Output>
   <Output Name="PlateLightFailSts" Type="bool_t">
     <Value>
-      <anon>OFF</anon>
+      <anon>VF030_PLATELIGHTFAILSTS_OFF</anon>
       <anon>0x00</anon>
-      <anon></anon>
       <anon>Switch off lamp RHFParkTailLightFailSts</anon>
     </Value>
     <Value>
-      <anon>ON</anon>
+      <anon>VF030_PLATELIGHTFAILSTS_ON</anon>
       <anon>0x01</anon>
-      <anon></anon>
       <anon>Switch on lamp RHFParkTailLightFailSts&apos;</anon>
     </Value>
-    <Signal Destination="Network" Type="CAN" Async="false" MessageName="EXTERNAL_LIGHTS" SignalName="PlateLightFailSts_bit" Implemented="true" />
+    <Network MessageName="EXTERNAL_LIGHTS" SignalName="PlateLightFailSts_bit" Async="false" />
   </Output>
-</opt>
+</Interface>

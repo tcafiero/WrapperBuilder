@@ -152,18 +152,6 @@
 										<variables/>
 									</template>
 									<newline/>
-									<text fixtext="MIL"/>
-									<newline/>
-									<template subtype="attribute" match="MIL">
-										<children>
-											<radiobutton checkedvalue="true" checkedvalue1="1">
-												<children>
-													<content/>
-												</children>
-											</radiobutton>
-										</children>
-										<variables/>
-									</template>
 									<newline/>
 									<newline/>
 									<text fixtext="History"/>
@@ -282,7 +270,6 @@
 									<template subtype="element" match="Input">
 										<children>
 											<newline/>
-											<newline/>
 											<text fixtext="Name"/>
 											<newline/>
 											<template subtype="attribute" match="Name">
@@ -382,20 +369,18 @@
 												</children>
 											</tgrid>
 											<newline/>
-											<newline/>
-											<newline/>
 											<paragraph paragraphtag="h4">
 												<children>
-													<text fixtext="Input from other VF"/>
+													<text fixtext="Input VF"/>
 												</children>
 											</paragraph>
 											<template subtype="element" match="NBC">
 												<children>
 													<newline/>
-													<template subtype="attribute" match="VFname">
+													<template subtype="attribute" match="VF">
 														<children>
 															<newline/>
-															<text fixtext="VFname"/>
+															<text fixtext="VF"/>
 															<newline/>
 															<editfield>
 																<styles width="6.48in"/>
@@ -426,7 +411,7 @@
 											<newline/>
 											<paragraph paragraphtag="h4">
 												<children>
-													<text fixtext="Input from network"/>
+													<text fixtext="Input Network"/>
 												</children>
 											</paragraph>
 											<template subtype="element" match="Network">
@@ -482,11 +467,10 @@
 											<newline/>
 											<paragraph paragraphtag="h4">
 												<children>
-													<text fixtext="Input from Pin"/>
+													<text fixtext="Input Pin"/>
 												</children>
 											</paragraph>
-											<newline/>
-											<template subtype="element" match="PIN">
+											<template subtype="element" match="Pin">
 												<children>
 													<newline/>
 													<template subtype="attribute" match="ProcessorPinName">
@@ -511,10 +495,9 @@
 											<newline/>
 											<paragraph paragraphtag="h4">
 												<children>
-													<text fixtext="Input from Proxy"/>
+													<text fixtext="Input Proxy"/>
 												</children>
 											</paragraph>
-											<newline/>
 											<template subtype="element" match="Proxy">
 												<children>
 													<newline/>
@@ -654,13 +637,13 @@
 											<newline/>
 											<paragraph paragraphtag="h4">
 												<children>
-													<text fixtext="Output for other VF"/>
+													<text fixtext="Output VF"/>
 												</children>
 											</paragraph>
 											<template subtype="element" match="NBC">
 												<children>
 													<newline/>
-													<template subtype="attribute" match="VFname">
+													<template subtype="attribute" match="VF">
 														<children>
 															<newline/>
 															<text fixtext="VFname"/>
@@ -671,19 +654,6 @@
 																	<content/>
 																</children>
 															</editfield>
-															<newline/>
-														</children>
-														<variables/>
-													</template>
-													<newline/>
-													<template subtype="attribute" match="Implemented">
-														<children>
-															<text fixtext="Implementd"/>
-															<radiobutton checkedvalue="true" checkedvalue1="1">
-																<children>
-																	<content/>
-																</children>
-															</radiobutton>
 														</children>
 														<variables/>
 													</template>
@@ -694,7 +664,7 @@
 											<newline/>
 											<paragraph paragraphtag="h4">
 												<children>
-													<text fixtext="Output for network"/>
+													<text fixtext="Output Network"/>
 												</children>
 											</paragraph>
 											<template subtype="element" match="Network">
@@ -750,10 +720,10 @@
 											<newline/>
 											<paragraph paragraphtag="h4">
 												<children>
-													<text fixtext="Input from Pin"/>
+													<text fixtext="Output Pin"/>
 												</children>
 											</paragraph>
-											<template subtype="element" match="PIN">
+											<template subtype="element" match="Pin">
 												<children>
 													<newline/>
 													<template subtype="attribute" match="ProcessorPinName">
@@ -833,6 +803,73 @@
 												</children>
 												<variables/>
 											</template>
+											<newline/>
+											<text fixtext="Values"/>
+											<newline/>
+											<tgrid>
+												<properties border="1"/>
+												<children>
+													<tgridbody-cols>
+														<children>
+															<tgridcol>
+																<styles width="6.10in"/>
+															</tgridcol>
+														</children>
+													</tgridbody-cols>
+													<tgridbody-rows>
+														<children>
+															<template subtype="element" match="Value">
+																<children>
+																	<tgridrow>
+																		<children>
+																			<tgridcell>
+																				<children>
+																					<tgrid>
+																						<properties border="1"/>
+																						<children>
+																							<tgridbody-cols>
+																								<children>
+																									<template subtype="element" match="anon">
+																										<children>
+																											<tgridcol>
+																												<styles width="1.07in"/>
+																											</tgridcol>
+																										</children>
+																										<variables/>
+																									</template>
+																								</children>
+																							</tgridbody-cols>
+																							<tgridbody-rows>
+																								<children>
+																									<tgridrow>
+																										<children>
+																											<tgridcell>
+																												<children>
+																													<editfield>
+																														<styles width="1.34in"/>
+																														<children>
+																															<content/>
+																														</children>
+																													</editfield>
+																												</children>
+																											</tgridcell>
+																										</children>
+																									</tgridrow>
+																								</children>
+																							</tgridbody-rows>
+																						</children>
+																					</tgrid>
+																				</children>
+																			</tgridcell>
+																		</children>
+																	</tgridrow>
+																</children>
+																<variables/>
+															</template>
+														</children>
+													</tgridbody-rows>
+												</children>
+											</tgrid>
 											<newline/>
 											<line/>
 											<newline/>
