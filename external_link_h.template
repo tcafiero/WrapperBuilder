@@ -87,6 +87,9 @@ enum DOUP_ErrorStatus_e
 <% end %>
 
 <% end %>
+#define VERS_TIMER_STOPPED 0
+#define VERS_TIMER_RUNNING 1
+#define VERS_TIMER_EXPIRED 2
 
 
 /* OUTPUT SECTION */
