@@ -48,20 +48,29 @@
 
 /* Application */
 
-/* Includes use by the model */
-<% for input in descriptor["Input"] %>
-<% if input.has_key?("Proxy") %>
-#include "vers.h"
-<% end %>
-<% if input.has_key?("NBC") %>
-<% for signal in input["NBC"] %>
-<% if signal["Implemented"] %>
-#include "<%= signal["VF"] %>.h"
+/* Includes used by the model */
+<%
+includes = Hash.new
+for input in descriptor["Input"]
+if input.has_key?("Proxy")
+includes["vers.h"]=true
+end
+if input.has_key?("NBC")
+for signal in input["NBC"]
+if signal["Implemented"] == 'true'
+includes[signal["VF"]+'.h']=true
+else
+includes[signal["VF"]+'.h']=false
+end
+end
+end
+end
+includes.each do |filename,implemented|
+if implemented %>
+#include "<%= filename %>"
 <% else %>
-/* TODO When <%= signal["VF"] %> is implemented delete comment on following statement */
-//#include "<%= signal["VF"] %>.h"
-<% end %>
-<% end %>
+/* TODO When VF is implemented delete comment on following statement */
+//#include "<%= filename %>"
 <% end %>
 <% end %>
 
@@ -79,12 +88,6 @@
 <% end %>
 
 
-<% if descriptor.has_key?("Timer") %>
-#define VERS_TIMER_STOPPED 0
-#define VERS_TIMER_RUNNING 1
-#define VERS_TIMER_EXPIRED 2
-<% end %>
-
 
 /*______ G L O B A L - T Y P E S _____________________________________________*/
 
@@ -97,7 +100,7 @@
 <% signal=input["Proxy"][0] %>
 <% source="VERS" %>
 <% end %>
-<% if !signal["Implemented"] %>
+<% if !signal["Implemented"] == 'true' %>
 typedef <%= input["Type"] %> <%= source %>_<%= input["Name"] %>_t;
 <% end %>
 <% end %>
@@ -109,14 +112,15 @@ typedef <%= input["Type"] %> <%= source %>_<%= input["Name"] %>_t;
 
 <% for output in descriptor["Output"] %>
 <% if output.has_key? ("NBC") %>
-#define <%= descriptor["Module"].upcase %>_<%= output["Name"].upcase %>_STATUS_CHANGED\
+#define <%= descriptor["Module"].upcase %>_<%= output["Name"].upcase %>_STATUS_CHANGED()\
 <% for signal in output["NBC"] %>
-<% if signal["Implemented"] %>
+<% if signal["Implemented"] == 'true' %>
 <%= signal["VF"] %>_<%= output["Name"] %>StatusChanged();\
 <% else %>
 //<%= signal["VF"] %>_<%= output["Name"] %>StatusChanged();\
 <% end %>
 <% end %>
+;
 <% end %>
 <% end %>
 

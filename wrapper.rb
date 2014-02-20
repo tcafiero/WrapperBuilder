@@ -13,8 +13,9 @@ interface = xs.xml_in(xmlfile)
 descriptor=interface["Interface"][0]
 for input in descriptor["Input"]
   for signal in input["NBC"] || input["Proxy"] || input["Pin"] || input["Network"]
-    if signal["Implemented"]
-      input["Implemented"]=signal["Implemented"]
+    input["Implemented"]=true
+    if signal.has_key?("Implemented") && (signal["Implemented"]=='false' || signal["Implemented"]=='0')
+      input["Implemented"]=false
     end
     for value in input["Value"]
       if input.has_key?("NBC")
@@ -75,6 +76,7 @@ if descriptor.has_key?("Timer")
     end
   end
 end
+puts interface.to_yaml
 
 if true
   pr=File.read('wrapper_c.template')

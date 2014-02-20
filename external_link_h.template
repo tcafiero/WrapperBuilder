@@ -87,9 +87,13 @@ enum DOUP_ErrorStatus_e
 <% end %>
 
 <% end %>
+
+/* TIMER SECTION */
+<% if descriptor.has_key?("Timer") %>
 #define VERS_TIMER_STOPPED 0
 #define VERS_TIMER_RUNNING 1
 #define VERS_TIMER_EXPIRED 2
+<% end %>
 
 
 /* OUTPUT SECTION */

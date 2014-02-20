@@ -188,7 +188,7 @@ void <%= descriptor["Module"] %>_ProxiStatusChanged(void)
 <% for input in descriptor["Input"] %>
 <% if input.has_key? ("Proxy") %>
 <% for signal in input["Proxy"] %>
-<% if signal["Implemented"] %>
+<% if signal["Implemented"] == 'true' %>
 <%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=VERS_Get<%= input["Name"] %>();
 <% else %>
 /* TODO  Delete following comment when VERS_Get<%= input["Name"] %>() is implemented*/
@@ -215,7 +215,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 /* NOTE
    Bind following callback
    function: <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged();
-   in file: <%= signal["Source"] %>_config.h
+   in file: ...\BCM_APP_L7_F142M\BCML7_CLIENT\CONFIGURATION_FILES\<%= signal["VF"] %>_config.h
    at section: G L O B A L - M A C R O S  */
 /******************************************************************************/
 /**
@@ -228,7 +228,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void)
 {
 <% signal = input["NBC"][0] %>
-<% if signal["Implemented"] %>
+<% if signal["Implemented"] == 'true' %>
 <%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=<%= signal["VF"] %>_Get<%= input["Name"] %>();
 <% else %>
 /* TODO  Delete following comment when <%= signal["VF"] %> implemented*/
@@ -268,7 +268,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 void <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged(void)
 {
 <% signal = input["Pin"][0] %>
-<% if signal["Implemented"] %>
+<% if signal["Implemented"] == 'true' %>
 <%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=(<%= input["Type"] %>) LINP_Get<%= signal["ProcessorPinName"] %>();
 <% else %>
 /* TODO  Delete following comment when <%= input["Source"] %> has binding on this callback routine*/
@@ -435,7 +435,7 @@ GPEP_Net1EvtMsgTxReq( GPEP_<%= signal["MessageName"] %>_MASK);
 <%# Timer Management (START SECTION) %>
 <% if descriptor.has_key?("Timer") %>
 <% for timer in descriptor["Timer"] %>
-<% if timer["Implemented"] %>
+<% if timer["Implemented"] == 'true' %>
 
 /******************************************************************************/
 /**
