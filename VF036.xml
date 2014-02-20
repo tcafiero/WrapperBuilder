@@ -61,7 +61,7 @@
       <anon>0x01</anon>
       <anon>Value for ON</anon>
     </Value>
-    <NBC VF="VF030" />
+    <NBC VF="VF030" Implemented="true" />
   </Output>
   <Output Name="LowBeamFollowMeCarCmd" Type="bool_t">
     <Value>
@@ -74,7 +74,7 @@
       <anon>0x01</anon>
       <anon>Active function LowBeamFollowMeCarCmd</anon>
     </Value>
-    <NBC VF="VF042" />
+    <NBC VF="VF042" Implemented="true"></NBC>
   </Output>
   <Output Name="PosLightFollowMeCarCmd" Type="bool_t">
     <Value>
@@ -87,7 +87,7 @@
       <anon>0x01</anon>
       <anon>ON value</anon>
     </Value>
-    <NBC VF="VF027" />
+    <NBC VF="VF027" Implemented="true" />
   </Output>
   <Timer Name="1" Implemented="true">
     <Value>
