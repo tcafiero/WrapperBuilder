@@ -8,17 +8,18 @@ c3='Explicit'
 c4='FALSE'
 c5='NA'
 c6=output["Value"][0][0]
-c7='Record'
-c8='None'
-c9=output["Name"]
-c10=''
-c11=output["Type"]
-c12='None'
+c7='None'
+c8='Record'
+c9='None'
+c10=output["Name"]
+c11=''
+c12=output["Type"]
 c13='None'
+c14='None'
 for value in output["Value"]
-c14=value[0]+' = '+value[1]
-c15=value[2] %>
-<%= c1 %>;<%= c2 %>;<%= c3 %>;<%= c4 %>;<%= c5 %>;<%= c6 %>;<%= c7 %>;<%= c8 %>;<%= c9 %>;<%= c10 %>;<%= c11 %>;<%= c12 %>;<%= c13 %>;<%= c14 %>;<%= c15 %>
+c15=value[0]+' = '+value[1]
+c16=value[2] %>
+<%= c1 %>;<%= c2 %>;<%= c3 %>;<%= c4 %>;<%= c5 %>;<%= c6 %>;<%= c7 %>;<%= c8 %>;<%= c9 %>;<%= c10 %>;<%= c11 %>;<%= c12 %>;<%= c13 %>;<%= c14 %>;<%= c15 %>;<%= c16 %>
 <%
 c1=''
 c2=''
@@ -32,7 +33,7 @@ c9=''
 c10=''
 c11=''
 c12=''
-c13=''
+c14=''
 end
 end
 end %>

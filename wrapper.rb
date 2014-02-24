@@ -76,7 +76,7 @@ if descriptor.has_key?("Timer")
     end
   end
 end
-puts interface.to_yaml
+# puts interface.to_yaml
 
 if true
   pr=File.read('wrapper_c.template')
