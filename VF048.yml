@@ -1,0 +1,133 @@
+---
+Interface:
+- Author: Antonio Cafiero
+  Module: VF048
+  Description: Follow me home [F048.Vf2]
+  Details: (not)
+  Date: '2014-02-24'
+  Platform: Body Platform F142M L7
+  History:
+  - Author: T. Cafiero
+    Date: '2014-02-24'
+    Description: first release
+  Input:
+  - Name: KeySts
+    Type: u_int08
+    Value:
+    - - VF040_KEY_OFF_STATUS
+      - '0x01'
+      - Key is in OFF status
+    - - VF040_KEY_PARK_STATUS
+      - '0x02'
+      - Key is in PARK status
+    - - VF040_KEY_ON_STATUS
+      - '0x04'
+      - Key is in ON status
+    - - VF040_CRANK_ON_STATUS
+      - '0x0C'
+      - Key is in CRANK status
+    NBC:
+    - VF: VF040
+      Implemented: 'true'
+    Implemented: true
+  - Name: FollowMeCmd
+    Type: bool_t
+    Value:
+    - - VF247_FOLLOW_ME_OFF
+      - '0x00'
+      - Signal OFF
+    - - VF247_FOLLOW_ME_ON
+      - '0x01'
+      - Signal ON
+    NBC:
+    - VF: VF247
+      Implemented: 'true'
+    Implemented: true
+  - Name: ComfortEnable
+    Type: bool_t
+    Value:
+    - - VF003_CE_NOT_ACTIVE
+      - '0x00'
+      - Function Disabled
+    - - VF003_CE_ACTIVE
+      - '0x01'
+      - Function Enabled
+    NBC:
+    - VF: VF003
+      Implemented: 'true'
+    Implemented: true
+  Output:
+  - Name: Luci_targa_cmd
+    Type: u_int08
+    Value:
+    - - VF048_LUCI_TARGA_CMD_OFF
+      - '0x00'
+      - Value for OFF
+    - - VF048_LUCI_TARGA_CMD_ON
+      - '0x01'
+      - Value for ON
+    NBC:
+    - VF: VF030
+      Implemented: 'true'
+  - Name: PosLightFollowMeCmd
+    Type: bool_t
+    Value:
+    - - VF048_POSLIGHTFOLLOWMECMD_OFF
+      - '0x00'
+      - OFF value
+    - - VF048_POSLIGHTFOLLOWMECMD_ON
+      - '0x01'
+      - ON value
+    NBC:
+    - VF: VF027
+      Implemented: 'true'
+  - Name: LowBeamFollowMeCmd
+    Type: bool_t
+    Value:
+    - - VF048_LOWBEAMFOLLOWMECMD_OFF
+      - '0x00'
+      - Deactive function LowBeamFollowMeCmd
+    - - VF048_LOWBEAMFOLLOWMECMD_ON
+      - '0x01'
+      - Activate function LowBeamFollowMeCmd
+    NBC:
+    - VF: VF042
+      Implemented: 'true'
+  - Name: Targa_cmd
+    Type: u_int08
+    Value:
+    - - VF048_TARGA_CMD_OFF
+      - '0x00'
+      - Value for OFF
+    - - VF048_TARGA_CMD_ON
+      - '0x01'
+      - Value for ON
+    NBC:
+    - VF: VF030
+      Implemented: 'true'
+  - Name: HighBeamSts
+    Type: bool_t
+    Value:
+    - - VF048_HIGHBEAMSTS_OFF
+      - '0x00'
+      - Value for OFF
+    - - VF048_HIGHBEAMSTS_ON
+      - '0x01'
+      - Value for ON
+    Network:
+    - MessageName: EXTERNAL_LIGHTS
+      SignalName: HighBeamSts
+      Async: 'false'
+  Timer:
+  - Name: '1'
+    Implemented: 'true'
+    Value:
+    - - VF048_TIMER1_30SEC_TIMEOUT
+      - 30*1000
+      - 30 sec timeout
+  - Name: '2'
+    Implemented: 'true'
+    Value:
+    - - VF048_TIMER2_2SEC_TIMEOUT
+      - 2*1000
+      - 2 sec timeout

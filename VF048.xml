@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Interface Author="Antonio Cafiero" Module="VF048" Description="Follow me home [F048.Vf2]" Details="(not)" Date="2014-02-24" Platform="Body Platform F142M L7">
+  <History Author="T. Cafiero" Date="2014-02-24" Description="first release" />
+  <Input Name="KeySts" Type="u_int08">
+    <Value>
+      <anon>VF040_KEY_OFF_STATUS</anon>
+      <anon>0x01</anon>
+      <anon>Key is in OFF status</anon>
+    </Value>
+    <Value>
+      <anon>VF040_KEY_PARK_STATUS</anon>
+      <anon>0x02</anon>
+      <anon>Key is in PARK status</anon>
+    </Value>
+    <Value>
+      <anon>VF040_KEY_ON_STATUS</anon>
+      <anon>0x04</anon>
+      <anon>Key is in ON status</anon>
+    </Value>
+    <Value>
+      <anon>VF040_CRANK_ON_STATUS</anon>
+      <anon>0x0C</anon>
+      <anon>Key is in CRANK status</anon>
+    </Value>
+    <NBC VF="VF040" Implemented="true" />
+  </Input>
+  <Input Name="FollowMeCmd" Type="bool_t">
+    <Value>
+      <anon>VF247_FOLLOW_ME_OFF</anon>
+      <anon>0x00</anon>
+      <anon>Signal OFF</anon>
+    </Value>
+    <Value>
+      <anon>VF247_FOLLOW_ME_ON</anon>
+      <anon>0x01</anon>
+      <anon>Signal ON</anon>
+    </Value>
+    <NBC VF="VF247" Implemented="true" />
+  </Input>
+  <Input Name="ComfortEnable" Type="bool_t">
+    <Value>
+      <anon>VF003_CE_NOT_ACTIVE</anon>
+      <anon>0x00</anon>
+      <anon>Function Disabled</anon>
+    </Value>
+    <Value>
+      <anon>VF003_CE_ACTIVE</anon>
+      <anon>0x01</anon>
+      <anon>Function Enabled</anon>
+    </Value>
+    <NBC VF="VF003" Implemented="true" />
+  </Input>
+  <Output Name="Luci_targa_cmd" Type="u_int08">
+    <Value>
+      <anon>VF048_LUCI_TARGA_CMD_OFF</anon>
+      <anon>0x00</anon>
+      <anon>Value for OFF</anon>
+    </Value>
+    <Value>
+      <anon>VF048_LUCI_TARGA_CMD_ON</anon>
+      <anon>0x01</anon>
+      <anon>Value for ON</anon>
+    </Value>
+    <NBC VF="VF030" Implemented="true" />
+  </Output>
+  <Output Name="PosLightFollowMeCmd" Type="bool_t">
+    <Value>
+      <anon>&amp;OFF</anon>
+      <anon>0x00</anon>
+      <anon>OFF value</anon>
+    </Value>
+    <Value>
+      <anon>&amp;ON</anon>
+      <anon>0x01</anon>
+      <anon>ON value</anon>
+    </Value>
+    <NBC VF="VF027" Implemented="true" />
+  </Output>
+  <Output Name="LowBeamFollowMeCmd" Type="bool_t">
+    <Value>
+      <anon>&amp;OFF</anon>
+      <anon>0x00</anon>
+      <anon>Deactive function LowBeamFollowMeCmd</anon>
+    </Value>
+    <Value>
+      <anon>&amp;ON</anon>
+      <anon>0x01</anon>
+      <anon>Activate function LowBeamFollowMeCmd</anon>
+    </Value>
+    <NBC VF="VF042" Implemented="true" />
+  </Output>
+  <Output Name="Targa_cmd" Type="u_int08">
+    <Value>
+      <anon>&amp;OFF</anon>
+      <anon>0x00</anon>
+      <anon>Value for OFF</anon>
+    </Value>
+    <Value>
+      <anon>&amp;ON</anon>
+      <anon>0x01</anon>
+      <anon>Value for ON</anon>
+    </Value>
+    <NBC VF="VF030" Implemented="true" />
+  </Output>
+  <Output Name="HighBeamSts" Type="bool_t">
+    <Value>
+      <anon>&amp;OFF</anon>
+      <anon>0x00</anon>
+      <anon>Value for OFF</anon>
+    </Value>
+    <Value>
+      <anon>&amp;ON</anon>
+      <anon>0x01</anon>
+      <anon>Value for ON</anon>
+    </Value>
+    <Network MessageName="EXTERNAL_LIGHTS" SignalName="HighBeamSts" Async="false" />
+  </Output>
+  <Timer Name="1" Implemented="true">
+    <Value>
+      <anon>&amp;30SEC</anon>
+      <anon>30*1000</anon>
+      <anon>30 sec timeout</anon>
+    </Value>
+  </Timer>
+  <Timer Name="2" Implemented="true">
+    <Value>
+      <anon>&amp;2SEC</anon>
+      <anon>2*1000</anon>
+      <anon>2 sec timeout</anon>
+    </Value>
+  </Timer>
+</Interface>

@@ -87,6 +87,17 @@ if implemented %>
 
 <% end %>
 
+/* TIMER SECTION */
+<%
+if descriptor.has_key?("Timer")
+for timer in descriptor["Timer"] %>
+/* Value valid for Timer<%= timer["Name"] %> */ 
+<% for value in timer["Value"] %>
+#define <%= value[0] %> <%= value[1] %> /* <%= value[2] %> */
+<% end %>
+
+<% end %>
+<% end %>
 
 
 /*______ G L O B A L - T Y P E S _____________________________________________*/

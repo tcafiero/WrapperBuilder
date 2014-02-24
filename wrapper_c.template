@@ -40,6 +40,17 @@
 
 /*______ L O C A L - D A T A _________________________________________________*/
 
+<% if descriptor.has_key?("Timer") %>
+/* timer buffer */
+<% for timer in descriptor["Timer"] %>
+<% if timer["Implemented"] == 'true' %>
+static u_int8 <%= descriptor["Module"] %>_Timer<%= timer["Name"] %>;
+<% end %>
+<% end %>
+<% end %>
+
+
+
 /* Outputs Defintions */
 <% for output in descriptor["Output"] %>
 static <%= output["Type"] %> <%= descriptor["Module"] %>_<%= output["Name"] %>;
@@ -449,7 +460,7 @@ void <%= descriptor["Module"] %>_SetTimer<%= timer["Name"] %>(u_int32 time)
 {
   CancelAlarm(<%= descriptor["Module"] %>_Timer<%= timer["Name"] %>_al);
   SetRelAlarm(<%= descriptor["Module"] %>_Timer<%= timer["Name"] %>_al,MSEC(time),0);
-  <%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %> = VERS_TIMER_RUNNING;
+  <%= descriptor["Module"] %>_Timer<%= timer["Name"] %> = VERS_TIMER_RUNNING;
 if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
 {
 <%= descriptor["Module"] %>_ModelEventCounter++;
@@ -466,7 +477,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 void <%= descriptor["Module"] %>_ResetTimer<%= timer["Name"] %>(void)
 {
   CancelAlarm(<%= descriptor["Module"] %>_Timer<%= timer["Name"] %>_al);
-  <%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %> = VERS_TIMER_STOPPED;
+  <%= descriptor["Module"] %>_Timer<%= timer["Name"] %> = VERS_TIMER_STOPPED;
 if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
 {
 <%= descriptor["Module"] %>_ModelEventCounter++;
@@ -482,7 +493,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 /******************************************************************************/
 void <%= descriptor["Module"] %>_Timer<%= timer["Name"] %>Expired(void)
 {
-  <%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %> = VERS_TIMER_EXPIRED;
+  <%= descriptor["Module"] %>_Timer<%= timer["Name"] %> = VERS_TIMER_EXPIRED;
 if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
 {
 <%= descriptor["Module"] %>_ModelEventCounter++;
@@ -492,6 +503,28 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 <% end %>
 <% end %>
 <%# Timer Management (STOP SECTION) %>
+
+<% if descriptor.has_key?("Timer") %>
+/******************************************************************************/
+/**
+ * \brief       Write inputs signal to the model for timers buffers and the
+ *              inputs that aren't event driven.
+ * \author      <%= descriptor["Author"] %>
+ * \since       <%= descriptor["Date"] %>
+ */
+/******************************************************************************/
+void <%= descriptor["Module"] %>_WriteInputs(void)
+{
+	/* write timers */
+<% for timer in descriptor["Timer"] %>
+<% if timer["Implemented"] == 'true' %>
+<%= descriptor["Module"] %>_ModelInputs.Timer<%= timer["Name"] %> = <%= descriptor["Module"] %>_Timer<%= timer["Name"] %>;
+<% end %>
+<% end %>
+}
+<% end %>
+
+
 
 /* NOTE
    Bind following callback
@@ -511,6 +544,9 @@ void <%= descriptor["Module"] %>_Task_ts(void)
 {
   if (<%= descriptor["Module"] %>_ModelEventCounter > 0)
   {
+	<% if descriptor.has_key?("Timer") %>
+    <%= descriptor["Module"] %>_WriteInputs();
+	<% end %>
     <%= descriptor["Module"] %>_Model();
     <%= descriptor["Module"] %>_ReadOutputs();
     <%= descriptor["Module"] %>_ModelEventCounter--;

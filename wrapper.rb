@@ -9,7 +9,6 @@ xmlfile = File.open(ARGV[0]+'.xml','r')
 interface = xs.xml_in(xmlfile)
 # xmlfile=File.open(ARGV[0]+'.xml','w')
 # xmlfile.puts XmlSimple.xml_out(interface)
-# puts interface.to_yaml
 descriptor=interface["Interface"][0]
 for input in descriptor["Input"]
   for signal in input["NBC"] || input["Proxy"] || input["Pin"] || input["Network"]
@@ -76,7 +75,10 @@ if descriptor.has_key?("Timer")
     end
   end
 end
-# puts interface.to_yaml
+if ARGV[1] == '-print'
+  puts interface.to_yaml
+  exit
+end
 
 if true
   pr=File.read('wrapper_c.template')
