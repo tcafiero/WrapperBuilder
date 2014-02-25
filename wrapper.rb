@@ -3,6 +3,7 @@ require 'erubis'
 require 'xmlsimple'
 require 'vine'
 
+verbose=false
 #interface = YAML.load_file(ARGV[0]+'.yml')
 xs = XmlSimple.new({ 'ForceArray' => true, 'KeepRoot' => true })
 xmlfile = File.open(ARGV[0]+'.xml','r')

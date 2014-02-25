@@ -1,6 +1,8 @@
+<% if verbose %>/* NOTE   Bind following callback
 /* NOTE
    put this file into dir: ...\BCM_APP_L7_F142M\BCML7_CLIENT\CONFIGURATION_FILES\
 */
+<% end %>
 /******************************************************************************/
 /**
  * \brief       <%= descriptor["Module"] %>.
