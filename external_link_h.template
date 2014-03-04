@@ -147,6 +147,15 @@ void <%= descriptor["Module"] %>_StayActive(void);
 
 void <%= descriptor["Module"] %>_GoToSleep(void);
 
+<%
+if File.exist?(ARGV[0]+'_include.h')
+  extra=File.read(ARGV[0]+'_include.h')
+%>
+<%= extra %>
+<% end %>
+
+
+
 #endif /* <%= descriptor["Module"] %>_H */
 
 /*______ E N D _____ (<%= descriptor["Module"] %>.h) ________________________________________________*/

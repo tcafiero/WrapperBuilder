@@ -50,19 +50,6 @@
     </Value>
     <NBC VF="VF003" Implemented="true" />
   </Input>
-  <Output Name="Luci_targa_cmd" Type="u_int08">
-    <Value>
-      <anon>VF048_LUCI_TARGA_CMD_OFF</anon>
-      <anon>0x00</anon>
-      <anon>Value for OFF</anon>
-    </Value>
-    <Value>
-      <anon>VF048_LUCI_TARGA_CMD_ON</anon>
-      <anon>0x01</anon>
-      <anon>Value for ON</anon>
-    </Value>
-    <NBC VF="VF030" Implemented="true" />
-  </Output>
   <Output Name="PosLightFollowMeCmd" Type="bool_t">
     <Value>
       <anon>&amp;OFF</anon>
@@ -89,14 +76,14 @@
     </Value>
     <NBC VF="VF042" Implemented="true" />
   </Output>
-  <Output Name="Targa_cmd" Type="u_int08">
+  <Output Name="Luci_targa_cmd" Type="u_int08">
     <Value>
-      <anon>&amp;OFF</anon>
+      <anon>VF048_LUCI_TARGA_CMD_OFF</anon>
       <anon>0x00</anon>
       <anon>Value for OFF</anon>
     </Value>
     <Value>
-      <anon>&amp;ON</anon>
+      <anon>VF048_LUCI_TARGA_CMD_ON</anon>
       <anon>0x01</anon>
       <anon>Value for ON</anon>
     </Value>

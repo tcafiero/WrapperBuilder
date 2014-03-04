@@ -595,6 +595,14 @@ void <%= descriptor["Module"] %>_GoToSleep(void)
   WKSS_TaskState(<%= descriptor["Module"] %>_ApplicationTask, WKSS_INACTIVE_TASK);
 }
 
+<%
+if File.exist?(ARGV[0]+'_code.c')
+  extra=File.read(ARGV[0]+'_code.c')
+%>
+<%= extra %>
+<% end %>
+
+
 /*______ E N D _____ (<%= descriptor["Module"] %>.c) _______________________________________________*/
 
 

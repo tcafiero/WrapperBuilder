@@ -138,6 +138,13 @@ typedef <%= input["Type"] %> <%= source %>_<%= input["Name"] %>_t;
 
 /*______ G L O B A L - F U N C T I O N S - P R O T O T Y P E S _______________*/
 
+<%
+if File.exist?(ARGV[0]+'_include.h')
+  extra=File.read(ARGV[0]+'_include.h')
+%>
+<%= extra %>
+<% end %>
+
 
 #endif /* <%= descriptor["Module"] %>_CONFIG_H */
 
