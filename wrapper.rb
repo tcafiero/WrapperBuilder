@@ -3,7 +3,12 @@ require 'erubis'
 require 'xmlsimple'
 require 'vine'
 
-verbose=false
+@verbose=false
+if ARGV.size >= 2
+if ARGV[1] == "verbose"
+@verbose=true
+end
+end
 #interface = YAML.load_file(ARGV[0]+'.yml')
 xs = XmlSimple.new({ 'ForceArray' => true, 'KeepRoot' => true })
 xmlfile = File.open(ARGV[0]+'.xml','r')
@@ -76,9 +81,11 @@ if descriptor.has_key?("Timer")
     end
   end
 end
-if ARGV[1] == '-print'
-  puts interface.to_yaml
-  exit
+
+if @verbose
+ymlfile=File.open(ARGV[0]+'.yml','w')
+ymlfile.puts YAML.dump(interface) 
+ymlfile.close
 end
 
 if true

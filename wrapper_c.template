@@ -73,7 +73,7 @@ void <%= descriptor["Module"] %>_ReadOutputs(void);
 
 /*______ G L O B A L - F U N C T I O N S _____________________________________*/
 
-<% if verbose %>
+<% if @verbose %>
 /* NOTE
    Bind following callback
    function: <%= descriptor["Module"] %>_Init(void)
@@ -146,7 +146,7 @@ void <%= descriptor["Module"] %>_Init(void)
 <%= descriptor["Module"] %>_<%= output["Name"] %>=<%= value[0] %>;
 <%= descriptor["Module"] %>_ModelOutputs.<%= output["Name"] %>=<%= descriptor["Module"] %>_<%= output["Name"] %>;
 <% for signal in output["Pin"]%>
-<% if verbose %>/* NOTE * in file: ...\BCM_I_O\CONF\doup_cfg.h
+<% if @verbose %>/* NOTE * in file: ...\BCM_I_O\CONF\doup_cfg.h
  * add macro: #define DOUP_Set<%= output["Name"] %>(x)  DOUP_SetOutVal(<%= signal["ProcessorPinName"] %>,x)
 */
 <% end %>
@@ -183,7 +183,7 @@ NETC_TX_<%= signal["MessageName"] %><%= signal["SignalName"] %>=<%= descriptor["
 <% end %>
 <% end %>
 <% if trigger001 %>
-<% if verbose %>/* NOTE   Bind following callback
+<% if @verbose %>/* NOTE   Bind following callback
    function: <%= descriptor["Module"] %>_ProxiStatusChanged();
    in file: ...\BCM_APP_L7_F142M\BCML7_CLIENT\CONFIGURATION_FILES\vers_config.h
    at section: G L O B A L - M A C R O S  */
@@ -225,7 +225,8 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 <%# NBC SIGNAL callback (START SECTION) %>
 <% for input in descriptor["Input"] %>
 <% if input.has_key?("NBC") %>
-<% if verbose %>/* NOTE   Bind following callback
+<% if @verbose %>/* NOTE   Bind following callback
+   <% signal = input["NBC"][0] %>
    function: <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged();
    in file: ...\BCM_APP_L7_F142M\BCML7_CLIENT\CONFIGURATION_FILES\<%= signal["VF"] %>_config.h
    at section: G L O B A L - M A C R O S  */
@@ -262,7 +263,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 <%# PHYSICAL SIGNAL callback (START SECTION) %>
 <% for input in descriptor["Input"] %>
 <% if input.has_key?("Pin") %>
-<% if verbose %>/* NOTE   Bind following callback
+<% if @verbose %>/* NOTE   Bind following callback
    function: <%= descriptor["Module"] %>_<%= input["Name"] %>StatusChanged();
    in file: ...\BCM_I_O\CONF\linp_config.h
    at section: Logical Input CALLBACK function mapping
@@ -305,7 +306,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 <% if output.has_key?("Pin") %>
 <% for signal in output["Pin"]%>
 <% if signal.has_key?("Diagnosis") %>
-<% if verbose %>/* NOTE   Check if following callback
+<% if @verbose %>/* NOTE   Check if following callback
    function: <%= descriptor["Module"] %>_<%= output["Name"] %>Diagnosis();
    in file: ...\BCM_I_O\CONF\linp_config.h
    
@@ -355,7 +356,7 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 <% end %>
 
 <% mset.each_key { | messagename | %>
-<% if verbose %>/* NOTE   Bind following callback
+<% if @verbose %>/* NOTE   Bind following callback
    function: <%= descriptor["Module"] %>_<%= messagename %>_Confirmation();
    in file: ...\BCM_NET_DIAG\L7\CAN\Presentation\NETP\netp_config.c
    at section: where <%= messagename %> is evalued
@@ -528,7 +529,7 @@ void <%= descriptor["Module"] %>_WriteInputs(void)
 
 
 
-<% if verbose %>/* NOTE   Bind following callback
+<% if @verbose %>/* NOTE   Bind following callback
    function: <%= descriptor["Module"] %>_Task_ts(void)
    in file: ...\BCM_APP_L7_F142M\BCML7_CLIENT\CONFIGURATION_FILES\task_config.c
    put following line: <%= descriptor["Module"] %>_Task_ts();
@@ -556,7 +557,7 @@ void <%= descriptor["Module"] %>_Task_ts(void)
 }
 
 
-<% if verbose %>/* NOTE   put this line into mandatory idle state of Stateflow of Model
+<% if @verbose %>/* NOTE   put this line into mandatory idle state of Stateflow of Model
    exit: <%= descriptor["Module"] %>_StayActive(void);
    
    Modify file: ...\BCM_APP_L7_F142M\PTF_STD\System\WKSS\PublicInt\wkss.h
@@ -579,7 +580,7 @@ void <%= descriptor["Module"] %>_StayActive(void)
   WKSS_TaskState(<%= descriptor["Module"] %>_ApplicationTask, WKSS_ACTIVE_TASK);
 }
 
-<% if verbose %>/* NOTE   put this line into mandatory idle state of Stateflow of Model
+<% if @verbose %>/* NOTE   put this line into mandatory idle state of Stateflow of Model
    entry: <%= descriptor["Module"] %>_GoToSleep(void);
 */
 <% end %>
