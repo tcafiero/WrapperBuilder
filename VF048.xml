@@ -100,7 +100,7 @@
       <anon>0x01</anon>
       <anon>Value for ON</anon>
     </Value>
-    <Network MessageName="EXTERNAL_LIGHTS" SignalName="HighBeamSts" Async="false" />
+    <Network MessageName="EXTERNAL_LIGHTS" SignalName="HighBeamSts_bit" Async="false" />
   </Output>
   <Timer Name="1" Implemented="true">
     <Value>
