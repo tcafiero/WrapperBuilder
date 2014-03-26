@@ -360,8 +360,8 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 <% if @verbose %>/* NOTE   Bind following callback
    function: <%= descriptor["Module"] %>_<%= messagename %>_Confirmation();
    in file: ...\BCM_NET_DIAG\L7\CAN\Presentation\NETP\netp_config.c
-   at section: where <%= messagename %> is evalued
-   put at the end ov block this call: <%= descriptor["Module"] %>_<%= messagename %>_Confirmation();
+   at section: where <%= messagename %> is used
+   put at the end of block this call: <%= descriptor["Module"] %>_<%= messagename %>_Confirmation();
 */
 <% end %>
 /******************************************************************************/
