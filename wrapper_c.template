@@ -347,10 +347,11 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 <% for input in descriptor["Input"] %>
 <% if input.has_key? ("Network") %>
 <% for signal in input["Network"] %>
-<% if  mset[signal["MessageName"]] == 0 %>
-<% mset[signal["MessageName"]]=[] %>
-<% end %>
-<% mset[signal["MessageName"]] << signal %>
+<% if !mset.has_key? (signal["MessageName"])
+   mset[signal["MessageName"]]=[]
+   end
+%>
+<% mset[signal["MessageName"]] <<  [input["Name"], signal] %>
 <% end %>
 <% end %>
 <% end %>
@@ -373,13 +374,10 @@ if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_E
 /******************************************************************************/
 void <%= descriptor["Module"] %>_<%= messagename %>_Confirmation(void)
 {
-<% for input in descriptor["Input"] %>
-<% for signal in input["Network"] %>
-<% if signal["MessageName"] == messagename %>
-<%= descriptor["Module"] %>_ModelInputs.<%= input["Name"] %>=NETC_RX_<%= signal["MessageName"] %><%= signal["SignalName"] %>;
+<% for signal in mset[messagename] %>
+<%= descriptor["Module"] %>_ModelInputs.<%= signal[0] %>=NETC_RX_<%= signal[1]["MessageName"] %><%= signal[1]["SignalName"] %>;
 <% end %>
-<% end %>
-<% end %>
+
 if(<%= descriptor["Module"] %>_ModelEventCounter < <%= descriptor["Module"] %>_EVENT_COUNT_MAX)
 {
 <%= descriptor["Module"] %>_ModelEventCounter++;

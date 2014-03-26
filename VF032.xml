@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Interface Author="Antonio Cafiero" Module="VF032" Description="Luci stazionamento [F032.Vf6]" Details="(not)" Date="2014-03-16" Platform="Body Platform F142M L7">
+  <History Author="T. Cafiero" Date="2014-03-16" Description="first release" />
+  <Input Name="KeySts" Type="u_int08">
+    <Value>
+      <anon>VF040_KEY_OFF_STATUS</anon>
+      <anon>0x01</anon>
+      <anon>Key is in OFF status</anon>
+    </Value>
+    <Value>
+      <anon>VF040_KEY_PARK_STATUS</anon>
+      <anon>0x02</anon>
+      <anon>Key is in PARK status</anon>
+    </Value>
+    <Value>
+      <anon>VF040_KEY_ON_STATUS</anon>
+      <anon>0x04</anon>
+      <anon>Key is in ON status</anon>
+    </Value>
+    <Value>
+      <anon>VF040_CRANK_ON_STATUS</anon>
+      <anon>0x0C</anon>
+      <anon>Key is in CRANK status</anon>
+    </Value>
+    <NBC VF="VF040" Implemented="true" />
+  </Input>
+  <Input Name="ParkLightCmd" Type="bool_t">
+    <Value>
+      <anon>VF247_POS_LIGHT_OFF</anon>
+      <anon>0x00</anon>
+      <anon>Signal OFF</anon>
+    </Value>
+    <Value>
+      <anon>VF247_POS_LIGHT_ON        </anon>
+      <anon>0x01</anon>
+      <anon>Signal ON</anon>
+    </Value>
+    <NBC VF="VF247" Implemented="true" />
+  </Input>
+  <Input Name="RDirectionSwitchSts" Type="bool_t">
+    <Value>
+      <anon>&amp;OFF</anon>
+      <anon>0x00</anon>
+      <anon>Signal low</anon>
+    </Value>
+    <Value>
+      <anon>&amp;ON</anon>
+      <anon>0x01</anon>
+      <anon>Signal high</anon>
+    </Value>
+    <Network MessageName="STATUS_NVO" SignalName="RdirectionSwitchSts" Async="true"></Network>
+  </Input>
+  <Input Name="LDirectionSwitchSts" Type="bool_t">
+    <Value>
+      <anon>&amp;OFF</anon>
+      <anon>0x00</anon>
+      <anon>Signal low</anon>
+    </Value>
+    <Value>
+      <anon>&amp;ON</anon>
+      <anon>0x01</anon>
+      <anon>Signal High</anon>
+    </Value>
+    <Network MessageName="STATUS_NVO" SignalName="LdirectionSwitchSts" Async="true"></Network>
+  </Input>
+  <Output Name="LPosLightParkCmd" Type="bool_t">
+    <Value>
+      <anon>&amp;OFF</anon>
+      <anon>0x00</anon>
+      <anon>OFF value</anon>
+    </Value>
+    <Value>
+      <anon>&amp;ON</anon>
+      <anon>0x01</anon>
+      <anon>ON value</anon>
+    </Value>
+    <NBC VF="VF027" Implemented="true" />
+  </Output>
+  <Output Name="RPosLightParkCmd" Type="bool_t">
+    <Value>
+      <anon>&amp;OFF</anon>
+      <anon>0x00</anon>
+      <anon>OFF value</anon>
+    </Value>
+    <Value>
+      <anon>&amp;ON</anon>
+      <anon>0x01</anon>
+      <anon>ON value</anon>
+    </Value>
+    <NBC VF="VF027" Implemented="true" />
+  </Output>
+  <Output Name="LHParkTailLightSts" Type="bool_t">
+    <Value>
+      <anon>&amp;OFF</anon>
+      <anon>0x00</anon>
+      <anon>Value for OFF</anon>
+    </Value>
+    <Value>
+      <anon>&amp;ON</anon>
+      <anon>0x01</anon>
+      <anon>Value for ON</anon>
+    </Value>
+    <Network MessageName="EXTERNAL_LIGHTS" SignalName="LHParkTailLightSts" Async="true" />
+  </Output>
+  <Output Name="RHParkTailLightSts" Type="bool_t">
+    <Value>
+      <anon>&amp;OFF</anon>
+      <anon>0x00</anon>
+      <anon>Value for OFF</anon>
+    </Value>
+    <Value>
+      <anon>&amp;ON</anon>
+      <anon>0x01</anon>
+      <anon>Value for ON</anon>
+    </Value>
+    <Network MessageName="EXTERNAL_LIGHTS" SignalName="RHParkTailLightSts" Async="true" />
+  </Output>
+  <Timer Name="1" Implemented="true">
+    <Value>
+      <anon>&amp;500MSEC</anon>
+      <anon>500</anon>
+      <anon>500 msec timeout</anon>
+    </Value>
+  </Timer>
+</Interface>
