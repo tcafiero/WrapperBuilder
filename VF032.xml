@@ -48,7 +48,7 @@
       <anon>0x01</anon>
       <anon>Signal high</anon>
     </Value>
-    <Network MessageName="STATUS_NVO" SignalName="RdirectionSwitchSts" Async="true"></Network>
+    <Network MessageName="STATUS_NVO" SignalName="RdirectionSwitchSts_bit" Async="true"></Network>
   </Input>
   <Input Name="LDirectionSwitchSts" Type="bool_t">
     <Value>
@@ -61,7 +61,7 @@
       <anon>0x01</anon>
       <anon>Signal High</anon>
     </Value>
-    <Network MessageName="STATUS_NVO" SignalName="LdirectionSwitchSts" Async="true"></Network>
+    <Network MessageName="STATUS_NVO" SignalName="LdirectionSwitchSts_bit" Async="true"></Network>
   </Input>
   <Output Name="LPosLightParkCmd" Type="bool_t">
     <Value>
@@ -100,7 +100,7 @@
       <anon>0x01</anon>
       <anon>Value for ON</anon>
     </Value>
-    <Network MessageName="EXTERNAL_LIGHTS" SignalName="LHParkTailLightSts" Async="true" />
+    <Network MessageName="EXTERNAL_LIGHTS" SignalName="LHParkTailLightSts_bit" Async="true" />
   </Output>
   <Output Name="RHParkTailLightSts" Type="bool_t">
     <Value>
@@ -113,7 +113,7 @@
       <anon>0x01</anon>
       <anon>Value for ON</anon>
     </Value>
-    <Network MessageName="EXTERNAL_LIGHTS" SignalName="RHParkTailLightSts" Async="true" />
+    <Network MessageName="EXTERNAL_LIGHTS" SignalName="RHParkTailLightSts_bit" Async="true" />
   </Output>
   <Timer Name="1" Implemented="true">
     <Value>

@@ -57,18 +57,6 @@ Interface:
       Implemented: 'true'
     Implemented: true
   Output:
-  - Name: Luci_targa_cmd
-    Type: u_int08
-    Value:
-    - - VF048_LUCI_TARGA_CMD_OFF
-      - '0x00'
-      - Value for OFF
-    - - VF048_LUCI_TARGA_CMD_ON
-      - '0x01'
-      - Value for ON
-    NBC:
-    - VF: VF030
-      Implemented: 'true'
   - Name: PosLightFollowMeCmd
     Type: bool_t
     Value:
@@ -93,13 +81,13 @@ Interface:
     NBC:
     - VF: VF042
       Implemented: 'true'
-  - Name: Targa_cmd
+  - Name: Luci_targa_cmd
     Type: u_int08
     Value:
-    - - VF048_TARGA_CMD_OFF
+    - - VF048_LUCI_TARGA_CMD_OFF
       - '0x00'
       - Value for OFF
-    - - VF048_TARGA_CMD_ON
+    - - VF048_LUCI_TARGA_CMD_ON
       - '0x01'
       - Value for ON
     NBC:
@@ -116,7 +104,7 @@ Interface:
       - Value for ON
     Network:
     - MessageName: EXTERNAL_LIGHTS
-      SignalName: HighBeamSts
+      SignalName: HighBeamSts_bit
       Async: 'false'
   Timer:
   - Name: '1'

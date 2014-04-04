@@ -34,19 +34,6 @@
 
 /*______ G L O B A L - D E F I N E S _________________________________________*/
 
-/* OUTPUT SECTION */
-
-<% for output in descriptor["Output"] %>
-/* Value valid for <%= output["Name"] %> */ 
-<% for value in output["Value"] %>
-#define <%= value[0] %> <%= value[1] %> /* <%= value[2] %> */
-<% end %>
-
-<% end %>
-
-
-
-
 
 /*______ G L O B A L - T Y P E S _____________________________________________*/
 <% for output in descriptor["Output"] %>

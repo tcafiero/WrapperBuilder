@@ -78,7 +78,7 @@ if implemented %>
 
 /* INPUT SECTION */
 <% for input in descriptor["Input"] %>
-<% if !input["Implemented"] %>
+<% if !input["Implemented"] || input.has_key?("Network")%>
 /* Value valid for <%= input["Name"] %> */ 
 <% for value in input["Value"] %>
 #define <%= value[0] %> <%= value[1] %> /* <%= value[2] %> */
@@ -86,6 +86,19 @@ if implemented %>
 <% end %>
 
 <% end %>
+
+/* OUTPUT SECTION */
+
+<% for output in descriptor["Output"] %>
+/* Value valid for <%= output["Name"] %> */ 
+<% for value in output["Value"] %>
+#define <%= value[0] %> <%= value[1] %> /* <%= value[2] %> */
+<% end %>
+
+<% end %>
+
+
+
 
 /* TIMER SECTION */
 <%
